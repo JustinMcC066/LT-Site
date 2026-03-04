@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hok.Studio — About</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@200;300;400;500;600;700;800&family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        hok: {
+          bg: '#0e1010',
+          card: '#161818',
+          border: 'rgba(255,255,255,0.08)',
+          borderLight: 'rgba(255,255,255,0.12)',
+          gray: '#767a82',
+          accent: '#ebf441',
+          white: '#ffffff',
+        }
+      },
+      fontFamily: {
+        heading: ['"Inter Tight"', 'sans-serif'],
+        body: ['"Inter"', 'sans-serif'],
+      },
+      borderRadius: {
+        'hok': '20px',
+        'hok-lg': '24px',
+      }
+    }
+  }
+}
+</script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: #0e1010;
+    color: #fff;
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0e1010; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+  /* Section reveal */
+  .reveal { opacity: 0; transform: translateY(40px); }
+  .reveal.active { opacity: 1; transform: translateY(0); transition: opacity 0.8s cubic-bezier(.23,1,.32,1), transform 0.8s cubic-bezier(.23,1,.32,1); }
+
+  /* Image reveal */
+  .img-reveal { clip-path: inset(100% 0 0 0); }
+  .img-reveal.active { clip-path: inset(0 0 0 0); transition: clip-path 1s cubic-bezier(.23,1,.32,1); }
+  .img-reveal img, .img-reveal video { transform: scale(1.15); transition: transform 1.2s cubic-bezier(.23,1,.32,1); }
+  .img-reveal.active img, .img-reveal.active video { transform: scale(1); }
+
+  /* Stagger children */
+  .stagger-children .reveal:nth-child(1) { transition-delay: 0s; }
+  .stagger-children .reveal:nth-child(2) { transition-delay: 0.1s; }
+  .stagger-children .reveal:nth-child(3) { transition-delay: 0.2s; }
+  .stagger-children .reveal:nth-child(4) { transition-delay: 0.3s; }
+  .stagger-children .reveal:nth-child(5) { transition-delay: 0.4s; }
+
+  /* Rolling counter */
+  .counter-digit-wrap {
+    display: inline-flex;
+    overflow: hidden;
+    height: 1em;
+    line-height: 1;
+    vertical-align: bottom;
+  }
+  .counter-digit-col {
+    display: flex;
+    flex-direction: column;
+    transition: transform 1.2s cubic-bezier(.23,1,.32,1);
+  }
+  .counter-digit-col span {
+    display: block;
+    height: 1em;
+    line-height: 1;
+  }
+
+  /* Marquee */
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .marquee-track {
+    animation: marquee 25s linear infinite;
+  }
+  .marquee-track:hover {
+    animation-play-state: paused;
+  }
+
+  /* Testimonial slider */
+  .slider-track {
+    transition: transform 0.6s cubic-bezier(.23,1,.32,1);
+  }
+
+  /* Team card hover */
+  .team-card .team-hover-card {
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(.23,1,.32,1);
+  }
+  .team-card:hover .team-hover-card {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* Nav dropdown */
+  .nav-dropdown {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s cubic-bezier(.23,1,.32,1);
+  }
+  .nav-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  /* Mobile menu */
+  .mobile-menu {
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(.23,1,.32,1);
+  }
+  .mobile-menu.active {
+    transform: translateX(0);
+  }
+
+  /* Hamburger */
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: #fff;
+    margin: 5px 0;
+    transition: all 0.3s;
+  }
+  .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.active span:nth-child(2) { opacity: 0; }
+  .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  /* Accent dot */
+  .accent-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ebf441;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  /* Button hover */
+  .hok-btn {
+    transition: all 0.3s cubic-bezier(.23,1,.32,1);
+  }
+  .hok-btn:hover {
+    background: #ebf441;
+    color: #0e1010;
+  }
+  .hok-btn:hover .accent-dot {
+    background: #0e1010;
+  }
+
+  /* Value card hover */
+  .value-card {
+    transition: all 0.4s cubic-bezier(.23,1,.32,1);
+  }
+  .value-card:hover {
+    border-color: rgba(235,244,65,0.3);
+    transform: translateY(-4px);
+  }
+
+  /* Benefit card */
+  .benefit-card {
+    transition: all 0.4s cubic-bezier(.23,1,.32,1);
+  }
+  .benefit-card:hover {
+    border-color: rgba(235,244,65,0.2);
+  }
+
+  /* Nav link underline */
+  .nav-link {
+    position: relative;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: #fff;
+    transition: width 0.3s;
+  }
+  .nav-link:hover::after, .nav-link.active::after {
+    width: 100%;
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== NAVBAR ========== -->
+<nav class="fixed top-0 left-0 w-full z-[100]" style="background: rgba(14,16,16,0.8); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);">
+  <div class="max-w-[1200px] mx-auto px-5 lg:px-8 flex items-center justify-between h-[72px] lg:h-[80px]">
+    <!-- Logo -->
+    <a href="#" class="flex-shrink-0">
+      <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67bf537a88dabb6819edbee6_Hok.Studio.svg" alt="Hok.Studio" class="h-6 lg:h-7">
+    </a>
+
+    <!-- Center Nav -->
+    <div class="hidden lg:flex items-center gap-8">
+      <a href="#" class="nav-link active text-sm font-medium text-white tracking-tight font-heading">About</a>
+      <a href="#" class="nav-link text-sm font-medium text-white/70 hover:text-white tracking-tight font-heading">Work</a>
+      <a href="#" class="nav-link text-sm font-medium text-white/70 hover:text-white tracking-tight font-heading">Career</a>
+      <div class="relative" id="pagesDropdownTrigger">
+        <button class="nav-link text-sm font-medium text-white/70 hover:text-white tracking-tight font-heading flex items-center gap-1.5" onclick="toggleDropdown()">
+          Pages
+          <svg width="10" height="6" viewBox="0 0 10 6" fill="none" class="mt-0.5 transition-transform" id="dropdownArrow">
+            <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <!-- Dropdown -->
+        <div class="nav-dropdown absolute top-full left-1/2 -translate-x-1/2 mt-4 w-[580px] bg-[#161818] border border-white/[0.08] rounded-hok-lg p-8" id="pagesDropdown">
+          <div class="grid grid-cols-3 gap-8">
+            <div>
+              <p class="text-xs font-medium text-white/40 uppercase tracking-wider mb-4 font-heading">Main Pages</p>
+              <div class="flex flex-col gap-3">
+                <a href="#" class="text-sm text-white/70 hover:text-white transition-colors font-body">Home</a>
+                <a href="#" class="text-sm text-white/70 hover:text-white transition-colors font-body">About Us</a>
+                <a href="#" class="text-sm text-white/70 hover:text-white transition-colors font-body">Works</a>
+                <a href="#" class="text-sm text-white/70 hover:text-white transition-colors font-body">Blog</a>
+                <a href="#" class="text-sm text-white/70 hover:text-white transition-colors font-body">Contact Us</a>
+              </div>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-white/40 uppercase tracking-wider mb-4 font-heading">Inner Pages</p>
+              <div class="flex flex-col gap-3">
+                <a href="#" class="text-sm text-white/70 hover:text-white transition-colors font-body">Work Single</a>
+                <a href="#" class="text-sm text-white/70 hover:text-white transition-colors font-body">Blog Single</a>
+                <a href="#" class="text-sm text-white/70 hover:text-white transition-colors font-body">Career Single</a>
+                <a href="#" class="text-sm text-white/70 hover:text-white transition-colors font-body">Career</a>
+              </div>
+            </div>
+            <div>
+              <p class="text-xs font-medium text-white/40 uppercase tracking-wider mb-4 font-heading">Utility Pages</p>
+              <div class="flex flex-col gap-3">
+                <a href="#" class="text-sm text-white/70 hover:text-white transition-colors font-body">404 Page</a>
+                <a href="#" class="text-sm text-white/70 hover:text-white transition-colors font-body">Styleguide</a>
+                <a href="#" class="text-sm text-white/70 hover:text-white transition-colors font-body">Licenses</a>
+                <a href="#" class="text-sm text-white/70 hover:text-white transition-colors font-body">Changelog</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: CTA + Hamburger -->
+    <div class="flex items-center gap-4">
+      <a href="#" class="hok-btn hidden lg:flex items-center gap-2.5 bg-white/[0.08] border border-white/[0.08] rounded-full px-5 py-2.5 text-sm font-medium text-white font-heading tracking-tight">
+        <span class="accent-dot"></span>
+        Start A Project
+      </a>
+      <button class="hamburger lg:hidden relative z-[110]" onclick="toggleMobile()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu fixed inset-0 z-[105] bg-[#0e1010] pt-24 px-6 lg:hidden" id="mobileMenu">
+  <div class="flex flex-col gap-6">
+    <a href="#" class="text-2xl font-bold text-white font-heading">About</a>
+    <a href="#" class="text-2xl font-bold text-white/70 font-heading">Work</a>
+    <a href="#" class="text-2xl font-bold text-white/70 font-heading">Career</a>
+    <a href="#" class="text-2xl font-bold text-white/70 font-heading">Pages</a>
+    <div class="pt-6 border-t border-white/[0.08]">
+      <a href="#" class="hok-btn flex items-center gap-2.5 bg-white/[0.08] border border-white/[0.08] rounded-full px-5 py-3 text-sm font-medium text-white font-heading tracking-tight w-fit">
+        <span class="accent-dot"></span>
+        Start A Project
+      </a>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========== BANNER SECTION ========== -->
+<section class="pt-[140px] lg:pt-[180px] pb-[80px] lg:pb-[120px]">
+  <div class="max-w-[1200px] mx-auto px-5 lg:px-8">
+    <div class="flex flex-col lg:flex-row gap-8 lg:gap-16 items-start">
+      <!-- Left label -->
+      <div class="reveal flex items-center gap-3 lg:pt-4 flex-shrink-0">
+        <div class="w-10 h-10 rounded-xl bg-white/[0.06] border border-white/[0.08] flex items-center justify-center">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ebf441" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+        </div>
+        <span class="text-sm font-medium text-white/60 font-heading tracking-tight">About Us</span>
+      </div>
+      <!-- Right content -->
+      <div class="flex-1">
+        <h1 class="reveal text-[32px] sm:text-[42px] lg:text-[60px] xl:text-[74px] font-bold text-white font-heading leading-[103%] tracking-[-0.02em] mb-6">
+          We are founded on the belief that questioning assumptions drives innovation.
+        </h1>
+        <p class="reveal text-base lg:text-lg text-[#767a82] font-body leading-[166%] max-w-[600px]">
+          At Hok Studio, we specialize in crafting tailored digital strategies that drive results.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== MISSION SECTION ========== -->
+<section class="py-[80px] lg:py-[120px]">
+  <div class="max-w-[1200px] mx-auto px-5 lg:px-8">
+    <!-- Header -->
+    <div class="mb-12 lg:mb-20">
+      <div class="reveal flex items-center gap-2.5 mb-5">
+        <span class="accent-dot"></span>
+        <span class="text-sm font-medium text-white/60 font-heading tracking-tight">Our Mission</span>
+      </div>
+      <h2 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold text-white font-heading leading-[108%] tracking-[-0.02em] max-w-[900px]">
+        To empower businesses with innovative digital marketing solutions that exact drive growth, enhance brand identity.
+      </h2>
+    </div>
+
+    <!-- Content grid -->
+    <div class="flex flex-col lg:flex-row gap-8 lg:gap-10">
+      <!-- LEFT column -->
+      <div class="flex-1 flex flex-col gap-8">
+        <!-- Video block -->
+        <div class="img-reveal rounded-hok-lg overflow-hidden">
+          <video autoplay muted loop playsinline class="w-full h-[260px] lg:h-[320px] object-cover">
+            <source src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88%2F67f807b552f984fcd9ab70fb_Video%201-transcode.mp4" type="video/mp4">
+          </video>
+        </div>
+        <!-- Counter highlight -->
+        <div class="reveal bg-[#161818] border border-white/[0.08] rounded-hok-lg p-6 flex items-center gap-5">
+          <div class="w-14 h-14 rounded-2xl bg-[#ebf441]/10 flex items-center justify-center flex-shrink-0">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ebf441" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <div>
+            <div class="text-[40px] lg:text-[48px] font-bold font-heading text-white leading-none tracking-tight counter-group" data-target="86" data-suffix="+">
+              <span class="counter-digits"></span><span class="counter-suffix text-[#ebf441]">+</span>
+            </div>
+            <p class="text-sm text-[#767a82] font-body mt-1">Expert Team Members</p>
+          </div>
+        </div>
+        <!-- Body text -->
+        <p class="reveal text-base text-[#767a82] font-body leading-[166%]">
+          We help businesses grow by building strong digital foundations with creative strategy and data-driven solutions tailored to each unique brand.
+        </p>
+      </div>
+
+      <!-- RIGHT column -->
+      <div class="flex-1 relative">
+        <div class="img-reveal rounded-hok-lg overflow-hidden h-full min-h-[400px] lg:min-h-[560px]">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c124560cd67b9d4507f2ad_contemplative-man-in-modern-workspace-dnjui.webp" alt="CEO" class="w-full h-full object-cover">
+        </div>
+        <!-- Badge overlay -->
+        <div class="absolute bottom-6 left-6 bg-[#161818]/90 backdrop-blur-md border border-white/[0.08] rounded-2xl px-4 py-3 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#ebf441]/10 flex items-center justify-center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ebf441" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+          </div>
+          <div>
+            <p class="text-sm font-bold text-white font-heading">60% Boost</p>
+          </div>
+        </div>
+        <!-- Label -->
+        <div class="absolute top-6 right-6 bg-[#161818]/90 backdrop-blur-md border border-white/[0.08] rounded-full px-4 py-2">
+          <span class="text-xs font-medium text-white/80 font-heading tracking-tight">Meet Our CEO</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== STATS SECTION ========== -->
+<section class="py-[80px] lg:py-[120px]">
+  <div class="max-w-[1200px] mx-auto px-5 lg:px-8">
+    <!-- Header -->
+    <div class="mb-12 lg:mb-16 text-center">
+      <div class="reveal flex items-center gap-2.5 mb-5 justify-center">
+        <span class="accent-dot"></span>
+        <span class="text-sm font-medium text-white/60 font-heading tracking-tight">Mission</span>
+      </div>
+      <h2 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] font-bold text-white font-heading leading-[108%] tracking-[-0.02em] max-w-[700px] mx-auto">
+        We've gathered some fascinating insights from our achievements.
+      </h2>
+    </div>
+
+    <!-- Stats grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <!-- Stat 1 -->
+      <div class="reveal bg-[#161818] border border-white/[0.08] rounded-hok-lg p-8 lg:p-10 text-center">
+        <div class="text-[56px] sm:text-[64px] lg:text-[82px] font-bold font-heading text-white leading-[100%] tracking-[-0.03em] mb-3 counter-group" data-target="90" data-suffix="%">
+          <span class="counter-digits"></span><span class="counter-suffix text-[#ebf441]">%</span>
+        </div>
+        <p class="text-base text-[#767a82] font-body">Client satisfaction</p>
+      </div>
+      <!-- Stat 2 -->
+      <div class="reveal bg-[#161818] border border-white/[0.08] rounded-hok-lg p-8 lg:p-10 text-center">
+        <div class="text-[56px] sm:text-[64px] lg:text-[82px] font-bold font-heading text-white leading-[100%] tracking-[-0.03em] mb-3 counter-group" data-target="100" data-suffix="+">
+          <span class="counter-digits"></span><span class="counter-suffix text-[#ebf441]">+</span>
+        </div>
+        <p class="text-base text-[#767a82] font-body">Project Successfully Done</p>
+      </div>
+      <!-- Stat 3 -->
+      <div class="reveal bg-[#161818] border border-white/[0.08] rounded-hok-lg p-8 lg:p-10 text-center">
+        <div class="text-[56px] sm:text-[64px] lg:text-[82px] font-bold font-heading text-white leading-[100%] tracking-[-0.03em] mb-3 counter-group" data-target="860" data-suffix="K+">
+          <span class="counter-digits"></span><span class="counter-suffix text-[#ebf441]">K+</span>
+        </div>
+        <p class="text-base text-[#767a82] font-body">Overall Revenue Raised</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== BRAND/LOGO SECTION ========== -->
+<section class="py-[80px] lg:py-[120px]">
+  <div class="max-w-[1200px] mx-auto px-5 lg:px-8 text-center mb-10">
+    <h3 class="reveal text-[22px] lg:text-[28px] font-bold text-white font-heading tracking-tight">Trusted by global brands</h3>
+  </div>
+  <!-- Marquee -->
+  <div class="relative overflow-hidden py-8">
+    <!-- Left fade -->
+    <div class="absolute left-0 top-0 bottom-0 w-32 z-10" style="background: linear-gradient(to right, #0e1010, transparent);"></div>
+    <!-- Right fade -->
+    <div class="absolute right-0 top-0 bottom-0 w-32 z-10" style="background: linear-gradient(to left, #0e1010, transparent);"></div>
+    <!-- Track -->
+    <div class="marquee-track flex items-center gap-16 w-max">
+      <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f95b99a3e2daca519d6110_logo-8%20(5).svg" alt="Brand" class="h-8 opacity-50 hover:opacity-100 transition-opacity">
+      <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f95bc7cd73b140e4c87e8d_logo-8%20(9).svg" alt="Brand" class="h-8 opacity-50 hover:opacity-100 transition-opacity">
+      <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f95b99bd017dfbd72fc38a_logo-8%20(6).svg" alt="Brand" class="h-8 opacity-50 hover:opacity-100 transition-opacity">
+      <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f95b993aa6424da00e7b80_Group%202085667062%20(1).svg" alt="Brand" class="h-8 opacity-50 hover:opacity-100 transition-opacity">
+      <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f95b99058dea2736c9bd54_logo-8%20(7).svg" alt="Brand" class="h-8 opacity-50 hover:opacity-100 transition-opacity">
+      <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f95b991ed29635c2fbc2e1_logo-8%20(8).svg" alt="Brand" class="h-8 opacity-50 hover:opacity-100 transition-opacity">
+      <!-- Duplicate for seamless loop -->
+      <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f95b99a3e2daca519d6110_logo-8%20(5).svg" alt="Brand" class="h-8 opacity-50 hover:opacity-100 transition-opacity">
+      <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f95bc7cd73b140e4c87e8d_logo-8%20(9).svg" alt="Brand" class="h-8 opacity-50 hover:opacity-100 transition-opacity">
+      <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f95b99bd017dfbd72fc38a_logo-8%20(6).svg" alt="Brand" class="h-8 opacity-50 hover:opacity-100 transition-opacity">
+      <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f95b993aa6424da00e7b80_Group%202085667062%20(1).svg" alt="Brand" class="h-8 opacity-50 hover:opacity-100 transition-opacity">
+      <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f95b99058dea2736c9bd54_logo-8%20(7).svg" alt="Brand" class="h-8 opacity-50 hover:opacity-100 transition-opacity">
+      <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f95b991ed29635c2fbc2e1_logo-8%20(8).svg" alt="Brand" class="h-8 opacity-50 hover:opacity-100 transition-opacity">
+    </div>
+  </div>
+  <div class="max-w-[1200px] mx-auto px-5 lg:px-8 text-center mt-10">
+    <p class="reveal text-base text-[#767a82] font-body max-w-[500px] mx-auto leading-[166%]">
+      We make user experience for some of the biggest brands in the world.
+    </p>
+  </div>
+</section>
+
+
+<!-- ========== VALUES SECTION ========== -->
+<section class="py-[80px] lg:py-[120px]">
+  <div class="max-w-[1200px] mx-auto px-5 lg:px-8">
+    <div class="flex flex-col lg:flex-row gap-12 lg:gap-20">
+      <!-- Left column — sticky -->
+      <div class="lg:w-[40%] lg:flex-shrink-0">
+        <div class="lg:sticky lg:top-32">
+          <div class="reveal flex items-center gap-2.5 mb-5">
+            <span class="accent-dot"></span>
+            <span class="text-sm font-medium text-white/60 font-heading tracking-tight">Our Values</span>
+          </div>
+          <h2 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] font-bold text-white font-heading leading-[108%] tracking-[-0.02em]">
+            Core principles that drive us
+          </h2>
+        </div>
+      </div>
+      <!-- Right column — scrolling value items -->
+      <div class="lg:w-[60%] flex flex-col">
+        <!-- Item 1 -->
+        <div class="reveal py-10 lg:py-14 border-b border-white/[0.08]" style="border-image:linear-gradient(90deg,rgba(235,244,65,0.3),rgba(235,244,65,0)) 1;">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c5ae1305f2603e26a58bc5_elements.svg" alt="" class="w-7 h-7 mb-5 invert brightness-0">
+          <h4 class="text-[22px] lg:text-[26px] font-bold text-white font-heading tracking-tight mb-4 leading-snug">Accountability and integrity</h4>
+          <p class="text-[15px] text-[#767a82] font-body leading-[175%] max-w-lg">We uphold honesty and transparency in everything we do, ensuring trust and reliability in our work.</p>
+        </div>
+        <!-- Item 2 -->
+        <div class="reveal py-10 lg:py-14 border-b border-white/[0.08]" style="border-image:linear-gradient(90deg,rgba(235,244,65,0.3),rgba(235,244,65,0)) 1;">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c8fc7e08f04c245d6e76d3_mentoring.svg" alt="" class="w-7 h-7 mb-5 invert brightness-0">
+          <h4 class="text-[22px] lg:text-[26px] font-bold text-white font-heading tracking-tight mb-4 leading-snug">Responsibility in everything</h4>
+          <p class="text-[15px] text-[#767a82] font-body leading-[175%] max-w-lg">Transforming your digital presence with innovative web design, intuitive drive business success</p>
+        </div>
+        <!-- Item 3 -->
+        <div class="reveal py-10 lg:py-14 border-b border-white/[0.08]" style="border-image:linear-gradient(90deg,rgba(235,244,65,0.3),rgba(235,244,65,0)) 1;">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c8fc7ec1eced9c7065bd2d_champion.svg" alt="" class="w-7 h-7 mb-5 invert brightness-0">
+          <h4 class="text-[22px] lg:text-[26px] font-bold text-white font-heading tracking-tight mb-4 leading-snug">Together, we achieve success</h4>
+          <p class="text-[15px] text-[#767a82] font-body leading-[175%] max-w-lg">Transforming your digital presence with innovative web design, intuitive drive business success</p>
+        </div>
+        <!-- Item 4 -->
+        <div class="reveal py-10 lg:py-14">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c8fc7e41fa175f1e08128e_ufo-01.svg" alt="" class="w-7 h-7 mb-5 invert brightness-0">
+          <h4 class="text-[22px] lg:text-[26px] font-bold text-white font-heading tracking-tight mb-4 leading-snug">Work smarter, achieve more</h4>
+          <p class="text-[15px] text-[#767a82] font-body leading-[175%] max-w-lg">Transforming your digital presence with innovative web design, intuitive drive business success</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== TEAM SECTION ========== -->
+<section class="py-[80px] lg:py-[120px]">
+  <div class="max-w-[1200px] mx-auto px-5 lg:px-8">
+    <!-- Header -->
+    <div class="mb-12 lg:mb-16 text-center">
+      <div class="reveal flex items-center gap-2.5 mb-5 justify-center">
+        <span class="accent-dot"></span>
+        <span class="text-sm font-medium text-white/60 font-heading tracking-tight">Team Members</span>
+      </div>
+      <h2 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] font-bold text-white font-heading leading-[108%] tracking-[-0.02em] mb-4">
+        Meet our team
+      </h2>
+      <p class="reveal text-base text-[#767a82] font-body max-w-[500px] mx-auto">
+        Our team consists of creative and strategic minds dedicated to driving success.
+      </p>
+    </div>
+
+    <!-- Team cards -->
+    <div class="flex gap-5 overflow-x-auto pb-4 lg:pb-0 lg:overflow-visible lg:grid lg:grid-cols-5 stagger-children" style="-webkit-overflow-scrolling: touch; scrollbar-width: none;">
+      <!-- Member 1 -->
+      <div class="reveal team-card flex-shrink-0 w-[220px] lg:w-auto relative group cursor-pointer">
+        <div class="rounded-hok-lg overflow-hidden mb-4 aspect-[3/4] relative">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c124560cd67b9d4507f2ad_contemplative-man-in-modern-workspace-dnjui.webp" alt="Alex Merahon" class="w-full h-full object-cover">
+          <!-- Hover card -->
+          <div class="team-hover-card absolute bottom-3 left-3 right-3 bg-[#161818]/95 backdrop-blur-md border border-white/[0.1] rounded-2xl p-3.5 flex items-center gap-3">
+            <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c124560cd67b9d4507f2ad_contemplative-man-in-modern-workspace-dnjui.webp" alt="" class="w-9 h-9 rounded-lg object-cover flex-shrink-0">
+            <div class="min-w-0">
+              <p class="text-sm font-bold text-white font-heading truncate">Alex Merahon</p>
+              <p class="text-xs text-[#767a82] font-body truncate">Co Founder</p>
+            </div>
+          </div>
+        </div>
+        <h4 class="text-base font-bold text-white font-heading tracking-tight">Alex Merahon</h4>
+        <p class="text-sm text-[#767a82] font-body mb-2">Co Founder</p>
+        <div class="flex items-center gap-1.5">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f96d9b6d50fecf427fd1b1_%F0%9F%87%AA%F0%9F%87%B8%20(1).png" alt="Spain" class="w-4 h-4 rounded-sm object-cover">
+          <span class="text-xs text-[#767a82] font-body">Spain</span>
+        </div>
+      </div>
+
+      <!-- Member 2 -->
+      <div class="reveal team-card flex-shrink-0 w-[220px] lg:w-auto relative group cursor-pointer">
+        <div class="rounded-hok-lg overflow-hidden mb-4 aspect-[3/4] relative">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67d7882d0900a24b2ec4fa14_Team%202.webp" alt="John Smith" class="w-full h-full object-cover">
+          <div class="team-hover-card absolute bottom-3 left-3 right-3 bg-[#161818]/95 backdrop-blur-md border border-white/[0.1] rounded-2xl p-3.5 flex items-center gap-3">
+            <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67d7882d0900a24b2ec4fa14_Team%202.webp" alt="" class="w-9 h-9 rounded-lg object-cover flex-shrink-0">
+            <div class="min-w-0">
+              <p class="text-sm font-bold text-white font-heading truncate">John Smith</p>
+              <p class="text-xs text-[#767a82] font-body truncate">Project Manager</p>
+            </div>
+          </div>
+        </div>
+        <h4 class="text-base font-bold text-white font-heading tracking-tight">John Smith</h4>
+        <p class="text-sm text-[#767a82] font-body mb-2">Project Manager</p>
+        <div class="flex items-center gap-1.5">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f96e091296c14da2a2472b_%F0%9F%87%AE%F0%9F%87%B9.png" alt="Italy" class="w-4 h-4 rounded-sm object-cover">
+          <span class="text-xs text-[#767a82] font-body">Italy</span>
+        </div>
+      </div>
+
+      <!-- Member 3 -->
+      <div class="reveal team-card flex-shrink-0 w-[220px] lg:w-auto relative group cursor-pointer">
+        <div class="rounded-hok-lg overflow-hidden mb-4 aspect-[3/4] relative">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67d7879fde4010172f58ad58_TEam.webp" alt="Joe Elia" class="w-full h-full object-cover">
+          <div class="team-hover-card absolute bottom-3 left-3 right-3 bg-[#161818]/95 backdrop-blur-md border border-white/[0.1] rounded-2xl p-3.5 flex items-center gap-3">
+            <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67d7879fde4010172f58ad58_TEam.webp" alt="" class="w-9 h-9 rounded-lg object-cover flex-shrink-0">
+            <div class="min-w-0">
+              <p class="text-sm font-bold text-white font-heading truncate">Joe Elia</p>
+              <p class="text-xs text-[#767a82] font-body truncate">UI Designer</p>
+            </div>
+          </div>
+        </div>
+        <h4 class="text-base font-bold text-white font-heading tracking-tight">Joe Elia</h4>
+        <p class="text-sm text-[#767a82] font-body mb-2">UI Designer</p>
+        <div class="flex items-center gap-1.5">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f96e09487b95328342f555_%F0%9F%87%BA%F0%9F%87%B8.png" alt="USA" class="w-4 h-4 rounded-sm object-cover">
+          <span class="text-xs text-[#767a82] font-body">New York</span>
+        </div>
+      </div>
+
+      <!-- Member 4 -->
+      <div class="reveal team-card flex-shrink-0 w-[220px] lg:w-auto relative group cursor-pointer">
+        <div class="rounded-hok-lg overflow-hidden mb-4 aspect-[3/4] relative">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67d3aa6732f793f2fdabd384_1eadb52afbf169e0ea09334e211a3902.webp" alt="Paul Cris" class="w-full h-full object-cover">
+          <div class="team-hover-card absolute bottom-3 left-3 right-3 bg-[#161818]/95 backdrop-blur-md border border-white/[0.1] rounded-2xl p-3.5 flex items-center gap-3">
+            <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67d3aa6732f793f2fdabd384_1eadb52afbf169e0ea09334e211a3902.webp" alt="" class="w-9 h-9 rounded-lg object-cover flex-shrink-0">
+            <div class="min-w-0">
+              <p class="text-sm font-bold text-white font-heading truncate">Paul Cris</p>
+              <p class="text-xs text-[#767a82] font-body truncate">Motion Design</p>
+            </div>
+          </div>
+        </div>
+        <h4 class="text-base font-bold text-white font-heading tracking-tight">Paul Cris</h4>
+        <p class="text-sm text-[#767a82] font-body mb-2">Motion Design</p>
+        <div class="flex items-center gap-1.5">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f96e09f2cc1e1cfb19caa6_%F0%9F%87%AB%F0%9F%87%B7.png" alt="France" class="w-4 h-4 rounded-sm object-cover">
+          <span class="text-xs text-[#767a82] font-body">France</span>
+        </div>
+      </div>
+
+      <!-- Member 5 -->
+      <div class="reveal team-card flex-shrink-0 w-[220px] lg:w-auto relative group cursor-pointer">
+        <div class="rounded-hok-lg overflow-hidden mb-4 aspect-[3/4] relative">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67d3aa953a50a721a5887334_Team%202.webp" alt="Tailor Smith" class="w-full h-full object-cover">
+          <div class="team-hover-card absolute bottom-3 left-3 right-3 bg-[#161818]/95 backdrop-blur-md border border-white/[0.1] rounded-2xl p-3.5 flex items-center gap-3">
+            <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67d3aa953a50a721a5887334_Team%202.webp" alt="" class="w-9 h-9 rounded-lg object-cover flex-shrink-0">
+            <div class="min-w-0">
+              <p class="text-sm font-bold text-white font-heading truncate">Tailor Smith</p>
+              <p class="text-xs text-[#767a82] font-body truncate">UX Researcher</p>
+            </div>
+          </div>
+        </div>
+        <h4 class="text-base font-bold text-white font-heading tracking-tight">Tailor Smith</h4>
+        <p class="text-sm text-[#767a82] font-body mb-2">UX Researcher</p>
+        <div class="flex items-center gap-1.5">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67f96e0984ff04f9db2f1909_%F0%9F%87%A6%F0%9F%87%AA.png" alt="UAE" class="w-4 h-4 rounded-sm object-cover">
+          <span class="text-xs text-[#767a82] font-body">Dubai</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== BENEFITS SECTION ========== -->
+<section class="py-[80px] lg:py-[120px]">
+  <div class="max-w-[1200px] mx-auto px-5 lg:px-8">
+    <!-- Header -->
+    <div class="mb-12 lg:mb-16">
+      <div class="reveal flex items-center gap-2.5 mb-5">
+        <span class="accent-dot"></span>
+        <span class="text-sm font-medium text-white/60 font-heading tracking-tight">Why Hok Studio</span>
+      </div>
+      <h2 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] font-bold text-white font-heading leading-[108%] tracking-[-0.02em]">
+        Why choose us?
+      </h2>
+    </div>
+
+    <!-- Two columns -->
+    <div class="flex flex-col lg:flex-row gap-8 lg:gap-10">
+      <!-- LEFT: Benefit cards -->
+      <div class="flex-1 flex flex-col gap-5">
+        <!-- Card 1 -->
+        <div class="reveal benefit-card bg-[#161818] border border-white/[0.08] rounded-hok-lg p-6 lg:p-7 flex gap-5">
+          <div class="w-12 h-12 rounded-xl bg-white/[0.06] border border-white/[0.06] flex items-center justify-center flex-shrink-0">
+            <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c6501c2b6e0ee52ea63e38_laptop-performance.svg" alt="" class="w-6 h-6">
+          </div>
+          <div>
+            <h4 class="text-lg font-bold text-white font-heading tracking-tight mb-2">Diverse Industry Experience</h4>
+            <p class="text-sm text-[#767a82] font-body leading-[166%]">We bring years of experience across various industries, providing tailored solutions that drive success.</p>
+          </div>
+        </div>
+        <!-- Card 2 -->
+        <div class="reveal benefit-card bg-[#161818] border border-white/[0.08] rounded-hok-lg p-6 lg:p-7 flex gap-5">
+          <div class="w-12 h-12 rounded-xl bg-white/[0.06] border border-white/[0.06] flex items-center justify-center flex-shrink-0">
+            <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c6501dc946953ae64c3713_Style%3DStroke%2C%20Type%3DRounded%20(2).svg" alt="" class="w-6 h-6">
+          </div>
+          <div>
+            <h4 class="text-lg font-bold text-white font-heading tracking-tight mb-2">Working Together with Trust</h4>
+            <p class="text-sm text-[#767a82] font-body leading-[166%]">Collaboration is at the heart of everything we do. Foster environment of openness, where ideas flow.</p>
+          </div>
+        </div>
+        <!-- Card 3 -->
+        <div class="reveal benefit-card bg-[#161818] border border-white/[0.08] rounded-hok-lg p-6 lg:p-7 flex gap-5">
+          <div class="w-12 h-12 rounded-xl bg-white/[0.06] border border-white/[0.06] flex items-center justify-center flex-shrink-0">
+            <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c6501c64ae2a06e3667161_building-03.svg" alt="" class="w-6 h-6">
+          </div>
+          <div>
+            <h4 class="text-lg font-bold text-white font-heading tracking-tight mb-2">Expertise in Multiple Industries</h4>
+            <p class="text-sm text-[#767a82] font-body leading-[166%]">Our team is skilled in working with businesses offering insights and strategies relevant to each sector.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Video -->
+      <div class="flex-1">
+        <div class="img-reveal rounded-hok-lg overflow-hidden h-full min-h-[360px] lg:min-h-[460px]">
+          <video autoplay muted loop playsinline class="w-full h-full object-cover">
+            <source src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88%2F67f80803367516feefca57a5_WhatsApp%20Video%202025-04-10%20at%20114101_1a689c7c-transcode.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== TESTIMONIALS SECTION ========== -->
+<section class="py-[80px] lg:py-[120px]">
+  <div class="max-w-[1200px] mx-auto px-5 lg:px-8">
+    <!-- Header -->
+    <div class="mb-12 lg:mb-16 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+      <div>
+        <div class="reveal flex items-center gap-2.5 mb-5">
+          <span class="accent-dot"></span>
+          <span class="text-sm font-medium text-white/60 font-heading tracking-tight">Testimonial</span>
+        </div>
+        <h2 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] font-bold text-white font-heading leading-[108%] tracking-[-0.02em]">
+          Client reviews
+        </h2>
+        <p class="reveal text-base text-[#767a82] font-body mt-4 max-w-[400px]">
+          Our clients love the results we deliver consistently and quality.
+        </p>
+      </div>
+      <!-- Arrows -->
+      <div class="reveal flex items-center gap-3">
+        <button onclick="slideTestimonial(-1)" class="w-12 h-12 rounded-full border border-white/[0.12] flex items-center justify-center hover:bg-white/[0.06] transition-colors" aria-label="Previous">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c8e26aed35df79f04d96b6_Vector.svg" alt="Previous" class="w-4 h-4">
+        </button>
+        <button onclick="slideTestimonial(1)" class="w-12 h-12 rounded-full border border-white/[0.12] flex items-center justify-center hover:bg-white/[0.06] transition-colors" aria-label="Next">
+          <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c8e3466521fc364bc16324_Vector%20(1).svg" alt="Next" class="w-4 h-4">
+        </button>
+      </div>
+    </div>
+
+    <!-- Slider -->
+    <div class="overflow-hidden rounded-hok-lg">
+      <div class="slider-track flex" id="testimonialTrack">
+        <!-- Slide 1 -->
+        <div class="w-full flex-shrink-0">
+          <div class="bg-[#161818] border border-white/[0.08] rounded-hok-lg p-8 lg:p-12 flex flex-col lg:flex-row gap-8 lg:gap-12">
+            <div class="flex items-center lg:items-start gap-4 lg:flex-col lg:min-w-[180px]">
+              <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c124560cd67b9d4507f2ad_contemplative-man-in-modern-workspace-dnjui.webp" alt="Lee Malia" class="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl object-cover">
+              <div>
+                <h4 class="text-base font-bold text-white font-heading">Lee Malia</h4>
+                <p class="text-sm text-[#767a82] font-body">UI Designer</p>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-5">
+                <span class="accent-dot"></span>
+                <span class="text-sm font-medium text-[#ebf441] font-heading tracking-tight">Supper Experience *</span>
+              </div>
+              <p class="text-[20px] lg:text-[26px] font-medium text-white font-heading leading-[142%] tracking-tight">
+                "Their creative approach to social media blogs marketing has boosted our branding awareness immensely highly professional."
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="w-full flex-shrink-0">
+          <div class="bg-[#161818] border border-white/[0.08] rounded-hok-lg p-8 lg:p-12 flex flex-col lg:flex-row gap-8 lg:gap-12">
+            <div class="flex items-center lg:items-start gap-4 lg:flex-col lg:min-w-[180px]">
+              <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c28ac041164463183176ec_image%20(2).webp" alt="Lee Malia" class="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl object-cover">
+              <div>
+                <h4 class="text-base font-bold text-white font-heading">Lee Malia</h4>
+                <p class="text-sm text-[#767a82] font-body">UI Designer</p>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-5">
+                <span class="accent-dot"></span>
+                <span class="text-sm font-medium text-[#ebf441] font-heading tracking-tight">Supper Experience *</span>
+              </div>
+              <p class="text-[20px] lg:text-[26px] font-medium text-white font-heading leading-[142%] tracking-tight">
+                "The software-first approach they brought to our project transformed our entire digital strategy and workflow efficiency."
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="w-full flex-shrink-0">
+          <div class="bg-[#161818] border border-white/[0.08] rounded-hok-lg p-8 lg:p-12 flex flex-col lg:flex-row gap-8 lg:gap-12">
+            <div class="flex items-center lg:items-start gap-4 lg:flex-col lg:min-w-[180px]">
+              <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c11bc0bddda4257fefee53_creative-workspace-with-abstract-art-cj2ry.webp" alt="Lee Malia" class="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl object-cover">
+              <div>
+                <h4 class="text-base font-bold text-white font-heading">Lee Malia</h4>
+                <p class="text-sm text-[#767a82] font-body">UI Designer</p>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-5">
+                <span class="accent-dot"></span>
+                <span class="text-sm font-medium text-[#ebf441] font-heading tracking-tight">Supper Experience *</span>
+              </div>
+              <p class="text-[20px] lg:text-[26px] font-medium text-white font-heading leading-[142%] tracking-tight">
+                "Their innovative solutions and dedication to quality have significantly improved our online presence and customer engagement."
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 4 -->
+        <div class="w-full flex-shrink-0">
+          <div class="bg-[#161818] border border-white/[0.08] rounded-hok-lg p-8 lg:p-12 flex flex-col lg:flex-row gap-8 lg:gap-12">
+            <div class="flex items-center lg:items-start gap-4 lg:flex-col lg:min-w-[180px]">
+              <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c10578a8957ed6d5e6b61b_image.webp" alt="Lee Malia" class="w-16 h-16 lg:w-20 lg:h-20 rounded-2xl object-cover">
+              <div>
+                <h4 class="text-base font-bold text-white font-heading">Lee Malia</h4>
+                <p class="text-sm text-[#767a82] font-body">UI Designer</p>
+              </div>
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center gap-2 mb-5">
+                <span class="accent-dot"></span>
+                <span class="text-sm font-medium text-[#ebf441] font-heading tracking-tight">Supper Experience *</span>
+              </div>
+              <p class="text-[20px] lg:text-[26px] font-medium text-white font-heading leading-[142%] tracking-tight">
+                "Working with Hok Studio has been a game-changer for our brand. Their software-first mindset delivered exceptional results."
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dots -->
+    <div class="flex items-center justify-center gap-2 mt-6" id="testimonialDots">
+      <button class="w-2 h-2 rounded-full bg-[#ebf441] transition-all" data-slide="0"></button>
+      <button class="w-2 h-2 rounded-full bg-white/20 transition-all" data-slide="1"></button>
+      <button class="w-2 h-2 rounded-full bg-white/20 transition-all" data-slide="2"></button>
+      <button class="w-2 h-2 rounded-full bg-white/20 transition-all" data-slide="3"></button>
+    </div>
+  </div>
+</section>
+
+
+<!-- ========== FOOTER ========== -->
+<footer class="pt-[80px] lg:pt-[120px] pb-8">
+  <div class="max-w-[1200px] mx-auto px-5 lg:px-8">
+    <!-- CTA Block -->
+    <div class="reveal bg-[#161818] border border-white/[0.08] rounded-hok-lg p-10 lg:p-16 text-center mb-16 lg:mb-24">
+      <div class="flex items-center gap-2.5 mb-5 justify-center">
+        <span class="accent-dot"></span>
+        <span class="text-sm font-medium text-white/60 font-heading tracking-tight">Got a project?</span>
+      </div>
+      <h2 class="text-[28px] sm:text-[36px] lg:text-[56px] font-bold text-white font-heading leading-[108%] tracking-[-0.02em] mb-8 max-w-[600px] mx-auto">
+        Bringing your ideas to life with designs.
+      </h2>
+      <a href="#" class="hok-btn inline-flex items-center gap-2.5 bg-white/[0.08] border border-white/[0.08] rounded-full px-7 py-3.5 text-base font-medium text-white font-heading tracking-tight">
+        <span class="accent-dot"></span>
+        Start A Project
+      </a>
+    </div>
+
+    <!-- Footer links -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-8 lg:gap-12 mb-16">
+      <!-- Pages -->
+      <div>
+        <h5 class="text-sm font-bold text-white font-heading mb-5 tracking-tight">Pages</h5>
+        <div class="flex flex-col gap-3">
+          <a href="#" class="text-sm text-[#767a82] hover:text-white transition-colors font-body">Home</a>
+          <a href="#" class="text-sm text-[#767a82] hover:text-white transition-colors font-body">About Us</a>
+          <a href="#" class="text-sm text-[#767a82] hover:text-white transition-colors font-body">Works</a>
+          <a href="#" class="text-sm text-[#767a82] hover:text-white transition-colors font-body">Blog</a>
+          <a href="#" class="text-sm text-[#767a82] hover:text-white transition-colors font-body">Contact Us</a>
+        </div>
+      </div>
+      <!-- Utility Pages -->
+      <div>
+        <h5 class="text-sm font-bold text-white font-heading mb-5 tracking-tight">Utility Pages</h5>
+        <div class="flex flex-col gap-3">
+          <a href="#" class="text-sm text-[#767a82] hover:text-white transition-colors font-body">404</a>
+          <a href="#" class="text-sm text-[#767a82] hover:text-white transition-colors font-body">Styleguide</a>
+          <a href="#" class="text-sm text-[#767a82] hover:text-white transition-colors font-body">License</a>
+          <a href="#" class="text-sm text-[#767a82] hover:text-white transition-colors font-body">Changelog</a>
+        </div>
+      </div>
+      <!-- Legal -->
+      <div>
+        <h5 class="text-sm font-bold text-white font-heading mb-5 tracking-tight">Legal</h5>
+        <div class="flex flex-col gap-3">
+          <a href="#" class="text-sm text-[#767a82] hover:text-white transition-colors font-body">Terms & Conditions</a>
+          <a href="#" class="text-sm text-[#767a82] hover:text-white transition-colors font-body">Privacy Policy</a>
+        </div>
+      </div>
+      <!-- Social -->
+      <div>
+        <h5 class="text-sm font-bold text-white font-heading mb-5 tracking-tight">Join with us:</h5>
+        <div class="flex flex-col gap-3">
+          <a href="#" class="text-sm text-[#767a82] hover:text-white transition-colors font-body flex items-center gap-2">Instagram</a>
+          <a href="#" class="text-sm text-[#767a82] hover:text-white transition-colors font-body flex items-center gap-2">Linkedin</a>
+          <a href="#" class="text-sm text-[#767a82] hover:text-white transition-colors font-body flex items-center gap-2">Youtube</a>
+          <a href="#" class="text-sm text-[#767a82] hover:text-white transition-colors font-body flex items-center gap-2">Discord</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="border-t border-white/[0.08] pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <img src="https://cdn.prod.website-files.com/67bc48bc1a4d41a08e2b3f88/67c26708a5c0034e193fb55c_Hok.Studio%20(1).svg" alt="Hok.Studio" class="h-5 opacity-50">
+      <p class="text-xs text-[#767a82]/60 font-body text-center">
+        Copyright &copy; 2025, All Rights Reserved By Hok.Studio, Powered By Webflow
+      </p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ========== SCRIPTS ========== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function() {
+  'use strict';
+
+  // ---- Dropdown ----
+  window.toggleDropdown = function() {
+    const dd = document.getElementById('pagesDropdown');
+    const arrow = document.getElementById('dropdownArrow');
+    dd.classList.toggle('active');
+    arrow.style.transform = dd.classList.contains('active') ? 'rotate(180deg)' : '';
+  };
+  document.addEventListener('click', function(e) {
+    const trigger = document.getElementById('pagesDropdownTrigger');
+    const dd = document.getElementById('pagesDropdown');
+    if (trigger && !trigger.contains(e.target)) {
+      dd.classList.remove('active');
+      document.getElementById('dropdownArrow').style.transform = '';
+    }
+  });
+
+  // ---- Mobile menu ----
+  window.toggleMobile = function() {
+    const menu = document.getElementById('mobileMenu');
+    const btn = document.querySelector('.hamburger');
+    menu.classList.toggle('active');
+    btn.classList.toggle('active');
+    document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+  };
+
+  // ---- Scroll reveal with GSAP ----
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Reveal elements
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 88%',
+      once: true,
+      onEnter: function() {
+        el.classList.add('active');
+      }
+    });
+  });
+
+  // Image reveals
+  document.querySelectorAll('.img-reveal').forEach(function(el) {
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 85%',
+      once: true,
+      onEnter: function() {
+        el.classList.add('active');
+      }
+    });
+  });
+
+  // ---- Rolling counter animation ----
+  function buildRollingCounter(el) {
+    const target = el.getAttribute('data-target');
+    const digitsContainer = el.querySelector('.counter-digits');
+    if (!digitsContainer || !target) return;
+
+    const digits = target.split('');
+    digitsContainer.innerHTML = '';
+
+    digits.forEach(function(digit, idx) {
+      const d = parseInt(digit);
+      const wrap = document.createElement('span');
+      wrap.className = 'counter-digit-wrap';
+      const col = document.createElement('span');
+      col.className = 'counter-digit-col';
+      col.style.transform = 'translateY(0)';
+
+      for (let i = 0; i <= 9; i++) {
+        const span = document.createElement('span');
+        span.textContent = i;
+        col.appendChild(span);
+      }
+
+      wrap.appendChild(col);
+      digitsContainer.appendChild(wrap);
+
+      // Store target for animation
+      wrap.dataset.targetDigit = d;
+      wrap.dataset.delay = idx * 0.12;
+    });
+  }
+
+  function animateCounter(el) {
+    const wraps = el.querySelectorAll('.counter-digit-wrap');
+    wraps.forEach(function(wrap) {
+      const col = wrap.querySelector('.counter-digit-col');
+      const targetDigit = parseInt(wrap.dataset.targetDigit);
+      const delay = parseFloat(wrap.dataset.delay) || 0;
+
+      setTimeout(function() {
+        col.style.transform = 'translateY(-' + targetDigit + 'em)';
+      }, delay * 1000);
+    });
+  }
+
+  document.querySelectorAll('.counter-group').forEach(function(el) {
+    buildRollingCounter(el);
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 85%',
+      once: true,
+      onEnter: function() {
+        animateCounter(el);
+      }
+    });
+  });
+
+  // ---- Testimonial Slider ----
+  let currentSlide = 0;
+  const totalSlides = 4;
+  const track = document.getElementById('testimonialTrack');
+  const dots = document.querySelectorAll('#testimonialDots button');
+
+  function goToSlide(index) {
+    if (index < 0) index = totalSlides - 1;
+    if (index >= totalSlides) index = 0;
+    currentSlide = index;
+    track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+
+    dots.forEach(function(dot, i) {
+      dot.style.background = i === currentSlide ? '#ebf441' : 'rgba(255,255,255,0.2)';
+      dot.style.width = i === currentSlide ? '24px' : '8px';
+      dot.style.borderRadius = '4px';
+    });
+  }
+
+  window.slideTestimonial = function(dir) {
+    goToSlide(currentSlide + dir);
+  };
+
+  dots.forEach(function(dot, i) {
+    dot.addEventListener('click', function() {
+      goToSlide(i);
+    });
+  });
+
+  // Initialize first dot active styling
+  goToSlide(0);
+
+  // Touch swipe support for slider
+  let touchStartX = 0;
+  let touchEndX = 0;
+  if (track) {
+    track.addEventListener('touchstart', function(e) {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    track.addEventListener('touchend', function(e) {
+      touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 50) slideTestimonial(1);
+      if (touchEndX - touchStartX > 50) slideTestimonial(-1);
+    }, { passive: true });
+  }
+
+  // ---- Navbar background on scroll ----
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 50) {
+      nav.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
+    } else {
+      nav.style.borderBottom = 'none';
+    }
+  });
+
+})();
+</script>
+</body>
+</html>

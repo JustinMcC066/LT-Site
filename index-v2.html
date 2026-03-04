@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Forma Studio - Creative Agency</title>
+  <meta name="description" content="Forma Studio is a full-service creative studio crafting thoughtful digital experiences and timeless design."/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            brand: '#F5D012',
+            'brand-light': '#F4D232',
+            'brand-warm': '#FEF9E6',
+            surface: '#fdfcf8',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; color: #1c1917; overflow-x: hidden; background: #F5D012; }
+    .reveal { opacity: 0; transform: translateY(30px) scale(0.97); filter: blur(4px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.visible { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    .nav-link-wrap { position: relative; overflow: hidden; height: 1.25em; }
+    .nav-link-wrap .line-1, .nav-link-wrap .line-2 { transition: transform 0.3s cubic-bezier(0.76, 0, 0.24, 1); }
+    .nav-link-wrap:hover .line-1 { transform: translateY(-100%); }
+    .nav-link-wrap:hover .line-2 { transform: translateY(-100%); }
+    .btn-animated { position: relative; overflow: hidden; }
+    .btn-animated .icon-1, .btn-animated .icon-2 { transition: transform 0.3s cubic-bezier(0.76, 0, 0.24, 1); }
+    .btn-animated:hover .icon-1 { transform: translate(100%, -100%); }
+    .btn-animated:hover .icon-2 { transform: translate(0, 0); }
+    .btn-animated .underline-1 { transition: transform 0.3s ease; transform-origin: left; }
+    .btn-animated .underline-2 { transition: transform 0.3s ease; transform-origin: right; transform: scaleX(0); }
+    .btn-animated:hover .underline-1 { transform: scaleX(0); transform-origin: right; }
+    .btn-animated:hover .underline-2 { transform: scaleX(1); transform-origin: left; }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .marquee { animation: marquee 20s linear infinite; }
+    @keyframes logo-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .logo-marquee { animation: logo-scroll 15s linear infinite; }
+    .faq-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .faq-body.open { max-height: 200px; }
+    .faq-icon { transition: transform 0.3s ease; }
+    .faq-icon.rotated { transform: rotate(45deg); }
+    .service-panel { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; }
+    .service-panel.open { max-height: 600px; }
+    .project-card-hover:hover img { transform: scale(1.05); }
+    .project-card-hover:hover .overlay { opacity: 1; }
+    .project-card-hover:hover .arrow-box .icon-a { transform: translate(100%, -100%); }
+    .project-card-hover:hover .arrow-box .icon-b { transform: translate(0, 0); }
+    .project-card-hover:hover .logo-reveal { opacity: 1; transform: translateY(0); }
+    .project-card-hover .overlay { opacity: 0; transition: opacity 0.3s; }
+    .project-card-hover .arrow-box .icon-a, .project-card-hover .arrow-box .icon-b { transition: transform 0.3s cubic-bezier(0.76, 0, 0.24, 1); }
+    .project-card-hover .arrow-box .icon-b { transform: translate(-100%, 100%); }
+    .project-card-hover .logo-reveal { opacity: 0; transform: translateY(100%); transition: all 0.3s ease; }
+    .slide { display: none; }
+    .slide.active { display: block; }
+    .testi-card { transition: transform 0.3s ease; }
+    .testi-card:hover { transform: translateY(-4px); }
+    .mobile-menu { transform: translateX(100%); transition: transform 0.3s ease; }
+    .mobile-menu.open { transform: translateX(0); }
+    .img-cover { width: 100%; height: 100%; object-fit: cover; }
+    .service-trigger:hover .plus-btn { background: rgba(255,255,255,0.15); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .platform-tab { background: #e7e5e4; color: #44403c; }
+    .platform-tab.active { background: #F5D012; color: #1c1917; }
+    .platform-tab:hover:not(.active) { background: #d6d3d1; }
+    .platform-panel { opacity: 0; position: absolute; top: 0; left: 0; width: 100%; pointer-events: none; transition: opacity 0.4s ease; }
+    .platform-panel.active { opacity: 1; pointer-events: auto; z-index: 10; }
+    #heroCard { transition: opacity 0.4s ease; }
+  </style>
+</head>
+<body>
+
+<!-- Yellow outer shell wrapping entire page -->
+<div class="bg-[#F5D012] min-h-screen p-3 lg:p-6">
+
+<!-- NAVBAR - outside the container, in the yellow area -->
+<header id="mainNav" style="position:sticky; top:12px; z-index:50; margin-bottom:16px;">
+  <div id="navInner" class="px-3 lg:px-4 flex items-center justify-between h-14 lg:h-16" style="background:transparent; border-radius:0; max-width:none; margin:0 auto;">
+    <a href="/" class="flex-shrink-0">
+      <img src="/Users/justin/Desktop/LTSPHE/assets/Lets-Talk-Sphe.png" alt="Let's Talk SPHE" class="h-10 lg:h-12"/>
+    </a>
+    <nav id="navLinks" class="hidden lg:flex items-center" style="gap:32px;">
+      <a href="/" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Home</span><span class="line-2 block">Home</span></a>
+      <a href="/about" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">About</span><span class="line-2 block">About</span></a>
+      <a href="/projects" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Projects</span><span class="line-2 block">Projects</span></a>
+      <a href="/blogs" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Blogs</span><span class="line-2 block">Blogs</span></a>
+      <a href="/contact" class="bg-stone-900 text-white text-sm font-medium px-5 py-2.5 rounded-full hover:bg-stone-800 transition-colors">Get started</a>
+    </nav>
+    <button id="menuBtn" class="lg:hidden w-8 h-8 flex flex-col justify-center items-center gap-1.5">
+      <span class="w-6 h-0.5 bg-stone-900 transition-all menu-line-1"></span>
+      <span class="w-6 h-0.5 bg-stone-900 transition-all menu-line-2"></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div id="mobileMenu" class="mobile-menu fixed inset-0 z-40 bg-[#F5D012] pt-20 px-8 lg:hidden">
+  <nav class="flex flex-col gap-6 text-2xl font-semibold text-stone-900">
+    <a href="/" class="border-b border-stone-900/20 pb-4">Home</a>
+    <a href="/about" class="border-b border-stone-900/20 pb-4">About</a>
+    <a href="/projects" class="border-b border-stone-900/20 pb-4">Projects</a>
+    <a href="/blogs" class="border-b border-stone-900/20 pb-4">Blogs</a>
+    <a href="/contact" class="bg-stone-900 text-white text-center py-4 rounded-full text-lg mt-4">Get started</a>
+  </nav>
+</div>
+
+<div class="bg-surface rounded-[40px] shadow-2xl overflow-hidden">
+
+<!-- HERO SECTION -->
+<section id="heroSection" class="relative flex flex-col bg-stone-900 rounded-[40px] h-[calc(100vh-108px)] lg:h-[calc(100vh-128px)]" style="overflow:visible; z-index:10;">
+  <div class="absolute inset-0 z-0 overflow-hidden rounded-[40px]">
+    <video autoplay muted loop playsinline class="img-cover">
+      <source src="/Users/justin/Desktop/LTSPHE/assets/2.mp4" type="video/mp4"/>
+    </video>
+    <div class="absolute inset-0" style="background:linear-gradient(to right, rgba(0,0,0,0.6), rgba(0,0,0,0.2));"></div>
+  </div>
+  <div class="relative z-10 w-full max-w-[1440px] mx-auto px-6 lg:px-10 pb-4 mb-10 flex flex-col justify-end flex-1" style="overflow:visible;">
+    <div class="flex flex-col lg:flex-row lg:items-end gap-8 lg:gap-12">
+      <!-- Left content — 60% -->
+      <div class="flex-1 flex flex-col gap-8 justify-end px-0 lg:w-[60%] lg:flex-none">
+        <div class="reveal">
+          <h1 class="text-white text-[clamp(2rem,4.5vw,3.75rem)] font-bold leading-[1.1] tracking-tight">
+            Empowering teachers.<br/>
+            <span class="text-[#F5D012]">Supporting teenagers.</span><br/>
+            Transforming SPHE in<br/>
+            Irish schools.
+          </h1>
+        </div>
+        <div class="reveal flex flex-col gap-6" style="transition-delay:0.1s">
+          <p class="text-white/70 text-base leading-relaxed lg:max-w-lg">Let's Talk SPHE is Ireland's first digital, curriculum-aligned platform supporting post-primary schools to comprehensively deliver the new SPHE curriculum.</p>
+          <div class="flex flex-wrap gap-4">
+            <a href="#" class="inline-flex items-center justify-center px-7 py-3 bg-[#F5D012] text-stone-900 font-semibold text-sm rounded-full hover:bg-white hover:text-black transition-colors">Book Now</a>
+            <a href="#" class="inline-flex items-center justify-center px-7 py-3 border border-white text-white font-semibold text-sm rounded-full hover:bg-white hover:text-black transition-colors">Explore the Platform</a>
+          </div>
+        </div>
+      </div>
+      <!-- Project card — 40% width, matches left content height -->
+      <div id="heroCard" class="reveal hidden lg:flex lg:w-[40%] lg:flex-none" style="transition-delay:0.2s; z-index:999; position:relative;">
+        <div class="relative group cursor-pointer w-full" id="heroCardInner" style="aspect-ratio:16/9;">
+          <div class="bg-white rounded-2xl overflow-hidden shadow-sm h-full">
+            <img src="/Users/justin/Desktop/LTSPHE/assets/Dashboard.jpg" alt="Let's Talk SPHE Dashboard" class="w-full h-full object-cover"/>
+          </div>
+          <button id="heroCardExploreBtn" class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span class="px-6 py-3 bg-[#F5D012] text-stone-900 font-semibold text-sm rounded-full shadow-lg hover:bg-white hover:text-black transition-colors">Explore the Platform</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Pill marquee along bottom of hero -->
+  <div class="relative z-10 overflow-hidden pb-6 lg:pb-8">
+    <div id="pillMarquee" class="flex gap-4 whitespace-nowrap w-max">
+      <span class="pill-item inline-flex items-center gap-2 px-4 py-2 bg-white/5 text-white text-sm font-medium rounded-full">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Ready-to-use lessons
+      </span>
+      <span class="pill-item inline-flex items-center gap-2 px-4 py-2 bg-white/5 text-white text-sm font-medium rounded-full">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Planning &amp; assessment
+      </span>
+      <span class="pill-item inline-flex items-center gap-2 px-4 py-2 bg-white/5 text-white text-sm font-medium rounded-full">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Teacher support
+      </span>
+      <span class="pill-item inline-flex items-center gap-2 px-4 py-2 bg-white/5 text-white text-sm font-medium rounded-full">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Built for Irish classrooms
+      </span>
+    </div>
+  </div>
+</section>
+
+<!-- WHY SPHE STATS SECTION -->
+<section class="py-20 lg:py-32 bg-surface">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="reveal flex flex-col lg:flex-row gap-6 lg:gap-16 mb-12 lg:mb-16">
+      <div class="text-sm text-stone-500 lg:pt-2 flex-shrink-0">the landscape<br/>is changing</div>
+      <h2 class="text-[clamp(1.75rem,3.5vw,3rem)] font-semibold leading-tight tracking-tight max-w-2xl text-stone-900">SPHE is no longer a &ldquo;nice-to-have&rdquo;</h2>
+    </div>
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-5">
+      <div class="hidden lg:block"></div>
+      <div class="reveal bg-white rounded-2xl border border-stone-100 p-6 lg:p-7 flex flex-col justify-between min-h-[200px] relative shadow-sm hover:shadow-md transition-all">
+        <div class="flex items-baseline gap-0.5">
+          <span class="text-[3rem] lg:text-[3.5rem] font-bold leading-none text-stone-900 counter" data-target="60">0</span>
+          <span class="text-[3rem] lg:text-[3.5rem] font-bold leading-none text-brand">hrs</span>
+        </div>
+        <p class="text-xs text-stone-500 mt-3">Mandatory SPHE at Senior Cycle from September 2027</p>
+        <div class="absolute top-5 right-5 text-[10px] text-stone-400 font-medium">[01]</div>
+      </div>
+      <div class="reveal bg-white rounded-2xl border border-stone-100 p-6 lg:p-7 flex flex-col justify-between min-h-[200px] relative shadow-sm hover:shadow-md transition-all" style="transition-delay:0.05s">
+        <div class="flex items-baseline gap-0.5">
+          <span class="text-[3rem] lg:text-[3.5rem] font-bold leading-none text-stone-900 counter" data-target="2027">0</span>
+        </div>
+        <p class="text-xs text-stone-500 mt-3">The year SPHE becomes compulsory across all Senior Cycle years</p>
+        <div class="absolute top-5 right-5 text-[10px] text-stone-400 font-medium">[02]</div>
+      </div>
+      <div class="reveal rounded-2xl overflow-hidden relative group min-h-[200px] col-span-2 lg:col-span-1 row-span-2" style="transition-delay:0.1s">
+        <img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/688fdc626ea560ac8d913c23_5fe56b89157198c6fc3cbb49645744a8aff93d78.avif" alt="Students in classroom" class="img-cover absolute inset-0 transition-transform duration-500 group-hover:scale-105"/>
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+          <div class="w-12 h-12 rounded-full border border-white/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <svg width="20" height="20" viewBox="0 0 29 30" fill="none"><path d="M.762 15h27.476" stroke="white" stroke-width="1.5" stroke-linecap="round"/><path d="M14.5 1.262v27.476" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="reveal bg-white rounded-2xl border border-stone-100 p-6 lg:p-7 flex flex-col justify-between min-h-[200px] relative shadow-sm hover:shadow-md transition-all" style="transition-delay:0.15s">
+        <div class="flex items-baseline gap-0.5">
+          <span class="text-[3rem] lg:text-[3.5rem] font-bold leading-none text-stone-900 counter" data-target="100">0</span>
+          <span class="text-[3rem] lg:text-[3.5rem] font-bold leading-none text-brand">%</span>
+        </div>
+        <p class="text-xs text-stone-500 mt-3">Curriculum-aligned content built for the new SPHE specification</p>
+        <div class="absolute top-5 right-5 text-[10px] text-stone-400 font-medium">[03]</div>
+      </div>
+      <div class="reveal bg-white rounded-2xl border border-stone-100 p-6 lg:p-7 flex flex-col justify-between min-h-[200px] relative shadow-sm hover:shadow-md transition-all" style="transition-delay:0.2s">
+        <div class="flex items-baseline gap-0.5">
+          <span class="text-[3rem] lg:text-[3.5rem] font-bold leading-none text-stone-900 counter" data-target="1">0</span>
+          <span class="text-[3rem] lg:text-[3.5rem] font-bold leading-none text-brand">hr/wk</span>
+        </div>
+        <p class="text-xs text-stone-500 mt-3">Required SPHE delivery in Transition Year every week</p>
+        <div class="absolute top-5 right-5 text-[10px] text-stone-400 font-medium">[04]</div>
+      </div>
+      <div class="hidden lg:block"></div>
+      <div class="hidden lg:block"></div>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO REVEAL SECTION -->
+<section class="py-16 lg:py-24 bg-surface overflow-hidden">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div id="videoReveal" class="rounded-2xl overflow-hidden shadow-xl" style="clip-path: inset(0 50% 0 50%); transition: clip-path 0s;">
+      <video autoplay muted loop playsinline class="w-full">
+        <source src="/Users/justin/Desktop/LTSPHE/assets/intro.mp4" type="video/mp4"/>
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- CARD LANDING SECTION -->
+<section id="cardLanding" class="pt-20 lg:pt-28 pb-10 lg:pb-16 bg-surface">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <!-- Header content above the card -->
+    <div class="text-center mb-12 lg:mb-16">
+      <span class="inline-block px-5 py-2 bg-[#F5D012] text-stone-900 text-sm font-semibold rounded-full mb-6">Interactive Preview</span>
+      <h2 class="text-[clamp(2rem,4vw,3.25rem)] font-bold leading-tight tracking-tight text-stone-900 mb-4">See the platform in action</h2>
+      <p class="text-stone-500 text-lg max-w-xl mx-auto">Explore the platform's course structure. Full access is available in a demo or trial.</p>
+    </div>
+    <!-- Tabs -->
+    <div class="flex flex-wrap justify-center gap-3 mb-10 lg:mb-14">
+      <button class="platform-tab active px-6 py-3 text-sm font-semibold rounded-full transition-colors" data-tab="0">Select Course</button>
+      <button class="platform-tab px-6 py-3 text-sm font-semibold rounded-full transition-colors" data-tab="1">Fifth Year Units</button>
+      <button class="platform-tab px-6 py-3 text-sm font-semibold rounded-full transition-colors" data-tab="2">Sixth Year Units</button>
+      <button class="platform-tab px-6 py-3 text-sm font-semibold rounded-full transition-colors" data-tab="3">Lesson View</button>
+    </div>
+    <!-- Tab content panels -->
+    <div class="flex justify-center relative">
+      <div id="cardTarget" class="w-full max-w-[1024px] relative">
+        <!-- Panel 0 — static dashboard image (always present for tab 0) -->
+        <div id="cardTargetStatic" class="rounded-2xl overflow-hidden shadow-lg">
+          <img src="/Users/justin/Desktop/LTSPHE/assets/Dashboard.jpg" alt="Let's Talk SPHE Dashboard" class="w-full rounded-2xl" style="aspect-ratio:16/9; object-fit:cover;"/>
+        </div>
+        <div class="platform-panel rounded-2xl overflow-hidden shadow-lg" data-panel="1">
+          <video autoplay muted loop playsinline class="w-full rounded-2xl"><source src="/Users/justin/Desktop/LTSPHE/assets/intro2.mp4" type="video/mp4"/></video>
+        </div>
+        <div class="platform-panel rounded-2xl overflow-hidden shadow-lg" data-panel="2">
+          <img src="/Users/justin/Desktop/LTSPHE/assets/Dashboard.jpg" alt="Sixth Year Units" class="w-full rounded-2xl"/>
+        </div>
+        <div class="platform-panel rounded-2xl overflow-hidden shadow-lg" data-panel="3">
+          <video autoplay muted loop playsinline class="w-full rounded-2xl"><source src="/Users/justin/Desktop/LTSPHE/assets/2.mp4" type="video/mp4"/></video>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS SECTION -->
+<section class="py-20 lg:py-32 bg-surface">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="reveal flex flex-col lg:flex-row gap-6 lg:gap-16 mb-12 lg:mb-16">
+      <div class="text-sm text-stone-500 lg:pt-2 flex-shrink-0">learn more<br/>about our story</div>
+      <h2 class="text-[clamp(1.75rem,3.5vw,3rem)] font-semibold leading-tight tracking-tight max-w-2xl text-stone-900">More than a service. A strategic design partner.</h2>
+    </div>
+    <div class="grid grid-cols-2 lg:grid-cols-5 gap-5">
+      <div class="hidden lg:block"></div>
+      <div class="reveal bg-white rounded-2xl border border-stone-100 p-6 lg:p-7 flex flex-col justify-between min-h-[200px] relative shadow-sm hover:shadow-md transition-all">
+        <div class="flex items-baseline gap-0.5">
+          <span class="text-[3rem] lg:text-[3.5rem] font-bold leading-none text-stone-900 counter" data-target="50">0</span>
+          <span class="text-[3rem] lg:text-[3.5rem] font-bold leading-none text-brand">+</span>
+        </div>
+        <p class="text-xs text-stone-500 mt-3">Happy clients across various industries</p>
+        <div class="absolute top-5 right-5 text-[10px] text-stone-400 font-medium">[01]</div>
+      </div>
+      <div class="reveal bg-white rounded-2xl border border-stone-100 p-6 lg:p-7 flex flex-col justify-between min-h-[200px] relative shadow-sm hover:shadow-md transition-all" style="transition-delay:0.05s">
+        <div class="flex items-baseline gap-0.5">
+          <span class="text-[3rem] lg:text-[3.5rem] font-bold leading-none text-stone-900 counter" data-target="200">0</span>
+          <span class="text-[3rem] lg:text-[3.5rem] font-bold leading-none text-brand">+</span>
+        </div>
+        <p class="text-xs text-stone-500 mt-3">Successfully delivered high-quality projects</p>
+        <div class="absolute top-5 right-5 text-[10px] text-stone-400 font-medium">[02]</div>
+      </div>
+      <div class="reveal rounded-2xl overflow-hidden relative group min-h-[200px] col-span-2 lg:col-span-1 row-span-2" style="transition-delay:0.1s">
+        <img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/688fdc626ea560ac8d913c23_5fe56b89157198c6fc3cbb49645744a8aff93d78.avif" alt="" class="img-cover absolute inset-0 transition-transform duration-500 group-hover:scale-105"/>
+        <div class="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors flex items-center justify-center">
+          <div class="w-12 h-12 rounded-full border border-white/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <svg width="20" height="20" viewBox="0 0 29 30" fill="none"><path d="M.762 15h27.476" stroke="white" stroke-width="1.5" stroke-linecap="round"/><path d="M14.5 1.262v27.476" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+          </div>
+        </div>
+      </div>
+      <div class="reveal bg-white rounded-2xl border border-stone-100 p-6 lg:p-7 flex flex-col justify-between min-h-[200px] relative shadow-sm hover:shadow-md transition-all" style="transition-delay:0.15s">
+        <div class="flex items-baseline gap-0.5">
+          <span class="text-[3rem] lg:text-[3.5rem] font-bold leading-none text-stone-900 counter" data-target="98">0</span>
+          <span class="text-[3rem] lg:text-[3.5rem] font-bold leading-none text-brand">%</span>
+        </div>
+        <p class="text-xs text-stone-500 mt-3">Client satisfaction based on surveys</p>
+        <div class="absolute top-5 right-5 text-[10px] text-stone-400 font-medium">[03]</div>
+      </div>
+      <div class="reveal bg-white rounded-2xl border border-stone-100 p-6 lg:p-7 flex flex-col justify-between min-h-[200px] relative shadow-sm hover:shadow-md transition-all" style="transition-delay:0.2s">
+        <div class="flex items-baseline gap-0.5">
+          <span class="text-[3rem] lg:text-[3.5rem] font-bold leading-none text-stone-900 counter" data-target="30">0</span>
+          <span class="text-[3rem] lg:text-[3.5rem] font-bold leading-none text-brand">%</span>
+        </div>
+        <p class="text-xs text-stone-500 mt-3">Average client profit growth increase</p>
+        <div class="absolute top-5 right-5 text-[10px] text-stone-400 font-medium">[04]</div>
+      </div>
+      <div class="hidden lg:block"></div>
+      <div class="hidden lg:block"></div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES SECTION -->
+<section class="bg-stone-900 text-white py-20 lg:py-28 overflow-hidden">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="flex flex-col gap-12">
+      <div class="reveal flex flex-col lg:flex-row gap-8 lg:gap-20">
+        <div class="lg:w-1/4 flex-shrink-0">
+          <div class="text-xs tracking-widest opacity-70 mb-1">OUR</div>
+          <div class="text-2xl lg:text-3xl font-bold">SERVICES</div>
+        </div>
+        <div class="lg:w-3/4">
+          <p class="text-white/70 text-sm lg:text-base leading-relaxed max-w-2xl">We create custom digital experiences that connect with audiences, drive engagement, and deliver real results. From building modern websites and e-commerce platforms to crafting complete brand identities and running performance-driven marketing campaigns, we take care of your presence across every digital touchpoint.</p>
+        </div>
+      </div>
+      <div class="flex flex-col" id="servicesAccordion">
+        <div class="border-t border-white/15">
+          <button class="service-trigger w-full flex items-center justify-between py-6 lg:py-8 group" data-index="0">
+            <div class="flex items-center gap-4 lg:gap-6">
+              <span class="text-sm font-medium opacity-50">01.</span>
+              <span class="text-stone-900 bg-brand rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M16.172 11L10.808 5.636l1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2h12.172z"/></svg>
+              </span>
+              <h3 class="text-xl lg:text-3xl font-bold">Art Direction</h3>
+            </div>
+            <div class="plus-btn w-10 h-10 rounded-full border border-white/30 flex items-center justify-center transition-all">
+              <svg width="16" height="16" viewBox="0 0 29 30" fill="none"><path d="M.762 15h27.476" stroke="white" stroke-width="1.5" stroke-linecap="round"/><path d="M14.5 1.262v27.476" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+          </button>
+          <div class="service-panel">
+            <div class="pb-8 flex flex-col lg:flex-row gap-6">
+              <div class="lg:w-2/3 rounded-2xl overflow-hidden aspect-[16/9]">
+                <img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/688fe2433da1f79ad7e7be95_1.webp" alt="Art Direction" class="img-cover"/>
+              </div>
+              <div class="lg:w-1/3 flex items-end">
+                <a href="/contact" class="btn-animated inline-flex items-center gap-3 text-white">
+                  <span class="text-sm font-medium">Explore our work</span>
+                  <span class="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center overflow-hidden relative">
+                    <span class="icon-1 absolute"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 9.414L7.397 18.02l-1.414-1.414L14.59 8H7.004V6h11v11h-2V9.414z"/></svg></span>
+                    <span class="icon-2 absolute translate-x-[-100%] translate-y-[100%]"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16.172 11L10.808 5.636l1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2h12.172z"/></svg></span>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-white/15">
+          <button class="service-trigger w-full flex items-center justify-between py-6 lg:py-8 group" data-index="1">
+            <div class="flex items-center gap-4 lg:gap-6">
+              <span class="text-sm font-medium opacity-50">02.</span>
+              <span class="text-stone-900 bg-brand rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M16.172 11L10.808 5.636l1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2h12.172z"/></svg>
+              </span>
+              <h3 class="text-xl lg:text-3xl font-bold">Branding &amp; Identity</h3>
+            </div>
+            <div class="plus-btn w-10 h-10 rounded-full border border-white/30 flex items-center justify-center transition-all">
+              <svg width="16" height="16" viewBox="0 0 29 30" fill="none"><path d="M.762 15h27.476" stroke="white" stroke-width="1.5" stroke-linecap="round"/><path d="M14.5 1.262v27.476" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+          </button>
+          <div class="service-panel">
+            <div class="pb-8 flex flex-col lg:flex-row gap-6">
+              <div class="lg:w-2/3 rounded-2xl overflow-hidden aspect-[16/9]">
+                <img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/688ff0872285cc205d53e1a6_Frame%2065.webp" alt="Branding" class="img-cover"/>
+              </div>
+              <div class="lg:w-1/3 flex items-end">
+                <a href="/contact" class="btn-animated inline-flex items-center gap-3 text-white"><span class="text-sm font-medium">Explore our work</span><span class="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center overflow-hidden relative"><span class="icon-1 absolute"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 9.414L7.397 18.02l-1.414-1.414L14.59 8H7.004V6h11v11h-2V9.414z"/></svg></span><span class="icon-2 absolute translate-x-[-100%] translate-y-[100%]"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16.172 11L10.808 5.636l1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2h12.172z"/></svg></span></span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-white/15">
+          <button class="service-trigger w-full flex items-center justify-between py-6 lg:py-8 group" data-index="2">
+            <div class="flex items-center gap-4 lg:gap-6">
+              <span class="text-sm font-medium opacity-50">03.</span>
+              <span class="text-stone-900 bg-brand rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M16.172 11L10.808 5.636l1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2h12.172z"/></svg>
+              </span>
+              <h3 class="text-xl lg:text-3xl font-bold">Marketing Campaign</h3>
+            </div>
+            <div class="plus-btn w-10 h-10 rounded-full border border-white/30 flex items-center justify-center transition-all">
+              <svg width="16" height="16" viewBox="0 0 29 30" fill="none"><path d="M.762 15h27.476" stroke="white" stroke-width="1.5" stroke-linecap="round"/><path d="M14.5 1.262v27.476" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+          </button>
+          <div class="service-panel">
+            <div class="pb-8 flex flex-col lg:flex-row gap-6">
+              <div class="lg:w-2/3 rounded-2xl overflow-hidden aspect-[16/9]">
+                <img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/688ff0a9c76067d79dc8da7b_glued-poster-mockup-free-vol01-by-mocku_preview%201.webp" alt="Marketing" class="img-cover"/>
+              </div>
+              <div class="lg:w-1/3 flex items-end">
+                <a href="/contact" class="btn-animated inline-flex items-center gap-3 text-white"><span class="text-sm font-medium">Explore our work</span><span class="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center overflow-hidden relative"><span class="icon-1 absolute"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 9.414L7.397 18.02l-1.414-1.414L14.59 8H7.004V6h11v11h-2V9.414z"/></svg></span><span class="icon-2 absolute translate-x-[-100%] translate-y-[100%]"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16.172 11L10.808 5.636l1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2h12.172z"/></svg></span></span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="border-t border-b border-white/15">
+          <button class="service-trigger w-full flex items-center justify-between py-6 lg:py-8 group" data-index="3">
+            <div class="flex items-center gap-4 lg:gap-6">
+              <span class="text-sm font-medium opacity-50">04.</span>
+              <span class="text-stone-900 bg-brand rounded-full w-6 h-6 flex items-center justify-center flex-shrink-0">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M16.172 11L10.808 5.636l1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2h12.172z"/></svg>
+              </span>
+              <h3 class="text-xl lg:text-3xl font-bold">Development</h3>
+            </div>
+            <div class="plus-btn w-10 h-10 rounded-full border border-white/30 flex items-center justify-center transition-all">
+              <svg width="16" height="16" viewBox="0 0 29 30" fill="none"><path d="M.762 15h27.476" stroke="white" stroke-width="1.5" stroke-linecap="round"/><path d="M14.5 1.262v27.476" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+          </button>
+          <div class="service-panel">
+            <div class="pb-8 flex flex-col lg:flex-row gap-6">
+              <div class="lg:w-2/3 rounded-2xl overflow-hidden aspect-[16/9]">
+                <img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/688ff0e206f1da9ab67d37e8_Rectangle%204.webp" alt="Development" class="img-cover"/>
+              </div>
+              <div class="lg:w-1/3 flex items-end">
+                <a href="/contact" class="btn-animated inline-flex items-center gap-3 text-white"><span class="text-sm font-medium">Explore our work</span><span class="w-8 h-8 rounded-full border border-white/30 flex items-center justify-center overflow-hidden relative"><span class="icon-1 absolute"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 9.414L7.397 18.02l-1.414-1.414L14.59 8H7.004V6h11v11h-2V9.414z"/></svg></span><span class="icon-2 absolute translate-x-[-100%] translate-y-[100%]"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16.172 11L10.808 5.636l1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2h12.172z"/></svg></span></span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mt-16 overflow-hidden">
+    <div class="flex whitespace-nowrap marquee">
+      <span class="text-[8rem] lg:text-[12rem] font-bold opacity-10 mx-8">SERVICES</span>
+      <span class="text-[8rem] lg:text-[12rem] font-bold opacity-10 mx-8">SERVICES</span>
+      <span class="text-[8rem] lg:text-[12rem] font-bold opacity-10 mx-8">SERVICES</span>
+      <span class="text-[8rem] lg:text-[12rem] font-bold opacity-10 mx-8">SERVICES</span>
+      <span class="text-[8rem] lg:text-[12rem] font-bold opacity-10 mx-8">SERVICES</span>
+      <span class="text-[8rem] lg:text-[12rem] font-bold opacity-10 mx-8">SERVICES</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS SECTION -->
+<section class="py-20 lg:py-32 bg-surface">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="flex flex-col gap-12">
+      <div class="reveal flex items-end justify-between">
+        <h3 class="text-2xl lg:text-3xl font-semibold tracking-tight text-stone-900">Explore some of our work</h3>
+        <div class="hidden lg:block text-sm text-stone-500 text-right">Featured<br/>projects</div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        <a href="#" class="reveal project-card-hover block group">
+          <div class="rounded-2xl overflow-hidden bg-white border border-stone-100 shadow-sm hover:shadow-md transition-all">
+            <div class="aspect-[4/3] overflow-hidden relative">
+              <img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/688fe2433da1f79ad7e7be95_1.webp" alt="Lumina Cosmetics" class="img-cover transition-transform duration-500"/>
+              <div class="overlay absolute inset-0 bg-black/30"></div>
+              <div class="absolute bottom-4 left-4 logo-reveal"><img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/68b10d3c252f870595c575da_Logo-5.png" alt="" class="h-6 brightness-0 invert"/></div>
+              <div class="arrow-box absolute top-4 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                <span class="icon-a absolute"><svg width="12" height="12" viewBox="0 0 15 16" fill="none"><path d="M14 1.5L1 14.5" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/><path d="M4.464 1.5H14v9.536" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/></svg></span>
+                <span class="icon-b absolute translate-x-[-100%] translate-y-[100%]"><svg width="12" height="12" viewBox="0 0 15 16" fill="none"><path d="M14 1.5L1 14.5" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/><path d="M4.464 1.5H14v9.536" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/></svg></span>
+              </div>
+            </div>
+            <div class="p-5"><h4 class="font-semibold text-base text-stone-900 mb-2">Lumina Cosmetics</h4><div class="flex gap-2"><span class="text-xs text-stone-600 bg-stone-100 px-3 py-1 rounded-full">Brand Identity</span><span class="text-xs text-stone-600 bg-stone-100 px-3 py-1 rounded-full">Web Design</span></div></div>
+          </div>
+        </a>
+        <a href="#" class="reveal project-card-hover block group" style="transition-delay:0.1s">
+          <div class="rounded-2xl overflow-hidden bg-white border border-stone-100 shadow-sm hover:shadow-md transition-all">
+            <div class="aspect-[4/3] overflow-hidden relative">
+              <img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/688ff0872285cc205d53e1a6_Frame%2065.webp" alt="Vibero Wellness" class="img-cover transition-transform duration-500"/>
+              <div class="overlay absolute inset-0 bg-black/30"></div>
+              <div class="absolute bottom-4 left-4 logo-reveal"><img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/68b10d358c17e7f68b5d285c_Logo-4.png" alt="" class="h-6 brightness-0 invert"/></div>
+              <div class="arrow-box absolute top-4 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                <span class="icon-a absolute"><svg width="12" height="12" viewBox="0 0 15 16" fill="none"><path d="M14 1.5L1 14.5" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/><path d="M4.464 1.5H14v9.536" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/></svg></span>
+                <span class="icon-b absolute translate-x-[-100%] translate-y-[100%]"><svg width="12" height="12" viewBox="0 0 15 16" fill="none"><path d="M14 1.5L1 14.5" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/><path d="M4.464 1.5H14v9.536" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/></svg></span>
+              </div>
+            </div>
+            <div class="p-5"><h4 class="font-semibold text-base text-stone-900 mb-2">Vibero Wellness</h4><div class="flex gap-2"><span class="text-xs text-stone-600 bg-stone-100 px-3 py-1 rounded-full">Social Media</span><span class="text-xs text-stone-600 bg-stone-100 px-3 py-1 rounded-full">Web Design</span></div></div>
+          </div>
+        </a>
+        <a href="#" class="reveal project-card-hover block group">
+          <div class="rounded-2xl overflow-hidden bg-white border border-stone-100 shadow-sm hover:shadow-md transition-all">
+            <div class="aspect-[4/3] overflow-hidden relative">
+              <img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/688ff0a9c76067d79dc8da7b_glued-poster-mockup-free-vol01-by-mocku_preview%201.webp" alt="Neon Studio" class="img-cover transition-transform duration-500"/>
+              <div class="overlay absolute inset-0 bg-black/30"></div>
+              <div class="absolute bottom-4 left-4 logo-reveal"><img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/68b10d2d65970ed9717c2ecc_Logo-3.png" alt="" class="h-6 brightness-0 invert"/></div>
+              <div class="arrow-box absolute top-4 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                <span class="icon-a absolute"><svg width="12" height="12" viewBox="0 0 15 16" fill="none"><path d="M14 1.5L1 14.5" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/><path d="M4.464 1.5H14v9.536" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/></svg></span>
+                <span class="icon-b absolute translate-x-[-100%] translate-y-[100%]"><svg width="12" height="12" viewBox="0 0 15 16" fill="none"><path d="M14 1.5L1 14.5" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/><path d="M4.464 1.5H14v9.536" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/></svg></span>
+              </div>
+            </div>
+            <div class="p-5"><h4 class="font-semibold text-base text-stone-900 mb-2">Neon Studio</h4><div class="flex gap-2"><span class="text-xs text-stone-600 bg-stone-100 px-3 py-1 rounded-full">UX Design</span><span class="text-xs text-stone-600 bg-stone-100 px-3 py-1 rounded-full">Branding</span></div></div>
+          </div>
+        </a>
+        <a href="#" class="reveal project-card-hover block group" style="transition-delay:0.1s">
+          <div class="rounded-2xl overflow-hidden bg-white border border-stone-100 shadow-sm hover:shadow-md transition-all">
+            <div class="aspect-[4/3] overflow-hidden relative">
+              <img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/688ff0e206f1da9ab67d37e8_Rectangle%204.webp" alt="Alto Agency" class="img-cover transition-transform duration-500"/>
+              <div class="overlay absolute inset-0 bg-black/30"></div>
+              <div class="absolute bottom-4 left-4 logo-reveal"><img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/68b10d2486a7ce2912d0e268_Logo-2.png" alt="" class="h-6 brightness-0 invert"/></div>
+              <div class="arrow-box absolute top-4 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                <span class="icon-a absolute"><svg width="12" height="12" viewBox="0 0 15 16" fill="none"><path d="M14 1.5L1 14.5" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/><path d="M4.464 1.5H14v9.536" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/></svg></span>
+                <span class="icon-b absolute translate-x-[-100%] translate-y-[100%]"><svg width="12" height="12" viewBox="0 0 15 16" fill="none"><path d="M14 1.5L1 14.5" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/><path d="M4.464 1.5H14v9.536" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/></svg></span>
+              </div>
+            </div>
+            <div class="p-5"><h4 class="font-semibold text-base text-stone-900 mb-2">Alto Agency</h4><div class="flex gap-2"><span class="text-xs text-stone-600 bg-stone-100 px-3 py-1 rounded-full">Brand Identity</span><span class="text-xs text-stone-600 bg-stone-100 px-3 py-1 rounded-full">Web Design</span></div></div>
+          </div>
+        </a>
+        <a href="#" class="reveal project-card-hover block group">
+          <div class="rounded-2xl overflow-hidden bg-white border border-stone-100 shadow-sm hover:shadow-md transition-all">
+            <div class="aspect-[4/3] overflow-hidden relative">
+              <img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/688ff37ae7d12a851748e860_508a8de06ea1a7a60612a7f2634aab2ad8221daf.jpg" alt="Novax Studio" class="img-cover transition-transform duration-500"/>
+              <div class="overlay absolute inset-0 bg-black/30"></div>
+              <div class="absolute bottom-4 left-4 logo-reveal"><img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/68b10d1c6db38b0db8d77df5_Logo-1.png" alt="" class="h-6 brightness-0 invert"/></div>
+              <div class="arrow-box absolute top-4 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                <span class="icon-a absolute"><svg width="12" height="12" viewBox="0 0 15 16" fill="none"><path d="M14 1.5L1 14.5" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/><path d="M4.464 1.5H14v9.536" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/></svg></span>
+                <span class="icon-b absolute translate-x-[-100%] translate-y-[100%]"><svg width="12" height="12" viewBox="0 0 15 16" fill="none"><path d="M14 1.5L1 14.5" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/><path d="M4.464 1.5H14v9.536" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/></svg></span>
+              </div>
+            </div>
+            <div class="p-5"><h4 class="font-semibold text-base text-stone-900 mb-2">Novax Studio</h4><div class="flex gap-2"><span class="text-xs text-stone-600 bg-stone-100 px-3 py-1 rounded-full">Brand Identity</span><span class="text-xs text-stone-600 bg-stone-100 px-3 py-1 rounded-full">Web Design</span></div></div>
+          </div>
+        </a>
+        <a href="#" class="reveal project-card-hover block group" style="transition-delay:0.1s">
+          <div class="rounded-2xl overflow-hidden bg-white border border-stone-100 shadow-sm hover:shadow-md transition-all">
+            <div class="aspect-[4/3] overflow-hidden relative">
+              <img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/688fe246c9f3387fd9dd58a5_1.webp" alt="Zelax Studio" class="img-cover transition-transform duration-500"/>
+              <div class="overlay absolute inset-0 bg-black/30"></div>
+              <div class="absolute bottom-4 left-4 logo-reveal"><img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/68b10d13ee0fb5e74487ca35_Logo.png" alt="" class="h-6 brightness-0 invert"/></div>
+              <div class="arrow-box absolute top-4 right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden">
+                <span class="icon-a absolute"><svg width="12" height="12" viewBox="0 0 15 16" fill="none"><path d="M14 1.5L1 14.5" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/><path d="M4.464 1.5H14v9.536" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/></svg></span>
+                <span class="icon-b absolute translate-x-[-100%] translate-y-[100%]"><svg width="12" height="12" viewBox="0 0 15 16" fill="none"><path d="M14 1.5L1 14.5" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/><path d="M4.464 1.5H14v9.536" stroke="#1c1917" stroke-width="2" stroke-linecap="round"/></svg></span>
+              </div>
+            </div>
+            <div class="p-5"><h4 class="font-semibold text-base text-stone-900 mb-2">Zelax Studio</h4><div class="flex gap-2"><span class="text-xs text-stone-600 bg-stone-100 px-3 py-1 rounded-full">Brand Identity</span><span class="text-xs text-stone-600 bg-stone-100 px-3 py-1 rounded-full">Web Design</span></div></div>
+          </div>
+        </a>
+      </div>
+      <div class="flex justify-end">
+        <a href="/projects" class="btn-animated inline-flex items-center gap-3 group">
+          <span class="text-sm font-medium text-stone-900">All projects</span>
+          <span class="w-8 h-8 rounded-full bg-stone-900 text-white flex items-center justify-center overflow-hidden relative">
+            <span class="icon-1 absolute"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 9.414L7.397 18.02l-1.414-1.414L14.59 8H7.004V6h11v11h-2V9.414z"/></svg></span>
+            <span class="icon-2 absolute translate-x-[-100%] translate-y-[100%]"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16.172 11L10.808 5.636l1.414-1.414L20 12l-7.778 7.778-1.414-1.414L16.172 13H4v-2h12.172z"/></svg></span>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS SECTION -->
+<section class="py-20 lg:py-32 bg-white">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="flex flex-col gap-12">
+      <div class="reveal">
+        <div class="text-sm text-stone-500 mb-3">TESTIMONIALS</div>
+        <h3 class="text-2xl lg:text-3xl font-semibold tracking-tight text-stone-900">Stories from our clients</h3>
+      </div>
+      <div class="reveal flex flex-col lg:flex-row gap-8">
+        <div class="lg:w-3/5 relative">
+          <div id="testimonialSlider">
+            <div class="slide active">
+              <div class="bg-surface rounded-2xl border border-stone-100 p-8 lg:p-10 flex flex-col justify-between min-h-[360px] shadow-sm">
+                <div>
+                  <div class="flex gap-1 mb-6">
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+                  </div>
+                  <p class="text-lg lg:text-xl font-semibold leading-relaxed text-stone-900">"Working with Forma Studio has completely transformed our online presence. From the very beginning, their team took the time to understand our brand, audience, and long-term goals."</p>
+                </div>
+                <div class="flex items-center justify-between mt-8"><div><div class="font-medium text-sm text-stone-900">ELENA M.</div><div class="text-xs text-brand">MARKETING DIRECTOR AT GREEN LEAF</div></div><div class="text-xs text-brand">[01]</div></div>
+              </div>
+            </div>
+            <div class="slide">
+              <div class="bg-surface rounded-2xl border border-stone-100 p-8 lg:p-10 flex flex-col justify-between min-h-[360px] shadow-sm">
+                <div>
+                  <div class="flex gap-1 mb-6"><svg width="18" height="18" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg><svg width="18" height="18" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg><svg width="18" height="18" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg><svg width="18" height="18" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg></div>
+                  <p class="text-lg lg:text-xl font-semibold leading-relaxed text-stone-900">"Forma Studio did an outstanding job redesigning our website. They created a modern, intuitive design that truly reflects who we are."</p>
+                </div>
+                <div class="flex items-center justify-between mt-8"><div><div class="font-medium text-sm text-stone-900">DANIELA P.</div><div class="text-xs text-brand">Co-Founder of NovaTech</div></div><div class="text-xs text-brand">[02]</div></div>
+              </div>
+            </div>
+            <div class="slide">
+              <div class="bg-surface rounded-2xl border border-stone-100 p-8 lg:p-10 flex flex-col justify-between min-h-[360px] shadow-sm">
+                <div>
+                  <div class="flex gap-1 mb-6"><svg width="18" height="18" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg><svg width="18" height="18" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg><svg width="18" height="18" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg><svg width="18" height="18" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg></div>
+                  <p class="text-lg lg:text-xl font-semibold leading-relaxed text-stone-900">"We've worked with several agencies in the past, but none have matched the level of dedication and creativity we experienced with Forma Studio."</p>
+                </div>
+                <div class="flex items-center justify-between mt-8"><div><div class="font-medium text-sm text-stone-900">EMMA L.</div><div class="text-xs text-brand">Marketing Director at GreenLeaf</div></div><div class="text-xs text-brand">[03]</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="flex gap-3 mt-6">
+            <button id="prevSlide" class="w-10 h-10 rounded-full border border-stone-200 flex items-center justify-center hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-all text-stone-700"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></button>
+            <button id="nextSlide" class="w-10 h-10 rounded-full border border-stone-200 flex items-center justify-center hover:bg-stone-900 hover:text-white hover:border-stone-900 transition-all text-stone-700"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
+          </div>
+        </div>
+        <div class="lg:w-2/5 rounded-2xl overflow-hidden min-h-[360px]">
+          <img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/688fdc6168b6787dbc73612f_435f7fb603901272375f034b1a6953ae4fac09ed.avif" alt="" class="img-cover h-full"/>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="reveal testi-card bg-surface rounded-2xl border border-stone-100 p-6 shadow-sm">
+          <div class="flex gap-1 mb-4"><svg width="14" height="14" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg><svg width="14" height="14" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg><svg width="14" height="14" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg><svg width="14" height="14" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg></div>
+          <p class="text-sm font-medium leading-relaxed mb-6 text-stone-700">"Forma Studio brought our vision to life with precision and creativity. Their work truly speaks for itself."</p>
+          <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden"><img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/688fdc62f78e4789784c9c79_8f78cb88374b982107c54f8778a6c893cd86acc3.avif" alt="" class="img-cover"/></div><div><div class="text-xs font-semibold text-stone-900">JAMES K.</div><div class="text-xs text-stone-500">Founder of UrbanGear</div></div></div>
+        </div>
+        <div class="reveal testi-card bg-surface rounded-2xl border border-stone-100 p-6 shadow-sm" style="transition-delay:0.1s">
+          <div class="flex gap-1 mb-4"><svg width="14" height="14" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg><svg width="14" height="14" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg><svg width="14" height="14" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg><svg width="14" height="14" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg></div>
+          <p class="text-sm font-medium leading-relaxed mb-6 text-stone-700">"Professional, responsive, and genuinely passionate about what they do. We saw results within the first month."</p>
+          <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden"><img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/688fdc62cad39483c4f69d8f_ae843d015ecd1328261a7c6bbe6c674bc9030b20.avif" alt="" class="img-cover"/></div><div><div class="text-xs font-semibold text-stone-900">AMIRA T.</div><div class="text-xs text-stone-500">CEO of Bloom Concept</div></div></div>
+        </div>
+        <div class="reveal testi-card bg-surface rounded-2xl border border-stone-100 p-6 shadow-sm" style="transition-delay:0.15s">
+          <div class="flex gap-1 mb-4"><svg width="14" height="14" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg><svg width="14" height="14" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg><svg width="14" height="14" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg><svg width="14" height="14" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg></div>
+          <p class="text-sm font-medium leading-relaxed mb-6 text-stone-700">"From the first call, we knew we were in good hands. Forma Studio delivered beyond expectations and with impressive speed."</p>
+          <div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full overflow-hidden"><img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/688fdc627b8a5a98dae13231_fd5bace257a56f390cbae5465c51eb1f32926e14.avif" alt="" class="img-cover"/></div><div><div class="text-xs font-semibold text-stone-900">LUIS R.</div><div class="text-xs text-stone-500">Product Manager at HelioTech</div></div></div>
+        </div>
+      </div>
+      <div class="reveal flex flex-col lg:flex-row items-center gap-6">
+        <div class="flex gap-4 flex-1">
+          <div class="flex-1 h-48 rounded-2xl overflow-hidden"><img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/688fdc6103efd2badaeb9d21_bb321ca02eace128b6ed9069893955658fd01d7c.avif" alt="" class="img-cover"/></div>
+          <div class="flex-1 h-48 rounded-2xl overflow-hidden"><img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/688fe1a6db6ff6c6f39384cc_pexels-creationhill-1681010%201.avif" alt="" class="img-cover"/></div>
+          <div class="flex-1 h-48 rounded-2xl overflow-hidden"><img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/688fdc63579ab2c38f5d6155_0d63563071ee0be67a603e99a26544662f2b5442.avif" alt="" class="img-cover"/></div>
+        </div>
+        <div class="flex items-center gap-2">
+          <svg width="72" height="18" viewBox="0 0 72 18" fill="none"><path d="M8 2.927l1.9 5.1h5.08l-4.08 2.97.94 5.36L8 13.64l-3.84 2.72.94-5.36-4.08-2.97h5.08L8 2.927z" fill="#F5D012"/><path d="M26 2.927l1.9 5.1h5.08l-4.08 2.97.94 5.36L26 13.64l-3.84 2.72.94-5.36-4.08-2.97h5.08L26 2.927z" fill="#F5D012"/><path d="M44 2.927l1.9 5.1h5.08l-4.08 2.97.94 5.36L44 13.64l-3.84 2.72.94-5.36-4.08-2.97h5.08L44 2.927z" fill="#F5D012"/><path d="M62 2.927l1.9 5.1h5.08l-4.08 2.97.94 5.36L62 13.64l-3.84 2.72.94-5.36-4.08-2.97h5.08L62 2.927z" fill="#F5D012"/></svg>
+          <span class="text-xs text-stone-500">100+ happy clients</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ SECTION -->
+<section class="py-20 lg:py-32 bg-surface">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="flex flex-col gap-12">
+      <div class="reveal max-w-lg mx-auto text-center">
+        <div class="text-sm text-stone-500 mb-3">FAQs</div>
+        <h3 class="text-2xl lg:text-3xl font-semibold tracking-tight text-stone-900">Got a question? We've got the answer</h3>
+      </div>
+      <div class="max-w-3xl mx-auto w-full flex flex-col" id="faqAccordion">
+        <div class="border-t border-stone-200">
+          <button class="faq-trigger w-full flex items-center justify-between py-5 lg:py-6 text-left">
+            <span class="text-sm lg:text-base font-medium pr-8 text-stone-900">How long does it take to design and launch a website with your team?</span>
+            <span class="faq-icon w-6 h-6 flex-shrink-0 flex items-center justify-center text-stone-700"><svg width="14" height="14" viewBox="0 0 29 30" fill="none"><path d="M.762 15h27.476" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14.5 1.262v27.476" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </button>
+          <div class="faq-body"><p class="text-sm text-stone-500 pb-5">Yes. No code, no jargon - just copy, paste, and go.</p></div>
+        </div>
+        <div class="border-t border-stone-200">
+          <button class="faq-trigger w-full flex items-center justify-between py-5 lg:py-6 text-left">
+            <span class="text-sm lg:text-base font-medium pr-8 text-stone-900">Do you offer ongoing support and maintenance after a project is completed?</span>
+            <span class="faq-icon w-6 h-6 flex-shrink-0 flex items-center justify-center text-stone-700"><svg width="14" height="14" viewBox="0 0 29 30" fill="none"><path d="M.762 15h27.476" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14.5 1.262v27.476" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </button>
+          <div class="faq-body"><p class="text-sm text-stone-500 pb-5">Yes. No code, no jargon - just copy, paste, and go.</p></div>
+        </div>
+        <div class="border-t border-stone-200">
+          <button class="faq-trigger w-full flex items-center justify-between py-5 lg:py-6 text-left">
+            <span class="text-sm lg:text-base font-medium pr-8 text-stone-900">Can Forma Studio help with branding and social media strategy?</span>
+            <span class="faq-icon w-6 h-6 flex-shrink-0 flex items-center justify-center text-stone-700"><svg width="14" height="14" viewBox="0 0 29 30" fill="none"><path d="M.762 15h27.476" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14.5 1.262v27.476" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </button>
+          <div class="faq-body"><p class="text-sm text-stone-500 pb-5">Yes. No code, no jargon - just copy, paste, and go.</p></div>
+        </div>
+        <div class="border-t border-b border-stone-200">
+          <button class="faq-trigger w-full flex items-center justify-between py-5 lg:py-6 text-left">
+            <span class="text-sm lg:text-base font-medium pr-8 text-stone-900">What is the typical process when working with Forma Studio on a new project?</span>
+            <span class="faq-icon w-6 h-6 flex-shrink-0 flex items-center justify-center text-stone-700"><svg width="14" height="14" viewBox="0 0 29 30" fill="none"><path d="M.762 15h27.476" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14.5 1.262v27.476" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
+          </button>
+          <div class="faq-body"><p class="text-sm text-stone-500 pb-5">Yes. No code, no jargon - just copy, paste, and go.</p></div>
+        </div>
+      </div>
+      <div class="reveal relative overflow-hidden py-8">
+        <div class="flex whitespace-nowrap logo-marquee">
+          <div class="flex items-center gap-16 mx-8">
+            <img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/6890a6b62ae78e79eb28af75_logoipsum-265%20(1)%201.svg" alt="" class="h-8 opacity-40"/>
+            <img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/6890a6b6f4dab71810c6b4fe_logoipsum-216%201.svg" alt="" class="h-8 opacity-40"/>
+            <img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/6890a6b69c928012910e7c65_logoipsum-213%201.svg" alt="" class="h-8 opacity-40"/>
+            <img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/6890a6b609539e8adf1eea22_logoipsum-286%201.svg" alt="" class="h-8 opacity-40"/>
+          </div>
+          <div class="flex items-center gap-16 mx-8">
+            <img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/6890a6b62ae78e79eb28af75_logoipsum-265%20(1)%201.svg" alt="" class="h-8 opacity-40"/>
+            <img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/6890a6b6f4dab71810c6b4fe_logoipsum-216%201.svg" alt="" class="h-8 opacity-40"/>
+            <img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/6890a6b69c928012910e7c65_logoipsum-213%201.svg" alt="" class="h-8 opacity-40"/>
+            <img src="https://cdn.prod.website-files.com/688fcc9d9b7f22f50183ee12/6890a6b609539e8adf1eea22_logoipsum-286%201.svg" alt="" class="h-8 opacity-40"/>
+          </div>
+        </div>
+        <div class="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-surface to-transparent z-10"></div>
+        <div class="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-surface to-transparent z-10"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG SECTION -->
+<section class="py-20 lg:py-32 bg-white">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="flex flex-col gap-12">
+      <div class="reveal">
+        <div class="text-sm text-stone-500 mb-3">BLOG</div>
+        <h3 class="text-2xl lg:text-3xl font-semibold tracking-tight text-stone-900">Our Blog</h3>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <a href="#" class="reveal group block">
+          <div class="rounded-2xl overflow-hidden bg-surface border border-stone-100 shadow-sm hover:shadow-md transition-all">
+            <div class="aspect-[4/3] overflow-hidden relative">
+              <img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/68bdb9e3f5d1c2f4e789d001_Rectangle%2038.webp" alt="" class="img-cover transition-transform duration-500 group-hover:scale-105"/>
+              <div class="absolute top-4 left-4"><span class="bg-brand text-stone-900 text-xs font-medium px-3 py-1.5 rounded-full">Technology</span></div>
+            </div>
+            <div class="p-5">
+              <h4 class="font-semibold text-sm lg:text-base leading-snug mb-4 text-stone-900">Designing for the Future: Website Trends That Matter in 2025</h4>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2"><div class="w-7 h-7 rounded-full overflow-hidden"><img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/6895b1fd38d3d13ef64ca2a9_33f9850f58cd8512e91eea4f87a176a2e0ce9eb7.webp" alt="" class="img-cover"/></div><span class="text-xs text-stone-500">ELENA MARKOV</span></div>
+                <span class="text-xs text-stone-500">08.08.2025</span>
+              </div>
+            </div>
+          </div>
+        </a>
+        <a href="#" class="reveal group block" style="transition-delay:0.1s">
+          <div class="rounded-2xl overflow-hidden bg-surface border border-stone-100 shadow-sm hover:shadow-md transition-all">
+            <div class="aspect-[4/3] overflow-hidden relative">
+              <img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/68964bc51c7ba1c3a14ed737_1920715a30d8732af72e4d1b647b92fc03f6094d.webp" alt="" class="img-cover transition-transform duration-500 group-hover:scale-105"/>
+              <div class="absolute top-4 left-4"><span class="bg-brand text-stone-900 text-xs font-medium px-3 py-1.5 rounded-full">Technology</span></div>
+            </div>
+            <div class="p-5">
+              <h4 class="font-semibold text-sm lg:text-base leading-snug mb-4 text-stone-900">The Anatomy of a High-Performing Website in 2025</h4>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2"><div class="w-7 h-7 rounded-full overflow-hidden"><img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/68964bcf18a8224cc6c90135_f73748b61950c745a6da0cf97f6dc1c60cc1c027.webp" alt="" class="img-cover"/></div><span class="text-xs text-stone-500">Liam Brooks</span></div>
+                <span class="text-xs text-stone-500">09.08.2025</span>
+              </div>
+            </div>
+          </div>
+        </a>
+        <a href="#" class="reveal group block" style="transition-delay:0.15s">
+          <div class="rounded-2xl overflow-hidden bg-surface border border-stone-100 shadow-sm hover:shadow-md transition-all">
+            <div class="aspect-[4/3] overflow-hidden relative">
+              <img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/68964bea5463d08ed2e82cbf_2f39407ca7c2e638f487e036985420b5bc9c78e9.webp" alt="" class="img-cover transition-transform duration-500 group-hover:scale-105"/>
+              <div class="absolute top-4 left-4"><span class="bg-brand text-stone-900 text-xs font-medium px-3 py-1.5 rounded-full">Technology</span></div>
+            </div>
+            <div class="p-5">
+              <h4 class="font-semibold text-sm lg:text-base leading-snug mb-4 text-stone-900">Modern Web Success: UX, Speed &amp; Strategy in 2025</h4>
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2"><div class="w-7 h-7 rounded-full overflow-hidden"><img src="https://cdn.prod.website-files.com/688fe0cdf9ebb5f9ca10d239/68964bf502185578fcf733a4_8ece6824b94e6d88c92fc45fab68b05255f06081.webp" alt="" class="img-cover"/></div><span class="text-xs text-stone-500">Noah Hayes</span></div>
+                <span class="text-xs text-stone-500">09.08.2025</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-stone-900 text-white py-16 lg:py-24 rounded-b-[40px]">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="flex flex-col gap-12">
+      <div class="flex flex-col lg:flex-row gap-12 lg:gap-20">
+        <div class="lg:w-1/3 flex flex-col gap-8">
+          <a href="/" class="text-3xl lg:text-4xl font-bold tracking-tight">FORMA STUDIO &reg;</a>
+          <div>
+            <div class="text-xs text-white/40 mb-3 uppercase tracking-wider">social media</div>
+            <div class="flex gap-3">
+              <a href="#" class="w-9 h-9 border border-white/20 rounded-full flex items-center justify-center hover:bg-brand hover:text-stone-900 hover:border-brand transition-all"><svg width="14" height="14" viewBox="0 0 21 20" fill="none"><path d="M11.99 11.125H13.78L14.49 8.125H11.99V6.625C11.99 5.853 11.99 5.125 13.42 5.125H14.49V2.605C14.26 2.573 13.38 2.5 12.45 2.5C10.51 2.5 9.13 3.743 9.13 6.025V8.125H6.99V11.125H9.13V17.5H11.99V11.125Z" fill="currentColor"/></svg></a>
+              <a href="#" class="w-9 h-9 border border-white/20 rounded-full flex items-center justify-center hover:bg-brand hover:text-stone-900 hover:border-brand transition-all"><svg width="14" height="14" viewBox="0 0 21 20" fill="none"><path d="M12.35 10c0 .422-.125.834-.36 1.185a2.133 2.133 0 01-3.282.386 2.133 2.133 0 011.508-3.638A2.134 2.134 0 0112.35 10zm4.533-2.933v5.866a3.867 3.867 0 01-3.733 3.734H7.283a3.867 3.867 0 01-3.733-3.734V7.067a3.867 3.867 0 013.733-3.734h5.867a3.867 3.867 0 013.733 3.734zM13.417 10a3.2 3.2 0 10-6.4 0 3.2 3.2 0 006.4 0zm1.066-3.467a.85.85 0 10-1.7 0 .85.85 0 001.7 0z" fill="currentColor"/></svg></a>
+              <a href="#" class="w-9 h-9 border border-white/20 rounded-full flex items-center justify-center hover:bg-brand hover:text-stone-900 hover:border-brand transition-all"><svg width="14" height="14" viewBox="0 0 21 20" fill="none"><path d="M6.41 4.815a1.486 1.486 0 10-2.973 0 1.486 1.486 0 002.973 0zm.045 2.578H3.49v9.274h2.97V7.393zm4.698 0H8.2v9.274h2.928v-4.867c0-2.71 3.545-2.962 3.545 0v4.867h2.936v-5.874c0-4.57-5.247-4.4-6.481-2.155l.03-1.245z" fill="currentColor"/></svg></a>
+            </div>
+          </div>
+        </div>
+        <div class="lg:w-2/3 flex flex-col md:flex-row gap-12">
+          <div class="md:w-1/2">
+            <div class="text-xs text-white/40 mb-3 uppercase tracking-wider">ABOUT</div>
+            <p class="text-sm text-white/60 leading-relaxed">Forma Studio is a digital studio specializing in design, branding, and interactive experiences.</p>
+          </div>
+          <div class="md:w-1/2">
+            <div class="text-xs text-white/40 mb-4 uppercase tracking-wider">NAVIGATION</div>
+            <div class="grid grid-cols-2 gap-2">
+              <a href="/" class="text-sm text-white/60 hover:text-white transition-colors">Home</a>
+              <a href="/projects" class="text-sm text-white/60 hover:text-white transition-colors">Projects (4)</a>
+              <a href="/about" class="text-sm text-white/60 hover:text-white transition-colors">About</a>
+              <a href="/blogs" class="text-sm text-white/60 hover:text-white transition-colors">Blog</a>
+              <a href="/contact" class="text-sm text-white/60 hover:text-white transition-colors">Contact</a>
+              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Changelog</a>
+              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">License</a>
+              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Style Guide</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-white/40">&copy; 2025 - All rights reserved</p>
+        <div class="flex items-center gap-4">
+          <a href="#" class="text-xs text-white/40 hover:text-white transition-colors">Terms &amp; Condition</a>
+          <span class="w-1 h-1 rounded-full bg-white/30"></span>
+          <a href="#" class="text-xs text-white/40 hover:text-white transition-colors">Privacy Policy</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</div><!-- end rounded container -->
+</div><!-- end yellow shell -->
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target, target = parseInt(el.dataset.target);
+      let current = 0; const inc = target / 40;
+      const timer = setInterval(() => { current += inc; if (current >= target) { current = target; clearInterval(timer); } el.textContent = Math.floor(current); }, 30);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+const menuBtn = document.getElementById('menuBtn'), mobileMenu = document.getElementById('mobileMenu');
+let menuOpen = false;
+menuBtn.addEventListener('click', () => {
+  menuOpen = !menuOpen; mobileMenu.classList.toggle('open');
+  const lines = menuBtn.querySelectorAll('span');
+  lines[0].style.transform = menuOpen ? 'rotate(45deg) translate(3px, 3px)' : '';
+  lines[1].style.transform = menuOpen ? 'rotate(-45deg) translate(3px, -3px)' : '';
+});
+
+const slides = document.querySelectorAll('#testimonialSlider .slide');
+let currentSlide = 0;
+function showSlide(n) { slides[currentSlide].classList.remove('active'); currentSlide = (n + slides.length) % slides.length; slides[currentSlide].classList.add('active'); }
+document.getElementById('prevSlide').addEventListener('click', () => showSlide(currentSlide - 1));
+document.getElementById('nextSlide').addEventListener('click', () => showSlide(currentSlide + 1));
+
+document.querySelectorAll('.faq-trigger').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const body = btn.nextElementSibling, icon = btn.querySelector('.faq-icon'), isOpen = body.classList.contains('open');
+    document.querySelectorAll('.faq-body').forEach(b => b.classList.remove('open'));
+    document.querySelectorAll('.faq-icon').forEach(i => i.classList.remove('rotated'));
+    if (!isOpen) { body.classList.add('open'); icon.classList.add('rotated'); }
+  });
+});
+
+document.querySelectorAll('.service-trigger').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const panel = btn.nextElementSibling, isOpen = panel.classList.contains('open');
+    document.querySelectorAll('.service-panel').forEach(p => p.classList.remove('open'));
+    if (!isOpen) panel.classList.add('open');
+  });
+});
+
+// Sticky nav — smoothly shrink to centered yellow pill on scroll
+(function() {
+  const nav = document.getElementById('mainNav');
+  const inner = document.getElementById('navInner');
+  const navLinks = document.getElementById('navLinks');
+  if (!nav || !inner) return;
+
+  const scrollStart = 0;
+  const scrollEnd = 200; // fully transformed by 200px scroll
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function update() {
+    const sy = window.scrollY;
+    const p = Math.min(1, Math.max(0, (sy - scrollStart) / (scrollEnd - scrollStart)));
+
+    // Background opacity: transparent -> yellow
+    inner.style.background = `rgba(245,208,18,${(p * 0.95).toFixed(3)})`;
+
+    // Backdrop blur
+    const blur = lerp(0, 12, p);
+    inner.style.backdropFilter = `blur(${blur.toFixed(1)}px)`;
+    inner.style.webkitBackdropFilter = `blur(${blur.toFixed(1)}px)`;
+
+    // Border radius: 0 -> pill
+    inner.style.borderRadius = lerp(0, 9999, p) > 20 ? '9999px' : lerp(0, 20, p) + 'px';
+
+    // Max width: full -> 720px
+    if (p > 0.01) {
+      const maxW = lerp(1400, 720, p);
+      inner.style.maxWidth = maxW + 'px';
+      inner.style.margin = '0 auto';
+    } else {
+      inner.style.maxWidth = 'none';
+      inner.style.margin = '0 auto';
+    }
+
+    // Shadow
+    const shadowOpacity = lerp(0, 0.12, p);
+    inner.style.boxShadow = `0 ${lerp(0, 8, p).toFixed(0)}px ${lerp(0, 32, p).toFixed(0)}px rgba(0,0,0,${shadowOpacity.toFixed(3)})`;
+
+    // Nav gap: 32px -> 16px
+    if (navLinks) {
+      navLinks.style.gap = lerp(32, 16, p) + 'px';
+    }
+
+    // Padding: wide -> equal (12px all around when pill)
+    const px = lerp(16, 12, p);
+    const py = lerp(0, 12, p);
+    inner.style.padding = `${py.toFixed(0)}px ${px.toFixed(0)}px`;
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+// Pill marquee — clone items to fill screen, then animate with rAF
+(function() {
+  const track = document.getElementById('pillMarquee');
+  if (!track) return;
+  const items = track.querySelectorAll('.pill-item');
+  const gap = 16; // gap-4 = 16px
+
+  // Clone items enough times to guarantee no gap (at least 3x viewport width)
+  function cloneItems() {
+    const setWidth = track.scrollWidth;
+    const viewW = window.innerWidth;
+    const copies = Math.ceil((viewW * 3) / setWidth);
+    for (let i = 0; i < copies; i++) {
+      items.forEach(item => track.appendChild(item.cloneNode(true)));
+    }
+  }
+  cloneItems();
+
+  // Measure one full set width (original items + gaps)
+  let oneSetWidth = 0;
+  items.forEach(item => { oneSetWidth += item.offsetWidth + gap; });
+
+  let x = 0;
+  const speed = 0.5; // px per frame
+
+  function animate() {
+    x -= speed;
+    if (Math.abs(x) >= oneSetWidth) x += oneSetWidth;
+    track.style.transform = `translateX(${x}px)`;
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+})();
+
+// Platform tabs — tab 0 shows static dashboard, tabs 1-3 overlay on top
+document.querySelectorAll('.platform-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const idx = tab.dataset.tab;
+    document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.platform-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+
+    const staticPanel = document.getElementById('cardTargetStatic');
+    if (idx === '0') {
+      // Show static dashboard, hide overlay panels
+      if (staticPanel) staticPanel.style.opacity = '1';
+    } else {
+      // Keep static panel visible underneath, show overlay panel on top
+      const panel = document.querySelector(`.platform-panel[data-panel="${idx}"]`);
+      if (panel) {
+        panel.classList.add('active');
+        const video = panel.querySelector('video');
+        if (video) { video.currentTime = 0; video.play(); }
+      }
+    }
+  });
+});
+
+// Video reveal — opens from center on scroll
+gsap.registerPlugin(ScrollTrigger);
+const videoReveal = document.getElementById('videoReveal');
+if (videoReveal) {
+  gsap.to(videoReveal, {
+    clipPath: 'inset(0 0% 0 0%)',
+    ease: 'none',
+    scrollTrigger: {
+      trigger: videoReveal,
+      start: 'top 85%',
+      end: 'top 30%',
+      scrub: 0.5,
+    }
+  });
+}
+
+// Click-triggered card animation — card flies from hero to tab section
+(function() {
+  const card = document.getElementById('heroCard');
+  const target = document.getElementById('cardTarget');
+  const staticPanel = document.getElementById('cardTargetStatic');
+  if (!card || !target) return;
+
+  let animating = false;
+  let landed = false;
+  let spacer = null;
+
+  function animateToTarget() {
+    if (animating || landed || window.innerWidth < 1024) return;
+    animating = true;
+
+    // Hide the static panel so the flying card replaces it
+    if (staticPanel) staticPanel.style.opacity = '0';
+
+    // Measure card in its current flex position
+    const cardRect = card.getBoundingClientRect();
+    const sy = window.scrollY;
+    const startTop = cardRect.top + sy;
+    const startLeft = cardRect.left;
+    const startW = cardRect.width;
+    const startH = cardRect.height;
+
+    // Create spacer to hold card's place in hero
+    spacer = document.createElement('div');
+    spacer.style.width = startW + 'px';
+    spacer.style.height = startH + 'px';
+    spacer.style.flexShrink = '0';
+    spacer.className = 'hidden lg:block';
+    card.parentElement.insertBefore(spacer, card);
+
+    // Move card to body for absolute positioning
+    document.body.appendChild(card);
+    gsap.set(card, {
+      position: 'absolute',
+      top: startTop,
+      left: startLeft,
+      width: startW,
+      zIndex: 9999,
+      margin: 0,
+    });
+
+    // Measure target
+    const targetRect = target.getBoundingClientRect();
+    const endWidth = Math.min(1024, targetRect.width);
+    const scaleVal = endWidth / startW;
+    const ratio = startH / startW;
+    target.style.height = (endWidth * ratio) + 'px';
+
+    const targetRect2 = target.getBoundingClientRect();
+    const endTop = targetRect2.top + sy;
+    const endLeft = targetRect2.left + (targetRect2.width - endWidth) / 2;
+
+    const deltaX = endLeft - startLeft;
+    const deltaY = endTop - startTop;
+
+    const cardInner = card.querySelector('.bg-white');
+    const endRadius = 16 / scaleVal;
+
+    // Scroll to tab section smoothly
+    document.getElementById('cardLanding').scrollIntoView({ behavior: 'smooth' });
+
+    // Animate the card flying down — fast to match scroll speed
+    gsap.to(card, {
+      x: deltaX,
+      y: deltaY,
+      scale: scaleVal,
+      transformOrigin: 'top left',
+      duration: 0.55,
+      ease: 'power3.inOut',
+      onUpdate: function() {
+        if (cardInner) {
+          const p = this.progress();
+          const r = gsap.utils.interpolate(16, endRadius, p);
+          cardInner.style.borderRadius = r + 'px';
+        }
+      },
+      onComplete: () => {
+        animating = false;
+        landed = true;
+        // Show static panel again, hide the flying card on top
+        if (staticPanel) staticPanel.style.opacity = '1';
+        card.style.opacity = '0';
+        // Activate tab 0 state
+        document.querySelectorAll('.platform-tab').forEach((t, i) => {
+          t.classList.toggle('active', i === 0);
+        });
+      }
+    });
+  }
+
+  // Click the card or the explore button
+  card.addEventListener('click', animateToTarget);
+})();
+</script>
+</body>
+</html>

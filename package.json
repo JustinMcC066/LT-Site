@@ -1,0 +1,23 @@
+{
+  "name": "lt",
+  "version": "1.0.0",
+  "description": "",
+  "main": "screenshot.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JustinMcC066/LT-Site.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JustinMcC066/LT-Site/issues"
+  },
+  "homepage": "https://github.com/JustinMcC066/LT-Site#readme",
+  "dependencies": {
+    "@playwright/test": "^1.58.2"
+  }
+}

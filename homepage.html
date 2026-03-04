@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Let's Talk SPHE</title>
+  <meta name="description" content="Forma Studio is a full-service creative studio crafting thoughtful digital experiences and timeless design."/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Montserrat"', 'sans-serif'],
+            heading: ['"Montserrat"', 'sans-serif'],
+            body: ['"Montserrat"', 'sans-serif'],
+          },
+          colors: {
+            brand: '#F5D012',
+            'brand-light': '#F4D232',
+            'brand-warm': '#FEF9E6',
+            surface: '#fdfcf8',
+          },
+          screens: {
+            'xl': '1320px',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Montserrat', sans-serif; color: #1c1917; overflow-x: hidden; background: #F5D012; }
+    .reveal { opacity: 0; transform: translateY(30px) scale(0.97); filter: blur(4px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.visible { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    .nav-link-wrap { position: relative; overflow: hidden; height: 1.25em; }
+    .nav-link-wrap .line-1, .nav-link-wrap .line-2 { transition: transform 0.3s cubic-bezier(0.76, 0, 0.24, 1); }
+    .nav-link-wrap:hover .line-1 { transform: translateY(-100%); }
+    .nav-link-wrap:hover .line-2 { transform: translateY(-100%); }
+    .btn-flip .btn-flip-inner { position: relative; overflow: hidden; height: 1.25em; display: block; }
+    .btn-flip .line-1, .btn-flip .line-2 { display: flex; align-items: center; gap: 8px; transition: transform 0.3s cubic-bezier(0.76, 0, 0.24, 1); }
+    .btn-flip:hover .line-1 { transform: translateY(-100%); }
+    .btn-flip:hover .line-2 { transform: translateY(-100%); }
+    .btn-animated { position: relative; overflow: hidden; }
+    .btn-animated .icon-1, .btn-animated .icon-2 { transition: transform 0.3s cubic-bezier(0.76, 0, 0.24, 1); }
+    .btn-animated:hover .icon-1 { transform: translate(100%, -100%); }
+    .btn-animated:hover .icon-2 { transform: translate(0, 0); }
+    .btn-animated .underline-1 { transition: transform 0.3s ease; transform-origin: left; }
+    .btn-animated .underline-2 { transition: transform 0.3s ease; transform-origin: right; transform: scaleX(0); }
+    .btn-animated:hover .underline-1 { transform: scaleX(0); transform-origin: right; }
+    .btn-animated:hover .underline-2 { transform: scaleX(1); transform-origin: left; }
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .marquee { animation: marquee 20s linear infinite; }
+    @keyframes logo-scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .logo-marquee { animation: logo-scroll 15s linear infinite; }
+    .faq-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .faq-body.open { max-height: 200px; }
+    .faq-icon { transition: transform 0.3s ease; }
+    .faq-icon.rotated { transform: rotate(45deg); }
+    .service-panel { max-height: 0; overflow: hidden; transition: max-height 0.5s ease; }
+    .service-panel.open { max-height: 600px; }
+    .project-card-hover:hover img { transform: scale(1.05); }
+    .project-card-hover:hover .overlay { opacity: 1; }
+    .project-card-hover:hover .arrow-box .icon-a { transform: translate(100%, -100%); }
+    .project-card-hover:hover .arrow-box .icon-b { transform: translate(0, 0); }
+    .project-card-hover:hover .logo-reveal { opacity: 1; transform: translateY(0); }
+    .project-card-hover .overlay { opacity: 0; transition: opacity 0.3s; }
+    .project-card-hover .arrow-box .icon-a, .project-card-hover .arrow-box .icon-b { transition: transform 0.3s cubic-bezier(0.76, 0, 0.24, 1); }
+    .project-card-hover .arrow-box .icon-b { transform: translate(-100%, 100%); }
+    .project-card-hover .logo-reveal { opacity: 0; transform: translateY(100%); transition: all 0.3s ease; }
+    .slide { display: none; }
+    .slide.active { display: block; }
+    .testi-card { transition: transform 0.3s ease; }
+    .testi-card:hover { transform: translateY(-4px); }
+    .mobile-menu { transform: translateX(100%); transition: transform 0.3s ease; }
+    .mobile-menu.open { transform: translateX(0); }
+    .img-cover { width: 100%; height: 100%; object-fit: cover; }
+    .service-trigger:hover .plus-btn { background: rgba(255,255,255,0.15); }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .platform-tab { background: #FEF9E6; color: #44403c; }
+    .platform-tab.active { background: #F5D012; color: #1c1917; }
+    .platform-tab:hover:not(.active) { background: #fdf0c4; }
+    .platform-panel { opacity: 0; position: absolute; top: 0; left: 0; width: 100%; pointer-events: none; transition: opacity 0.4s ease; }
+    .platform-panel.active { opacity: 1; position: relative; pointer-events: auto; z-index: 10; }
+    #heroCard { transition: opacity 0.4s ease; }
+    .squiggle-line { stroke-dasharray: 500; stroke-dashoffset: 500; animation: squiggle-draw 2s cubic-bezier(0.25, 0.1, 0.25, 1) forwards 0.5s; }
+    @keyframes squiggle-draw { to { stroke-dashoffset: 0; } }
+    @keyframes air-quotes {
+      0% { transform: translateY(0); }
+      7% { transform: translateY(-6px); }
+      14% { transform: translateY(0); }
+      21% { transform: translateY(-6px); }
+      28% { transform: translateY(0); }
+      100% { transform: translateY(0); }
+    }
+    #yellowBgZone, .yellowBgZone { position: relative; }
+    #yellowBgZone::before, #yellowBgZone::after,
+    .yellowBgZone::before, .yellowBgZone::after {
+      content: ''; position: absolute; left: 0; right: 0; height: 40px; z-index: 3; pointer-events: none;
+      background: #fdfcf8;
+    }
+    #yellowBgZone::before, .yellowBgZone::before { top: 0; border-radius: 0 0 40px 40px; }
+    #yellowBgZone::after, .yellowBgZone::after { bottom: 0; border-radius: 40px 40px 0 0; }
+    .service-row { position: relative; }
+    .service-row .service-img { opacity: 0; transform: translate(-50%,-50%) translateY(16px) rotate(0deg) scale(var(--s,1)); transition: all 0.35s ease; pointer-events: none; z-index: 20; }
+    .service-row:hover .service-img { opacity: 1; transform: translate(-50%,-50%) translateY(0) rotate(var(--tilt,0deg)) scale(var(--s,1)); }
+    .service-row:hover { z-index: 10; }
+    .service-row::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px; background: #F5D012; transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
+    .service-row:hover::after { transform: scaleX(1); }
+    .sarcastic-wobble {
+      animation: air-quotes 3.5s ease-in-out infinite;
+      transform-origin: center;
+    }
+    @keyframes blast-in {
+      0% { opacity: 0; transform: scale(0) rotate(-30deg); }
+      60% { opacity: 1; transform: scale(1.15) rotate(5deg); }
+      80% { transform: scale(0.95) rotate(-2deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+    .yellow-blast {
+      animation: blast-in 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.8s;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Presentation overlay -->
+<div id="presentOverlay" style="position:fixed; inset:0; z-index:9999; background:#F5D012; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="sessionStorage.setItem('entered','1'); location.reload();">
+  <button style="background:#1c1917; color:#fff; font-family:'Montserrat',sans-serif; font-weight:700; font-size:1.25rem; padding:16px 48px; border-radius:9999px; border:none; cursor:pointer; letter-spacing:0.02em;">Enter</button>
+</div>
+
+<!-- Yellow outer shell wrapping entire page -->
+<div class="bg-[#F5D012] min-h-screen p-3 lg:p-6">
+
+<!-- NAVBAR - outside the container, in the yellow area -->
+<header id="mainNav" style="position:sticky; top:12px; z-index:50; margin-bottom:16px;">
+  <div id="navInner" class="px-3 lg:px-4 flex items-center justify-between h-14 lg:h-16" style="background:#F5D010; border-radius:9999px; max-width:none; margin:0 auto; position:relative; overflow:visible; box-shadow:none; padding:12px 16px;">
+    <a href="/" class="flex-shrink-0">
+      <img id="navLogo" src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/logoheader.svg" alt="Let's Talk SPHE" class="h-10 lg:h-12" style="transform:scale(1.7) translateY(15px); transform-origin:left center; transition:transform 0.8s cubic-bezier(0.16,1,0.3,1), margin 0.8s cubic-bezier(0.16,1,0.3,1), padding 0.8s cubic-bezier(0.16,1,0.3,1); margin-bottom:0px;"/>
+    </a>
+    <!-- Center links group -->
+    <nav id="navLinks" class="hidden lg:flex items-center justify-center flex-1" style="gap:32px; padding-right:140px;">
+      <a href="/platform" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Platform</span><span class="line-2 block">Platform</span></a>
+      <a href="/for-teachers" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">For Teachers</span><span class="line-2 block">For Teachers</span></a>
+      <a href="/for-schools" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">For Schools</span><span class="line-2 block">For Schools</span></a>
+      <a href="/student-support" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Student Support</span><span class="line-2 block">Student Support</span></a>
+      <a href="/about" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">About</span><span class="line-2 block">About</span></a>
+      <a href="/courses" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Courses</span><span class="line-2 block">Courses</span></a>
+      <a href="/resources" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Resources</span><span class="line-2 block">Resources</span></a>
+      <a href="/contact" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Contact</span><span class="line-2 block">Contact</span></a>
+    </nav>
+    <!-- Right group: hamburger + CTA — absolutely positioned to prevent reflow -->
+    <div id="navRight" class="hidden lg:flex items-center" style="gap:12px; position:absolute; right:16px; top:50%; transform:translateY(-50%);">
+      <button id="pillMenuBtn" class="w-8 h-8 flex-col justify-center items-center gap-1.5" style="display:none;">
+        <span class="w-5 h-0.5 bg-stone-900 transition-all pill-line-1"></span>
+        <span class="w-5 h-0.5 bg-stone-900 transition-all pill-line-2"></span>
+        <span class="w-5 h-0.5 bg-stone-900 transition-all pill-line-3"></span>
+      </button>
+      <a id="bookDemo" href="/book-demo" class="btn-flip bg-stone-900 text-white text-sm font-medium px-5 py-2.5 rounded-full hover:bg-stone-800 transition-colors inline-block"><span class="btn-flip-inner"><span class="line-1">Book a Demo</span><span class="line-2">Book a Demo</span></span></a>
+    </div>
+    <!-- Mobile hamburger -->
+    <button id="menuBtn" class="lg:hidden w-8 h-8 flex flex-col justify-center items-center gap-1.5">
+      <span class="w-6 h-0.5 bg-stone-900 transition-all menu-line-1"></span>
+      <span class="w-6 h-0.5 bg-stone-900 transition-all menu-line-2"></span>
+    </button>
+  </div>
+  <!-- Pill dropdown menu for screens < 1380px -->
+  <div id="pillDropdown" class="absolute left-1/2 -translate-x-1/2 bg-[#F5D012] rounded-2xl shadow-lg overflow-hidden" style="display:none; opacity:0; transform:translateY(-8px); transition:opacity 0.3s ease, transform 0.3s ease; top:100%; margin-top:8px; min-width:280px; z-index:49;">
+    <nav class="flex flex-col py-3">
+      <a href="/platform" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Platform</a>
+      <a href="/for-teachers" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">For Teachers</a>
+      <a href="/for-schools" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">For Schools</a>
+      <a href="/student-support" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Student Support</a>
+      <a href="/about" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">About</a>
+      <a href="/courses" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Courses</a>
+      <a href="/resources" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Resources</a>
+      <a href="/contact" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div id="mobileMenu" class="mobile-menu fixed inset-0 z-40 bg-[#F5D012] pt-20 px-8 lg:hidden">
+  <nav class="flex flex-col gap-6 text-2xl font-semibold text-stone-900">
+    <a href="/platform" class="border-b border-stone-900/20 pb-4">Platform</a>
+    <a href="/for-teachers" class="border-b border-stone-900/20 pb-4">For Teachers</a>
+    <a href="/for-schools" class="border-b border-stone-900/20 pb-4">For Schools</a>
+    <a href="/student-support" class="border-b border-stone-900/20 pb-4">Student Support</a>
+    <a href="/about" class="border-b border-stone-900/20 pb-4">About</a>
+    <a href="/courses" class="border-b border-stone-900/20 pb-4">Courses</a>
+    <a href="/resources" class="border-b border-stone-900/20 pb-4">Resources</a>
+    <a href="/contact" class="border-b border-stone-900/20 pb-4">Contact</a>
+    <a href="/book-demo" class="bg-stone-900 text-white text-center py-4 rounded-full text-lg mt-4">Book a Demo</a>
+  </nav>
+</div>
+
+<!-- HERO SECTION — Bento Grid Layout -->
+<section id="heroSection" class="relative bg-white rounded-[40px]" style="overflow:visible; z-index:10;">
+  <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Yellow%20Comment%20Scribble.svg" alt="" class="absolute pointer-events-none" style="width:50vw; height:50vw; left:60vw; top:-10vw; z-index:0; opacity:1;">
+  <div class="w-full max-w-[1400px] mx-auto px-6 lg:px-10 relative" style="z-index:1;">
+    <div class="flex flex-col lg:flex-row gap-8 lg:gap-10 items-stretch">
+
+      <!-- LEFT COLUMN — Text content (60%) -->
+      <div class="flex flex-col justify-center lg:w-[60%] lg:flex-none py-4 lg:py-8">
+        <div class="flex flex-col gap-8">
+          <div class="reveal relative">
+            <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Yellow%20Blast.svg" alt="" class="absolute -top-[102px] -left-[140px] w-40 lg:w-48 pointer-events-none yellow-blast" style="opacity:0; transform:scale(0) rotate(-30deg);"/>
+            <h1 class="text-stone-900 text-[clamp(2.1rem,4.65vw,3.95rem)] font-bold leading-[1.08] tracking-tight font-heading">
+              <span class="inline-block mb-4">
+                <span class="block text-lg font-medium uppercase tracking-[0.2em] text-stone-600">Transforming SPHE in Irish schools</span>
+                <!-- squiggle underline hidden -->
+              </span>
+              Empowering teachers.<br/>
+              <span class="text-[#F5D012]" style="paint-order:stroke fill; -webkit-text-stroke:11px #1c1917;">Supporting teenagers.</span>
+            </h1>
+          </div>
+          <div class="reveal" style="transition-delay:0.1s">
+            <p class="text-stone-500 text-base leading-relaxed lg:max-w-lg">Let's Talk SPHE is Ireland's first digital, curriculum-aligned platform supporting post-primary schools to comprehensively deliver the new SPHE curriculum.</p>
+          </div>
+          <div class="reveal flex flex-wrap gap-4" style="transition-delay:0.15s">
+            <a href="#" class="inline-flex items-center justify-center px-7 py-3 bg-[#F5D012] text-stone-900 font-semibold text-sm rounded-full hover:bg-white hover:text-black transition-colors">Book Now</a>
+            <a id="heroExploreBtn" href="#" class="inline-flex items-center justify-center px-7 py-3 border border-stone-300 text-stone-900 font-semibold text-sm rounded-full hover:bg-stone-900 hover:text-white transition-colors">Explore the Platform</a>
+            <a href="#" class="inline-flex items-center justify-center px-7 py-3 bg-stone-100 text-stone-900 font-semibold text-sm rounded-full hover:bg-stone-900 hover:text-white transition-colors">I'm a Teacher</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN — dashboard only -->
+      <div class="lg:w-[40%] lg:flex-none w-full relative" style="height:calc(100vh - 190px); overflow:visible;">
+      </div>
+
+    </div>
+  </div>
+  <!-- Dashboard skewed view — positioned against hero section -->
+  <div id="heroDashboard" class="absolute" style="opacity:1; transition:opacity 0.5s ease; top:160px; right:-80px; width:48.4%; z-index:15;">
+    <div id="heroDashInner" class="rounded-2xl overflow-hidden shadow-2xl w-full bg-[#F5D012]" style="transform:perspective(1400px) rotateY(-8deg) rotateX(2deg) scale(1.1); transform-origin:right center; transition:transform 0.4s cubic-bezier(0.25,0.1,0.25,1);">
+      <img id="heroDashImg" src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="Let's Talk SPHE Dashboard" class="w-full object-cover object-left-top" style="aspect-ratio:16/9;"/>
+      <video id="heroDashVideo" muted loop playsinline class="absolute inset-0 w-full h-full object-contain object-center" style="opacity:0;">
+        <source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/clip4.mp4" type="video/mp4"/>
+      </video>
+    </div>
+  </div>
+</section>
+
+<!-- PILL MARQUEE — outside hero, in the yellow area -->
+<div class="relative z-10 overflow-hidden py-5 lg:py-6">
+  <div id="pillMarquee" class="flex items-center gap-6 whitespace-nowrap w-max">
+    <span class="pill-item inline-flex items-center text-stone-900 text-2xl font-semibold">Ready-to-use lessons</span>
+    <span class="pill-item text-white text-5xl leading-none">&bull;</span>
+    <span class="pill-item inline-flex items-center text-stone-900 text-2xl font-semibold">Planning &amp; assessment</span>
+    <span class="pill-item text-white text-5xl leading-none">&bull;</span>
+    <span class="pill-item inline-flex items-center text-stone-900 text-2xl font-semibold">Teacher support</span>
+    <span class="pill-item text-white text-5xl leading-none">&bull;</span>
+    <span class="pill-item inline-flex items-center text-stone-900 text-2xl font-semibold">Built for Irish classrooms</span>
+    <span class="pill-item text-white text-5xl leading-none">&bull;</span>
+  </div>
+  <!-- Yellow fade edges -->
+  <div class="absolute inset-y-0 left-0 w-24 pointer-events-none" style="background:linear-gradient(to right, #F5D012, transparent);"></div>
+  <div class="absolute inset-y-0 right-0 w-24 pointer-events-none" style="background:linear-gradient(to left, #F5D012, transparent);"></div>
+</div>
+
+<div class="bg-surface rounded-[40px]" style="overflow:clip;">
+
+<!-- ========== OUR MISSION SECTION ========== -->
+<section class="pt-20 lg:pt-28 pb-10 lg:pb-14 bg-surface" style="overflow:hidden;">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <!-- Header -->
+    <div class="mb-12 lg:mb-20">
+      <div class="reveal flex items-center gap-2.5 mb-5">
+        <span class="w-2 h-2 rounded-full bg-brand flex-shrink-0"></span>
+        <span class="text-sm font-medium text-stone-400 font-heading tracking-tight">A Modern Solution</span>
+      </div>
+      <h2 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold text-stone-900 font-heading leading-[108%] tracking-[-0.02em] max-w-[1080px]">
+        SPHE is no longer a <span class="text-[#F5D012] inline-block sarcastic-wobble">&ldquo;</span>nice-to-have.<span class="text-[#F5D012] inline-block sarcastic-wobble" style="animation-delay:0.15s;">&rdquo;</span> The landscape is changing.<br/>Schools need a modern solution.
+      </h2>
+    </div>
+
+    <!-- Content grid -->
+    <div class="flex flex-col lg:flex-row gap-8 lg:gap-10">
+      <!-- LEFT column -->
+      <div class="flex-1 flex flex-col gap-8">
+        <!-- Video block -->
+        <div class="reveal rounded-3xl overflow-hidden">
+          <video autoplay muted loop playsinline class="w-full h-[260px] lg:h-[320px] object-cover">
+            <source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/intro.mp4" type="video/mp4">
+          </video>
+        </div>
+        <!-- Mandatory from 2027 card -->
+        <div class="reveal bg-white border border-stone-100 rounded-3xl p-6 shadow-sm relative">
+          <div class="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center absolute top-6 right-6">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <p class="font-bold text-stone-900 font-heading mb-3" style="font-size:32px; line-height:1.1;">Mandatory from 2027</p>
+          <p class="text-stone-500 font-body leading-relaxed pr-14" style="font-size:16px;">From September 2027, schools must deliver 60 hours of SPHE at Senior Cycle and one hour per week in Transition Year.</p>
+        </div>
+      </div>
+
+      <!-- RIGHT column -->
+      <div class="flex-1 relative">
+        <img id="missionScribble" src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Yellow%20Comment%20Scribble.svg" alt="" class="absolute pointer-events-none" style="width:700px; height:700px; right:-120px; top:-120px; z-index:0; opacity:1;">
+        <div class="reveal rounded-3xl overflow-hidden h-full min-h-[400px] lg:max-h-[520px] relative" style="z-index:3;">
+          <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/teacher%20iso.png" alt="Teacher" class="w-full h-full object-contain" style="transform: scaleX(-1) translateX(-150px);">
+        </div>
+        <!-- Teachers need support card -->
+        <div class="absolute bottom-8 left-6 bg-[#F5D012] rounded-2xl px-5 py-4 shadow-sm" style="z-index:2; max-width:380px;">
+          <!-- Built pink badge -->
+          <img id="builtPinkBadge" src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/builtpink.svg" alt="" class="absolute pointer-events-none" style="bottom:calc(100% + 100px); left:50%; transform:translateX(-50%) scale(2) rotate(-6deg); opacity:0;"/>
+          <div class="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center absolute top-4 right-5">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4-4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <p class="font-bold text-stone-900 font-heading mb-2" style="font-size:32px; line-height:1.1;">Teachers need support</p>
+          <p class="text-stone-900 font-body leading-relaxed pr-14" style="font-size:16px;">Teachers want to facilitate honest, open discussion but often don't have the time or resources to build lessons from scratch.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Students deserve structure -->
+    <div class="mt-16 lg:mt-24 text-center">
+      <h2 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold text-stone-900 font-heading leading-[108%] tracking-[-0.02em]">Students deserve structure</h2>
+      <p class="reveal text-stone-500 text-base lg:text-lg mt-4 leading-relaxed max-w-2xl mx-auto font-body">Students benefit most when learning is structured, age-appropriate and grounded in real-life issues.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Yellow background wrapper for video -->
+<div id="yellowBgZone" style="background-color: #F5D012;">
+<!-- VIDEO REVEAL SECTION -->
+<section class="py-16 lg:py-24" style="overflow:visible;">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
+    <div id="videoReveal" class="rounded-2xl overflow-hidden shadow-xl relative cursor-none z-10" style="clip-path: inset(0% 50% 0% 50%);">
+      <video autoplay muted loop playsinline class="w-full">
+        <source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/intro.mp4" type="video/mp4"/>
+      </video>
+      <!-- Text overlay bottom left -->
+      <div class="absolute bottom-6 left-6 lg:bottom-10 lg:left-10 z-10 pointer-events-none">
+        <h3 class="text-white text-[clamp(2.25rem,5vw,4.25rem)] font-bold font-heading tracking-tight leading-[1.08]">Why SPHE matters now</h3>
+        <p class="text-white/70 text-lg mt-2 font-body">Hear from teachers and school leaders</p>
+      </div>
+      <!-- Gradient overlay for text legibility -->
+      <div class="absolute inset-x-0 bottom-0 h-32 pointer-events-none" style="background:linear-gradient(to top, rgba(0,0,0,0.5), transparent);"></div>
+      <!-- Custom play cursor -->
+      <div id="videoCursor" class="fixed top-0 left-0 pointer-events-none z-[60] flex items-center justify-center rounded-full bg-[#F5D012]" style="width:0px; height:0px; transform:translate(-50%,-50%); transition: width 0.35s cubic-bezier(0.16,1,0.3,1), height 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.35s cubic-bezier(0.16,1,0.3,1); opacity:0; overflow:hidden;">
+        <svg class="flex-shrink-0" width="32" height="32" viewBox="0 0 24 24" fill="none"><polygon points="8,4 21,12 8,20" fill="#1c1917"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- end yellowBgZone -->
+
+<!-- WHY IT MATTERS SCROLLING TEXT — hidden, kept for later use
+<div class="overflow-hidden py-8 lg:py-12 bg-surface">
+  <div class="flex whitespace-nowrap marquee">
+    <span class="text-[8rem] lg:text-[12rem] font-bold mx-8 font-heading" style="color:#FEF9E6;">WHY IT MATTERS</span>
+    <span class="text-[8rem] lg:text-[12rem] font-bold mx-8 font-heading" style="color:#FEF9E6;">WHY IT MATTERS</span>
+    <span class="text-[8rem] lg:text-[12rem] font-bold mx-8 font-heading" style="color:#FEF9E6;">WHY IT MATTERS</span>
+    <span class="text-[8rem] lg:text-[12rem] font-bold mx-8 font-heading" style="color:#FEF9E6;">WHY IT MATTERS</span>
+  </div>
+</div>
+-->
+
+<!-- Video lightbox overlay -->
+<div id="videoLightbox" class="fixed inset-0 z-[100]" style="display:none; opacity:0; transition:opacity 0.4s ease;">
+  <div class="absolute inset-0 bg-black/85" id="videoLightboxBg"></div>
+  <div id="lightboxWrapper" class="z-10" style="position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); width:90vw; max-width:1200px; aspect-ratio:16/9;">
+    <video id="lightboxVideo" controls class="w-full h-full rounded-2xl shadow-2xl" style="object-fit:cover;">
+      <source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/intro.mp4" type="video/mp4"/>
+    </video>
+    <button id="lightboxClose" class="absolute -top-12 right-0 text-white/70 hover:text-white transition-colors text-sm font-medium flex items-center gap-2">
+      <span>Close</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- CARD LANDING SECTION -->
+<section id="cardLanding" class="pt-20 lg:pt-28 pb-10 lg:pb-16 bg-surface">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <!-- Header above -->
+    <div class="mb-12 lg:mb-16 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
+      <div>
+        <div class="reveal flex items-center gap-2.5 mb-5">
+          <span class="w-2 h-2 rounded-full bg-brand flex-shrink-0"></span>
+          <span class="text-sm font-medium text-stone-400 font-heading tracking-tight">Interactive Preview</span>
+        </div>
+        <h2 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold leading-[108%] tracking-[-0.02em] text-stone-900 font-heading max-w-[900px]">See the platform in action</h2>
+        <p class="reveal text-stone-500 text-base lg:text-lg mt-4 leading-relaxed max-w-xl">Explore the platform's course structure. Full access is available in a demo or trial.</p>
+      </div>
+      <a href="/platform" class="reveal flex-shrink-0 btn-flip bg-stone-900 text-white text-sm font-medium px-6 py-3 rounded-full hover:bg-stone-800 transition-colors inline-block">
+        <span class="btn-flip-inner">
+          <span class="line-1">Explore the platform <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline ml-1" style="vertical-align:middle;"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></span>
+          <span class="line-2">Explore the platform <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline ml-1" style="vertical-align:middle;"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></span>
+        </span>
+      </a>
+    </div>
+    <!-- Two-column: tabs left, images right -->
+    <div class="flex flex-col xl:flex-row gap-6 xl:gap-10 items-stretch">
+      <!-- LEFT — Tabs stacked, matching image height -->
+      <div class="xl:w-[360px] flex-shrink-0 flex flex-col gap-2">
+        <button class="platform-tab active px-6 py-5 xl:py-0 xl:flex-1 text-base font-semibold rounded-xl transition-colors text-left" data-tab="0">
+          <span class="block text-lg font-bold">Select Course</span>
+          <span class="block text-sm font-normal text-stone-500 mt-1">Browse available SPHE courses and pick your starting point.</span>
+        </button>
+        <button class="platform-tab px-6 py-5 xl:py-0 xl:flex-1 text-base font-semibold rounded-xl transition-colors text-left" data-tab="1">
+          <span class="block text-lg font-bold">Fifth Year Units</span>
+          <span class="block text-sm font-normal text-stone-500 mt-1">Explore units covering relationships, wellbeing and identity.</span>
+        </button>
+        <button class="platform-tab px-6 py-5 xl:py-0 xl:flex-1 text-base font-semibold rounded-xl transition-colors text-left" data-tab="2">
+          <span class="block text-lg font-bold">Sixth Year Units</span>
+          <span class="block text-sm font-normal text-stone-500 mt-1">Dive into senior cycle topics aligned with the 2027 curriculum.</span>
+        </button>
+        <button class="platform-tab px-6 py-5 xl:py-0 xl:flex-1 text-base font-semibold rounded-xl transition-colors text-left" data-tab="3">
+          <span class="block text-lg font-bold">Lesson View</span>
+          <span class="block text-sm font-normal text-stone-500 mt-1">See how individual lessons are structured for classroom delivery.</span>
+        </button>
+      </div>
+      <!-- RIGHT — Tab content panels -->
+      <div class="flex-1 relative overflow-hidden bg-[#F5D012]" style="border-radius:24px;">
+        <div id="cardTarget" class="w-full relative">
+          <!-- Panel 0 — Select Course (clip4) -->
+          <div class="platform-panel active rounded-2xl overflow-hidden shadow-lg" data-panel="0">
+            <video autoplay muted loop playsinline class="w-full rounded-2xl" style="aspect-ratio:16/9; object-fit:contain;"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/clip4.mp4" type="video/mp4"/></video>
+          </div>
+          <!-- Panel 1 — Fifth Year Units (clip1) -->
+          <div class="platform-panel rounded-2xl overflow-hidden shadow-lg" data-panel="1">
+            <video autoplay muted loop playsinline class="w-full rounded-2xl" style="aspect-ratio:16/9; object-fit:contain;"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/step1.mp4" type="video/mp4"/></video>
+          </div>
+          <!-- Panel 2 — Sixth Year Units (clip2) -->
+          <div class="platform-panel rounded-2xl overflow-hidden shadow-lg" data-panel="2">
+            <video autoplay muted loop playsinline class="w-full rounded-2xl" style="aspect-ratio:16/9; object-fit:contain;"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/step2.mp4" type="video/mp4"/></video>
+          </div>
+          <!-- Panel 3 — Lesson View (clip3) -->
+          <div class="platform-panel rounded-2xl overflow-hidden shadow-lg" data-panel="3">
+            <video autoplay muted loop playsinline class="w-full rounded-2xl" style="aspect-ratio:16/9; object-fit:contain;"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/step3.mp4" type="video/mp4"/></video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== SERVICES HOVER SECTION ========== -->
+<section class="py-20 lg:py-28 bg-surface">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="reveal text-center mb-16">
+      <h2 class="text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold leading-[108%] tracking-[-0.02em] text-stone-900 font-heading max-w-3xl mx-auto">Built for the people who need it most</h2>
+      <p class="text-stone-500 text-base lg:text-lg mt-5 leading-relaxed max-w-2xl mx-auto font-body">Whether your school has a dedicated SPHE lead or not, this brings structure and consistency instantly.</p>
+      <!-- Tabs -->
+      <div class="flex justify-center gap-3 mt-8">
+        <button class="svc-tab px-6 py-2.5 rounded-full text-sm font-semibold transition-all bg-stone-900 text-white" data-svc-tab="teachers">For Teachers</button>
+        <button class="svc-tab px-6 py-2.5 rounded-full text-sm font-semibold transition-all bg-stone-100 text-stone-600 hover:bg-stone-200" data-svc-tab="schools">For Schools</button>
+      </div>
+    </div>
+    <!-- For Teachers list -->
+    <div id="svcTeachers" class="flex flex-col" style="transition:opacity 0.3s ease;">
+      <div class="service-row border-t border-stone-200 py-6 lg:py-8 group">
+        <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
+          <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">Save hours every week</h3>
+          <p class="text-base text-stone-500 max-w-sm font-body">Ready-to-use lesson plans eliminate time spent searching for and creating resources.</p>
+          <div class="service-img absolute left-1/2 top-1/2 hidden lg:block w-[190px] h-[210px] rounded-2xl overflow-hidden z-10" style="--tilt:-4deg; --s:1;">
+            <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="" class="w-full h-full object-cover"/>
+          </div>
+        </a>
+      </div>
+      <div class="service-row border-t border-stone-200 py-6 lg:py-8 group">
+        <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
+          <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">Teach sensitive topics with confidence</h3>
+          <p class="text-base text-stone-500 max-w-sm font-body">Facilitator notes, structured activities and clear guidance for every lesson.</p>
+          <div class="service-img absolute left-1/2 top-1/2 hidden lg:block w-[160px] h-[180px] rounded-2xl overflow-hidden z-10" style="--tilt:6deg; --s:1.05;">
+            <video autoplay muted loop playsinline class="w-full h-full object-cover"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/clip4.mp4" type="video/mp4"></video>
+          </div>
+        </a>
+      </div>
+      <div class="service-row border-t border-stone-200 py-6 lg:py-8 group">
+        <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
+          <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">Assessment & reflection built in</h3>
+          <p class="text-base text-stone-500 max-w-sm font-body">Access facilitator notes, activities, reflection and assessment in every module.</p>
+          <div class="service-img absolute left-1/2 top-1/2 hidden lg:block w-[200px] h-[220px] rounded-2xl overflow-hidden z-10" style="--tilt:-3deg; --s:0.95;">
+            <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/group2.JPG" alt="" class="w-full h-full object-cover"/>
+          </div>
+        </a>
+      </div>
+      <div class="service-row border-t border-b border-stone-200 py-6 lg:py-8 group">
+        <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
+          <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">Adapt lessons easily</h3>
+          <p class="text-base text-stone-500 max-w-sm font-body">Customise content to suit your class using the drag-and-drop builder.</p>
+          <div class="service-img absolute left-1/2 top-1/2 hidden lg:block w-[170px] h-[190px] rounded-2xl overflow-hidden z-10" style="--tilt:5deg; --s:1.1;">
+            <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/teacher%20iso.png" alt="" class="w-full h-full object-contain"/>
+          </div>
+        </a>
+      </div>
+    </div>
+    <!-- For Schools list -->
+    <div id="svcSchools" class="flex flex-col" style="display:none; opacity:0; transition:opacity 0.3s ease;">
+      <div class="service-row border-t border-stone-200 py-6 lg:py-8 group">
+        <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
+          <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">Consistent delivery</h3>
+          <p class="text-base text-stone-500 max-w-sm font-body">Consistent delivery across classes and year groups, even with non-specialist teachers.</p>
+          <div class="service-img absolute left-1/2 top-1/2 hidden lg:block w-[175px] h-[195px] rounded-2xl overflow-hidden z-10" style="--tilt:5deg; --s:1;">
+            <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="" class="w-full h-full object-cover"/>
+          </div>
+        </a>
+      </div>
+      <div class="service-row border-t border-stone-200 py-6 lg:py-8 group">
+        <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
+          <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">Curriculum-aligned</h3>
+          <p class="text-base text-stone-500 max-w-sm font-body">Resources aligned to the new SPHE curriculum for inspection and evaluation.</p>
+          <div class="service-img absolute left-1/2 top-1/2 hidden lg:block w-[195px] h-[215px] rounded-2xl overflow-hidden z-10" style="--tilt:-5deg; --s:1.05;">
+            <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Richie.jpg" alt="" class="w-full h-full object-cover"/>
+          </div>
+        </a>
+      </div>
+      <div class="service-row border-t border-stone-200 py-6 lg:py-8 group">
+        <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
+          <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">Planning documentation</h3>
+          <p class="text-base text-stone-500 max-w-sm font-body">Planning and assessment documentation built in, supporting WSE and SSE requirements.</p>
+          <div class="service-img absolute left-1/2 top-1/2 hidden lg:block w-[165px] h-[185px] rounded-2xl overflow-hidden z-10" style="--tilt:3deg; --s:0.95;">
+            <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/group2.JPG" alt="" class="w-full h-full object-cover"/>
+          </div>
+        </a>
+      </div>
+      <div class="service-row border-t border-b border-stone-200 py-6 lg:py-8 group">
+        <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
+          <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">School-wide visibility</h3>
+          <p class="text-base text-stone-500 max-w-sm font-body">See how SPHE is being delivered across the school, supporting accountability.</p>
+          <div class="service-img absolute left-1/2 top-1/2 hidden lg:block w-[185px] h-[205px] rounded-2xl overflow-hidden z-10" style="--tilt:-6deg; --s:1.1;">
+            <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/teacher%20iso.png" alt="" class="w-full h-full object-contain"/>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Yellow background wrapper for How it Works -->
+<div class="yellowBgZone" style="background-color: #F5D012; position:relative;">
+<div id="howTopFrameWrap" style="height:110px;">
+  <div id="howTopFrame" style="position:relative; top:0; z-index:5; height:110px; background:#fdfcf8; border-radius:0 0 40px 40px;"></div>
+</div>
+<!-- ========== OUR VALUES SECTION ========== -->
+<section class="py-20 lg:py-28" style="position:relative; z-index:1;">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="flex flex-col lg:flex-row gap-12 lg:gap-16">
+      <!-- Left column — sticky (55%) -->
+      <div class="lg:w-[55%] lg:flex-shrink-0">
+        <div id="howItWorksStickyCol">
+          <div class="reveal flex items-center gap-2.5 mb-5">
+            <span class="w-2 h-2 rounded-full bg-white flex-shrink-0"></span>
+            <span class="text-sm font-medium text-stone-900 font-heading tracking-tight">The Platform</span>
+          </div>
+          <h2 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold text-stone-900 font-heading leading-[108%] tracking-[-0.02em]">
+            How it Works
+          </h2>
+          <p class="reveal text-stone-900 text-base lg:text-lg mt-4 leading-relaxed font-body">Get started in minutes, not hours.</p>
+          <!-- Sticky image that changes with steps -->
+          <div class="mt-8 rounded-2xl overflow-hidden shadow-lg relative" style="aspect-ratio:16/9;">
+            <video id="howItWorksImg0" autoplay muted loop playsinline class="how-step-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-100"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/step1.mp4" type="video/mp4"></video>
+            <video id="howItWorksImg1" autoplay muted loop playsinline class="how-step-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/step2.mp4" type="video/mp4"></video>
+            <video id="howItWorksImg2" autoplay muted loop playsinline class="how-step-img absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/step3.mp4" type="video/mp4"></video>
+          </div>
+        </div>
+      </div>
+      <!-- Right column — scrolling steps (45%) -->
+      <div class="lg:w-[45%] flex flex-col gap-4">
+        <!-- Spacer to push Step 1 below the sticky image -->
+        <div class="hidden lg:block" id="howStepSpacer"></div>
+        <!-- Step 1 -->
+        <div class="how-step reveal p-6 my-12 lg:my-44 bg-white rounded-2xl" data-step="0">
+          <span class="text-sm font-semibold text-brand font-heading tracking-widest uppercase mb-4 block">Step 01</span>
+          <h4 class="text-[22px] lg:text-[26px] font-bold text-stone-900 font-heading tracking-tight mb-4 leading-snug">Log in and choose your course</h4>
+          <p class="text-[15px] text-stone-500 font-body leading-[175%] max-w-lg">Select from Transition Year or Senior Cycle courses, with content aligned to the new SPHE curriculum.</p>
+        </div>
+        <!-- Step 2 -->
+        <div class="how-step reveal p-6 my-12 lg:my-44 bg-white rounded-2xl" data-step="1">
+          <span class="text-sm font-semibold text-brand font-heading tracking-widest uppercase mb-4 block">Step 02</span>
+          <h4 class="text-[22px] lg:text-[26px] font-bold text-stone-900 font-heading tracking-tight mb-4 leading-snug">Build your lesson</h4>
+          <p class="text-[15px] text-stone-500 font-body leading-[175%] max-w-lg">Use the drag-and-drop module builder to assemble lessons from video, discussion, activities, reflection and assessment blocks.</p>
+        </div>
+        <!-- Step 3 -->
+        <div class="how-step reveal p-6 my-12 lg:my-44 bg-white rounded-2xl" data-step="2">
+          <span class="text-sm font-semibold text-brand font-heading tracking-widest uppercase mb-4 block">Step 03</span>
+          <h4 class="text-[22px] lg:text-[26px] font-bold text-stone-900 font-heading tracking-tight mb-4 leading-snug">Deliver and track</h4>
+          <p class="text-[15px] text-stone-500 font-body leading-[175%] max-w-lg">Deliver engaging lessons in class and keep track of planning, progress and assessment documentation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div style="height:200px;"></div>
+<div id="howBottomFrame" style="position:sticky; bottom:0; z-index:2; height:110px; background:#fdfcf8; border-radius:40px 40px 0 0; margin-top:-110px; opacity:0; transform:translateY(30px); transition:opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);"></div>
+</div><!-- end yellowBgZone for How it Works -->
+
+<!-- ========== WHERE WE BEGAN ========== -->
+<section class="pt-20 lg:pt-28 pb-10 lg:pb-14 bg-surface" style="overflow:hidden; position:relative; z-index:4;">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <!-- Content grid — swapped columns -->
+    <div class="flex flex-col lg:flex-row gap-8 lg:gap-10">
+      <!-- LEFT column — text content -->
+      <div class="flex-1 flex flex-col justify-center">
+        <div class="reveal flex items-center gap-2.5 mb-5">
+          <span class="w-2 h-2 rounded-full bg-brand flex-shrink-0"></span>
+          <span class="text-sm font-medium text-stone-400 font-heading tracking-tight">Where we began</span>
+        </div>
+        <h2 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold text-stone-900 font-heading leading-[108%] tracking-[-0.02em] max-w-[1080px] mb-6">
+          The story behind<br/>Let&rsquo;s Talk SPHE
+        </h2>
+        <p class="reveal text-stone-600 text-base lg:text-lg font-body leading-relaxed max-w-xl">Let&rsquo;s Talk SPHE is led by Richie Sadlier and was created to help schools deliver modern, inclusive and impactful SPHE. The platform combines high-quality digital content with practical classroom tools so teachers can focus on facilitating meaningful discussion.</p>
+        <p class="reveal text-stone-900 font-bold text-base lg:text-lg font-body mt-6 max-w-xl">Built with teachers. Guided by curriculum expertise. Designed for Irish classrooms.</p>
+        <div class="reveal flex flex-wrap gap-3 mt-8">
+          <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Built with teachers
+          </span>
+          <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Curriculum expertise
+          </span>
+          <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Irish classrooms
+          </span>
+        </div>
+      </div>
+
+      <!-- RIGHT column — video with Meet Richie card -->
+      <div class="flex-1 relative">
+        <!-- Video block with play button -->
+        <div id="storyVideoBlock" class="reveal rounded-3xl overflow-hidden relative cursor-pointer group" style="aspect-ratio:4/3;">
+          <video autoplay muted loop playsinline class="w-full h-full object-cover">
+            <source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/DASH/DASH%20Intro%20video%20L1_converted.mp4" type="video/mp4">
+          </video>
+          <!-- Play button overlay -->
+          <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
+            <div class="w-16 h-16 rounded-full bg-[#F5D012] flex items-center justify-center shadow-lg transform scale-100 group-hover:scale-110 transition-transform duration-300">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polygon points="9,5 20,12 9,19" fill="#1c1917"/></svg>
+            </div>
+          </div>
+        </div>
+        <!-- Meet Richie Sadlier card -->
+        <div class="absolute bottom-6 left-6 bg-[#F5D012] rounded-2xl px-5 py-4 shadow-sm" style="z-index:2; max-width:320px;">
+          <p class="font-bold text-stone-900 font-heading mb-1" style="font-size:22px; line-height:1.2;">Meet Richie Sadlier</p>
+          <p class="text-stone-900/70 font-body text-sm leading-relaxed">The story behind Let&rsquo;s Talk SPHE</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS SECTION -->
+<section class="py-20 lg:py-32 bg-surface" style="position:relative; z-index:4;">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="flex flex-col gap-12">
+      <!-- Header -->
+      <div class="reveal text-center">
+        <div class="flex items-center justify-center gap-2.5 mb-5">
+          <span class="w-2 h-2 rounded-full bg-brand flex-shrink-0"></span>
+          <span class="text-sm font-medium text-stone-400 font-heading tracking-tight">Testimonials</span>
+        </div>
+        <h2 class="text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold text-stone-900 font-heading leading-[108%] tracking-[-0.02em]">What teachers and schools are saying</h2>
+        <p class="text-stone-500 text-base lg:text-lg mt-4 leading-relaxed max-w-2xl mx-auto font-body">Early feedback from schools has been overwhelmingly positive.</p>
+      </div>
+
+      <!-- Testimonial cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Sarah M. -->
+        <div class="reveal bg-white rounded-2xl border border-stone-100 p-8 shadow-sm flex flex-col justify-between">
+          <div>
+            <div class="flex gap-1 mb-5">
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+            </div>
+            <p class="text-base lg:text-lg font-medium leading-relaxed text-stone-900 mb-6">&ldquo;Let&rsquo;s Talk SPHE has completely transformed how I approach SPHE in my classroom. The ready-to-use lessons save me hours every week.&rdquo;</p>
+          </div>
+          <div>
+            <p class="text-sm font-bold text-stone-900">Sarah M.</p>
+            <p class="text-xs text-stone-500 mt-0.5">SPHE Teacher, Dublin</p>
+          </div>
+        </div>
+        <!-- James O'B. -->
+        <div class="reveal bg-white rounded-2xl border border-stone-100 p-8 shadow-sm flex flex-col justify-between" style="transition-delay:0.1s">
+          <div>
+            <div class="flex gap-1 mb-5">
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+            </div>
+            <p class="text-base lg:text-lg font-medium leading-relaxed text-stone-900 mb-6">&ldquo;As a principal, having visibility of SPHE delivery across the school gives me real confidence during inspections.&rdquo;</p>
+          </div>
+          <div>
+            <p class="text-sm font-bold text-stone-900">James O&rsquo;B.</p>
+            <p class="text-xs text-stone-500 mt-0.5">Principal, Cork</p>
+          </div>
+        </div>
+        <!-- Aoife K. -->
+        <div class="reveal bg-white rounded-2xl border border-stone-100 p-8 shadow-sm flex flex-col justify-between" style="transition-delay:0.15s">
+          <div>
+            <div class="flex gap-1 mb-5">
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+              <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
+            </div>
+            <p class="text-base lg:text-lg font-medium leading-relaxed text-stone-900 mb-6">&ldquo;I was nervous about teaching sensitive topics, but the facilitator notes give me the confidence to lead genuine discussions.&rdquo;</p>
+          </div>
+          <div>
+            <p class="text-sm font-bold text-stone-900">Aoife K.</p>
+            <p class="text-xs text-stone-500 mt-0.5">Teacher, Galway</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trusted by -->
+      <div class="reveal text-center mt-4">
+        <p class="text-sm font-medium text-stone-400 font-heading tracking-tight mb-6">Trusted by pilot schools across Ireland</p>
+        <div class="flex flex-wrap justify-center gap-4">
+          <span class="inline-flex items-center px-5 py-2.5 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-600">Dublin School</span>
+          <span class="inline-flex items-center px-5 py-2.5 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-600">Cork School</span>
+          <span class="inline-flex items-center px-5 py-2.5 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-600">Galway School</span>
+          <span class="inline-flex items-center px-5 py-2.5 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-600">Limerick School</span>
+          <span class="inline-flex items-center px-5 py-2.5 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-600">Waterford School</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA / DEMO SECTION -->
+<section class="pt-8 lg:pt-12 pb-20 lg:pb-32 bg-surface" style="position:relative; z-index:4;">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="reveal text-center mb-12">
+      <div class="flex items-center justify-center gap-2.5 mb-5">
+        <span class="w-2 h-2 rounded-full bg-brand flex-shrink-0"></span>
+        <span class="text-sm font-medium text-stone-400 font-heading tracking-tight">Get Started</span>
+      </div>
+      <h2 class="text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold text-stone-900 font-heading leading-[108%] tracking-[-0.02em]">See how Let&rsquo;s Talk SPHE<br/>works in your school</h2>
+      <p class="text-stone-500 text-base lg:text-lg mt-4 leading-relaxed max-w-2xl mx-auto font-body">Book a personalised demo for your school, or request access as a teacher to start exploring the platform.</p>
+    </div>
+    <div id="ctaVideoReveal" class="reveal rounded-2xl overflow-hidden shadow-xl relative cursor-none">
+      <video autoplay muted loop playsinline class="w-full">
+        <source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/intro.mp4" type="video/mp4"/>
+      </video>
+      <div class="absolute bottom-6 left-6 lg:bottom-10 lg:left-10 z-10 pointer-events-none">
+        <h3 class="text-white text-[clamp(2.25rem,5vw,4.25rem)] font-bold font-heading tracking-tight leading-[1.08]">A day with Let&rsquo;s Talk SPHE</h3>
+        <p class="text-white/70 text-lg mt-2 font-body">Real teachers, real classrooms</p>
+        <div class="flex gap-3 mt-5 pointer-events-auto">
+          <a href="#" class="inline-block px-6 py-3 bg-[#F5D012] text-stone-900 text-sm font-semibold rounded-full hover:bg-yellow-400 transition-colors">Book a Demo</a>
+          <a href="#" class="inline-block px-6 py-3 bg-white/10 backdrop-blur-sm text-white text-sm font-semibold rounded-full border border-white/20 hover:bg-white/20 transition-colors">I&rsquo;m a Teacher &mdash; Request Access</a>
+        </div>
+      </div>
+      <div class="absolute inset-x-0 bottom-0 h-32 pointer-events-none" style="background:linear-gradient(to top, rgba(0,0,0,0.5), transparent);"></div>
+    </div>
+  </div>
+</section>
+<div id="ctaVideoCursor" class="fixed top-0 left-0 pointer-events-none z-[60] flex items-center justify-center rounded-full bg-[#F5D012]" style="width:0px; height:0px; transform:translate(-50%,-50%); transition: width 0.35s cubic-bezier(0.16,1,0.3,1), height 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.35s cubic-bezier(0.16,1,0.3,1); opacity:0; overflow:hidden;">
+  <svg class="flex-shrink-0" width="32" height="32" viewBox="0 0 24 24" fill="none"><polygon points="8,4 21,12 8,20" fill="#1c1917"/></svg>
+</div>
+
+<!-- FOOTER -->
+<footer class="bg-stone-900 text-white py-16 lg:py-24 rounded-b-[40px]" style="position:relative; z-index:4;">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="flex flex-col gap-12">
+      <div class="flex flex-col lg:flex-row gap-12 lg:gap-20">
+        <!-- Logo + description -->
+        <div class="lg:w-1/3 flex flex-col gap-6">
+          <a href="/"><img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/logofooter.svg" alt="Let's Talk SPHE" class="h-10 lg:h-12"/></a>
+          <p class="text-sm text-white/60 leading-relaxed">Ireland&rsquo;s first digital, curriculum-aligned platform supporting post-primary schools to comprehensively deliver the new SPHE curriculum.</p>
+          <a href="mailto:hello@letstalksphe.com" class="inline-flex items-center gap-2 text-sm text-[#F5D012] hover:text-yellow-300 transition-colors">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            hello@letstalksphe.com
+          </a>
+        </div>
+        <!-- Navigation columns -->
+        <div class="lg:w-2/3 flex flex-col md:flex-row gap-12 lg:gap-16">
+          <!-- Platform -->
+          <div class="flex-1">
+            <div class="text-xs text-white/40 mb-5 uppercase tracking-wider font-semibold">Platform</div>
+            <div class="flex flex-col gap-3">
+              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Platform Overview</a>
+              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">For Teachers</a>
+              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">For Schools</a>
+              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Courses</a>
+            </div>
+          </div>
+          <!-- Resources -->
+          <div class="flex-1">
+            <div class="text-xs text-white/40 mb-5 uppercase tracking-wider font-semibold">Resources</div>
+            <div class="flex flex-col gap-3">
+              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Resources</a>
+              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Student Support</a>
+              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">About Us</a>
+              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Contact</a>
+            </div>
+          </div>
+          <!-- Legal -->
+          <div class="flex-1">
+            <div class="text-xs text-white/40 mb-5 uppercase tracking-wider font-semibold">Legal</div>
+            <div class="flex flex-col gap-3">
+              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Privacy Policy</a>
+              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Cookies Policy</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+        <p class="text-xs text-white/40">&copy; 2026 - All rights reserved</p>
+        <div class="flex items-center gap-4">
+          <a href="#" class="text-xs text-white/40 hover:text-white transition-colors">Terms &amp; Conditions</a>
+          <span class="w-1 h-1 rounded-full bg-white/30"></span>
+          <a href="#" class="text-xs text-white/40 hover:text-white transition-colors">Privacy Policy</a>
+        </div>
+        <a href="https://www.rooftoptwentytwo.ie/" target="_blank" rel="noopener" class="text-xs text-white/40 hover:text-white transition-colors">Designed &amp; Developed by Rooftop Twenty Two</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</div><!-- end rounded container -->
+</div><!-- end yellow shell -->
+
+<script>
+// Lenis smooth scroll
+const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
+// Sync Lenis with GSAP ScrollTrigger
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+gsap.ticker.lagSmoothing(0);
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Built pink badge — animate in and tilt on scroll
+(function() {
+  const badge = document.getElementById('builtPinkBadge');
+  if (!badge) return;
+  gsap.set(badge, { opacity: 0, y: 40, rotation: 0, scale: 2 });
+  ScrollTrigger.create({
+    trigger: badge,
+    start: 'top 85%',
+    onEnter: () => {
+      gsap.to(badge, { opacity: 1, y: 0, rotation: -6, duration: 0.8, ease: 'back.out(1.7)' });
+    }
+  });
+  gsap.to(badge, {
+    rotation: -12,
+    scrollTrigger: {
+      trigger: badge,
+      start: 'top 80%',
+      end: 'top 20%',
+      scrub: 1
+    }
+  });
+})();
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const el = entry.target, target = parseInt(el.dataset.target);
+      let current = 0; const inc = target / 40;
+      const timer = setInterval(() => { current += inc; if (current >= target) { current = target; clearInterval(timer); } el.textContent = Math.floor(current); }, 30);
+      counterObserver.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+
+const menuBtn = document.getElementById('menuBtn'), mobileMenu = document.getElementById('mobileMenu');
+let menuOpen = false;
+menuBtn.addEventListener('click', () => {
+  menuOpen = !menuOpen; mobileMenu.classList.toggle('open');
+  const lines = menuBtn.querySelectorAll('span');
+  lines[0].style.transform = menuOpen ? 'rotate(45deg) translate(3px, 3px)' : '';
+  lines[1].style.transform = menuOpen ? 'rotate(-45deg) translate(3px, -3px)' : '';
+});
+
+
+document.querySelectorAll('.service-trigger').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const panel = btn.nextElementSibling, isOpen = panel.classList.contains('open');
+    document.querySelectorAll('.service-panel').forEach(p => p.classList.remove('open'));
+    if (!isOpen) panel.classList.add('open');
+  });
+});
+
+// Sticky nav — smoothly shrink to centered yellow pill on scroll
+(function() {
+  const nav = document.getElementById('mainNav');
+  const inner = document.getElementById('navInner');
+  const navLinks = document.getElementById('navLinks');
+  if (!nav || !inner) return;
+
+  // Use CSS transition for smooth interpolation between frames
+  inner.style.width = getFullWidth() + 'px';
+  inner.style.transition = 'width 0.5s ease-in-out, border-radius 0.5s ease-in-out, background 0.5s ease-in-out, backdrop-filter 0.5s ease-in-out, box-shadow 0.5s ease-in-out, padding 0.5s ease-in-out';
+  inner.style.maxWidth = 'none';
+  inner.style.margin = '0 auto';
+  if (navLinks) navLinks.style.transition = 'gap 0.5s ease-in-out, opacity 0.3s ease';
+
+  const threshold = 50;
+  const logo = document.getElementById('navLogo');
+  const pillMenuBtn = document.getElementById('pillMenuBtn');
+  const bookDemo = document.getElementById('bookDemo');
+  const navRight = document.getElementById('navRight');
+  let isPillState = false;
+  let pillExpanded = false;
+  let collapseTimer = null;
+  let fullStateTimer = null;
+
+  // Get all nav link items (excluding Book a Demo CTA)
+  function getNavItems() {
+    if (!navLinks) return [];
+    return Array.from(navLinks.children);
+  }
+
+  function getFullWidth() { return nav.offsetWidth; }
+
+  function showPillState() {
+    isPillState = true;
+    pillExpanded = false;
+    if (fullStateTimer) { clearTimeout(fullStateTimer); fullStateTimer = null; }
+    getNavItems().forEach(el => { el.style.display = 'none'; el.style.opacity = '0'; });
+    if (navLinks) { navLinks.style.display = 'none'; }
+    if (navRight) { navRight.style.display = 'flex'; }
+    if (pillMenuBtn) { pillMenuBtn.style.display = 'flex'; resetPillIcon(); }
+    inner.style.width = '650px';
+    inner.style.background = '#F5D010';
+    inner.style.backdropFilter = 'blur(12px)';
+    inner.style.webkitBackdropFilter = 'blur(12px)';
+    inner.style.borderRadius = '9999px';
+    inner.style.boxShadow = 'none';
+    inner.style.padding = '12px 16px';
+    if (logo) { logo.style.transform = 'scale(1.2)'; logo.style.marginBottom = '-30px'; logo.style.paddingLeft = '10px'; logo.style.position = 'relative'; logo.style.zIndex = '10'; }
+  }
+
+  function showFullState() {
+    isPillState = false;
+    pillExpanded = false;
+    clearCollapseTimer();
+    if (dropdownOpen) hideDropdown();
+    if (pillMenuBtn) { pillMenuBtn.style.display = 'none'; resetPillIcon(); }
+    if (navRight) { navRight.style.display = 'flex'; }
+    inner.style.width = getFullWidth() + 'px';
+    inner.style.maxWidth = 'none';
+    inner.style.background = '#F5D010';
+    inner.style.backdropFilter = 'blur(12px)';
+    inner.style.webkitBackdropFilter = 'blur(12px)';
+    inner.style.borderRadius = '9999px';
+    inner.style.boxShadow = 'none';
+    inner.style.padding = '12px 16px';
+    if (logo) { logo.style.transform = 'scale(1.7) translateY(15px)'; logo.style.marginBottom = '0px'; logo.style.paddingLeft = '0px'; logo.style.position = ''; logo.style.zIndex = ''; }
+    // Delay links appearing so logo/CTA can reposition first
+    // Don't show inline links if we're in dropdown mode
+    if (!useDropdown()) {
+      fullStateTimer = setTimeout(() => {
+        fullStateTimer = null;
+        if (useDropdown() || isPillState) return;
+        getNavItems().forEach(el => {
+          el.style.display = '';
+          el.style.opacity = '';
+          el.style.transform = '';
+          el.style.transition = '';
+          el.style.transitionDelay = '';
+        });
+        if (navLinks) { navLinks.style.display = ''; navLinks.style.opacity = '1'; navLinks.style.gap = '32px'; }
+      }, 200);
+    }
+  }
+
+  const pillDropdown = document.getElementById('pillDropdown');
+  let dropdownOpen = false;
+
+  function useDropdown() { return window.innerWidth < 1380; }
+
+  function showDropdown() {
+    if (dropdownOpen || !pillDropdown) return;
+    dropdownOpen = true;
+    pillDropdown.style.display = 'block';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        pillDropdown.style.opacity = '1';
+        pillDropdown.style.transform = 'translateY(0)';
+      });
+    });
+  }
+
+  function hideDropdown() {
+    if (!dropdownOpen || !pillDropdown) return;
+    dropdownOpen = false;
+    pillDropdown.style.opacity = '0';
+    pillDropdown.style.transform = 'translateY(-8px)';
+    setTimeout(() => { pillDropdown.style.display = 'none'; }, 300);
+  }
+
+  function expandPill() {
+    if (pillExpanded) return;
+    if (useDropdown()) { showDropdown(); return; }
+    pillExpanded = true;
+    clearCollapseTimer();
+    // Hide hamburger
+    if (pillMenuBtn) { pillMenuBtn.style.display = 'none'; }
+    // Expand width first
+    inner.style.width = '1200px';
+    // Show nav links
+    if (navLinks) { navLinks.style.display = 'flex'; navLinks.style.gap = '16px'; navLinks.style.opacity = '1'; }
+    const items = getNavItems();
+    items.forEach(el => {
+      el.style.display = '';
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(6px)';
+    });
+    // Cascade in links after width starts expanding
+    setTimeout(() => {
+      items.forEach((el, i) => {
+        el.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        el.style.transitionDelay = (i * 0.04) + 's';
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      });
+    }, 150);
+  }
+
+  function collapsePill() {
+    if (dropdownOpen) { hideDropdown(); return; }
+    if (!pillExpanded) return;
+    pillExpanded = false;
+    clearCollapseTimer();
+    // Cascade out in reverse
+    const items = getNavItems();
+    items.forEach((el, i) => {
+      const delay = (items.length - 1 - i) * 0.03;
+      el.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
+      el.style.transitionDelay = delay + 's';
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(6px)';
+    });
+    // Shrink width back smoothly
+    inner.style.width = '650px';
+    // After links fade, collapse navLinks and restore hamburger
+    const fadeTime = 150 + items.length * 30;
+    setTimeout(() => {
+      items.forEach(el => { el.style.display = 'none'; el.style.transition = ''; el.style.transitionDelay = ''; });
+      if (navLinks) { navLinks.style.display = 'none'; }
+      if (pillMenuBtn) { pillMenuBtn.style.display = 'flex'; }
+    }, fadeTime);
+  }
+
+  function resetPillIcon() {
+    if (!pillMenuBtn) return;
+    const lines = pillMenuBtn.querySelectorAll('span');
+    lines[0].style.transform = '';
+    lines[1].style.opacity = '1';
+    lines[2].style.transform = '';
+  }
+
+  function clearCollapseTimer() {
+    if (collapseTimer) { clearTimeout(collapseTimer); collapseTimer = null; }
+  }
+
+  if (pillMenuBtn) {
+    pillMenuBtn.addEventListener('click', () => {
+      if (dropdownOpen) { hideDropdown(); return; }
+      if (!pillExpanded) expandPill();
+    });
+  }
+
+  // Hover to expand (inline) or show dropdown, auto-collapse on mouse leave
+  inner.addEventListener('mouseenter', () => {
+    clearCollapseTimer();
+    if (isPillState && !pillExpanded && !dropdownOpen) expandPill();
+  });
+  inner.addEventListener('mouseleave', () => {
+    if (isPillState && pillExpanded) startCollapseTimer();
+    if (isPillState && dropdownOpen && !useDropdown()) hideDropdown();
+  });
+
+  // Keep dropdown open when hovering it
+  if (pillDropdown) {
+    pillDropdown.addEventListener('mouseenter', () => { clearCollapseTimer(); });
+    pillDropdown.addEventListener('mouseleave', () => {
+      if (dropdownOpen) startCollapseTimer();
+    });
+  }
+
+  function startCollapseTimer() {
+    clearCollapseTimer();
+    if (pillExpanded || dropdownOpen) {
+      collapseTimer = setTimeout(() => { collapsePill(); }, 600);
+    }
+  }
+
+  function update() {
+    const sy = window.scrollY;
+    const scrolled = sy > threshold;
+    if (window.innerWidth < 1024) return;
+
+    // Show drop shadow after 500px scroll
+    if (sy > 500) {
+      inner.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)';
+    } else {
+      inner.style.boxShadow = 'none';
+    }
+
+    // On screens < 1380px, always use pill state with hamburger
+    if (useDropdown()) {
+      if (!isPillState) showPillState();
+      return;
+    }
+
+    if (scrolled && !isPillState) {
+      showPillState();
+    } else if (!scrolled && isPillState) {
+      showFullState();
+    }
+  }
+
+  window.addEventListener('resize', () => {
+    if (useDropdown()) {
+      if (dropdownOpen) hideDropdown();
+      showPillState();
+    } else if (window.scrollY <= threshold) {
+      showFullState();
+      inner.style.width = getFullWidth() + 'px';
+      inner.style.maxWidth = 'none';
+    } else if (!isPillState) {
+      showPillState();
+    }
+  });
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+
+// Pill marquee — clone items to fill screen, then animate with rAF
+(function() {
+  const track = document.getElementById('pillMarquee');
+  if (!track) return;
+  const items = track.querySelectorAll('.pill-item');
+  const gap = 16; // gap-4 = 16px
+
+  // Clone items enough times to guarantee no gap (at least 3x viewport width)
+  function cloneItems() {
+    const setWidth = track.scrollWidth;
+    const viewW = window.innerWidth;
+    const copies = Math.ceil((viewW * 3) / setWidth);
+    for (let i = 0; i < copies; i++) {
+      items.forEach(item => track.appendChild(item.cloneNode(true)));
+    }
+  }
+  cloneItems();
+
+  // Measure one full set width (original items + gaps)
+  let oneSetWidth = 0;
+  items.forEach(item => { oneSetWidth += item.offsetWidth + gap; });
+
+  let x = 0;
+  const speed = 0.25; // px per frame
+
+  function animate() {
+    x -= speed;
+    if (Math.abs(x) >= oneSetWidth) x += oneSetWidth;
+    track.style.transform = `translateX(${x}px)`;
+    requestAnimationFrame(animate);
+  }
+  requestAnimationFrame(animate);
+})();
+
+// Platform tabs — switch active panel
+document.querySelectorAll('.platform-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const idx = tab.dataset.tab;
+    document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.platform-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    const panel = document.querySelector(`.platform-panel[data-panel="${idx}"]`);
+    if (panel) {
+      panel.classList.add('active');
+      const video = panel.querySelector('video');
+      if (video) { video.currentTime = 0; video.play(); }
+    }
+  });
+});
+
+// Video reveal — horizontal open from center on scroll
+gsap.registerPlugin(ScrollTrigger);
+const videoReveal = document.getElementById('videoReveal');
+if (videoReveal) {
+  gsap.fromTo(videoReveal,
+    { clipPath: 'inset(0% 50% 0% 50%)' },
+    {
+      clipPath: 'inset(0% 0% 0% 0%)',
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: videoReveal,
+        start: 'top 85%',
+        end: 'top 30%',
+        scrub: 0.5,
+      }
+    }
+  );
+}
+
+// Mission scribble parallax + rotate
+const missionScribble = document.getElementById('missionScribble');
+if (missionScribble) {
+  gsap.to(missionScribble, {
+    y: -60,
+    rotation: 25,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: missionScribble.parentElement,
+      start: 'top bottom',
+      end: 'bottom top',
+      scrub: 0.6,
+    }
+  });
+}
+
+
+// How it Works — GSAP pin left column so it stays fixed, next section scrolls over
+(function() {
+  const spacer = document.getElementById('howStepSpacer');
+  const stickyCol = document.getElementById('howItWorksStickyCol');
+  const yellowZone = stickyCol ? stickyCol.closest('.yellowBgZone') : null;
+  if (!spacer || !stickyCol || !yellowZone || window.innerWidth < 1024) return;
+
+  // Set spacer height
+  spacer.style.height = stickyCol.offsetHeight + 'px';
+
+  // Find the last step card to use as end trigger
+  const lastStep = yellowZone.querySelector('.how-step:last-child');
+
+  // Pin the left column
+  const colPin = ScrollTrigger.create({
+    trigger: stickyCol,
+    start: () => {
+      const colH = stickyCol.offsetHeight;
+      const vpH = window.innerHeight;
+      const topOffset = Math.max(110, (vpH - colH) / 2);
+      return 'top ' + topOffset + 'px';
+    },
+    endTrigger: lastStep,
+    end: 'bottom center',
+    pin: true,
+    pinSpacing: false,
+  });
+
+  // Manually fix the top white frame in sync with the column pin
+  const topFrame = document.getElementById('howTopFrame');
+  if (topFrame) {
+    const frameRect = topFrame.getBoundingClientRect();
+    const frameWidth = frameRect.width;
+    const frameLeft = frameRect.left;
+    const originalTop = topFrame.offsetTop;
+
+    function fixFrame() {
+      topFrame.style.position = 'fixed';
+      topFrame.style.top = '0';
+      topFrame.style.left = frameLeft + 'px';
+      topFrame.style.width = frameWidth + 'px';
+    }
+    function unfixFrame() {
+      // Place absolutely at the scroll position where pin ends
+      const endScroll = window.scrollY;
+      const zoneTop = yellowZone.getBoundingClientRect().top + window.scrollY;
+      topFrame.style.position = 'absolute';
+      topFrame.style.top = (endScroll - zoneTop) + 'px';
+      topFrame.style.left = '0';
+      topFrame.style.width = '100%';
+    }
+    function resetFrame() {
+      topFrame.style.position = 'relative';
+      topFrame.style.top = '0';
+      topFrame.style.left = '';
+      topFrame.style.width = '';
+    }
+
+    ScrollTrigger.create({
+      trigger: topFrame,
+      start: 'top top',
+      endTrigger: lastStep,
+      end: 'bottom center',
+      onEnter: fixFrame,
+      onLeave: unfixFrame,
+      onEnterBack: fixFrame,
+      onLeaveBack: resetFrame,
+    });
+  }
+
+  // Slide bottom frame into view just before pin ends
+  const bottomFrame = document.getElementById('howBottomFrame');
+  if (bottomFrame && lastStep) {
+    ScrollTrigger.create({
+      trigger: stickyCol,
+      start: 'top center',
+      onEnter: () => { bottomFrame.style.opacity = '1'; bottomFrame.style.transform = 'translateY(0)'; },
+      onLeaveBack: () => { bottomFrame.style.opacity = '0'; bottomFrame.style.transform = 'translateY(30px)'; },
+    });
+  }
+
+})();
+
+// How it Works — IntersectionObserver image swap
+(function() {
+  const steps = document.querySelectorAll('.how-step');
+  const imgs = document.querySelectorAll('.how-step-img');
+  if (!steps.length || !imgs.length) return;
+  let activeStep = 0;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = parseInt(entry.target.dataset.step);
+        if (idx !== activeStep) {
+          activeStep = idx;
+          imgs.forEach((img, i) => {
+            img.style.opacity = i === idx ? '1' : '0';
+          });
+        }
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '-20% 0px -20% 0px' });
+  steps.forEach(step => observer.observe(step));
+})();
+
+// Video play cursor + lightbox
+(function() {
+  const reveal = document.getElementById('videoReveal');
+  const cursor = document.getElementById('videoCursor');
+  const lightbox = document.getElementById('videoLightbox');
+  const lightboxVideo = document.getElementById('lightboxVideo');
+  const lightboxBg = document.getElementById('videoLightboxBg');
+  const lightboxClose = document.getElementById('lightboxClose');
+  if (!reveal || !cursor) return;
+
+  // Mouse follow
+  reveal.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+  });
+
+  // Scale up on hover in
+  reveal.addEventListener('mouseenter', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    cursor.style.width = '100px';
+    cursor.style.height = '100px';
+    cursor.style.opacity = '1';
+  });
+
+  // Scale down + hide on hover out
+  reveal.addEventListener('mouseleave', () => {
+    cursor.style.width = '0px';
+    cursor.style.height = '0px';
+    cursor.style.opacity = '0';
+  });
+
+  // Click to open lightbox
+  reveal.addEventListener('click', () => {
+    cursor.style.width = '0px';
+    cursor.style.height = '0px';
+    cursor.style.opacity = '0';
+    lightbox.style.display = 'block';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => { lightbox.style.opacity = '1'; });
+    });
+    lightboxVideo.currentTime = 0;
+    lightboxVideo.muted = false;
+    lightboxVideo.play();
+    document.body.style.overflow = 'hidden';
+    if (typeof lenis !== 'undefined') lenis.stop();
+  });
+
+  function closeLightbox() {
+    lightbox.style.opacity = '0';
+    lightboxVideo.pause();
+    lightboxVideo.muted = true;
+    document.body.style.overflow = '';
+    if (typeof lenis !== 'undefined') lenis.start();
+    setTimeout(() => { lightbox.style.display = 'none'; }, 400);
+  }
+
+  lightboxBg.addEventListener('click', closeLightbox);
+  lightboxClose.addEventListener('click', closeLightbox);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox.style.display !== 'none') closeLightbox();
+  });
+
+  // Story video block — open same lightbox
+  const storyBlock = document.getElementById('storyVideoBlock');
+  if (storyBlock) {
+    storyBlock.addEventListener('click', () => {
+      lightbox.style.display = 'block';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => { lightbox.style.opacity = '1'; });
+      });
+      lightboxVideo.currentTime = 0;
+      lightboxVideo.muted = false;
+      lightboxVideo.play();
+      document.body.style.overflow = 'hidden';
+      if (typeof lenis !== 'undefined') lenis.stop();
+    });
+  }
+
+  // CTA video play cursor + lightbox
+  const ctaReveal = document.getElementById('ctaVideoReveal');
+  const ctaCursor = document.getElementById('ctaVideoCursor');
+  if (ctaReveal && ctaCursor) {
+    ctaReveal.addEventListener('mousemove', (e) => {
+      ctaCursor.style.left = e.clientX + 'px';
+      ctaCursor.style.top = e.clientY + 'px';
+    });
+    ctaReveal.addEventListener('mouseenter', (e) => {
+      ctaCursor.style.left = e.clientX + 'px';
+      ctaCursor.style.top = e.clientY + 'px';
+      ctaCursor.style.width = '100px';
+      ctaCursor.style.height = '100px';
+      ctaCursor.style.opacity = '1';
+    });
+    ctaReveal.addEventListener('mouseleave', () => {
+      ctaCursor.style.width = '0px';
+      ctaCursor.style.height = '0px';
+      ctaCursor.style.opacity = '0';
+    });
+    ctaReveal.querySelectorAll('a').forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        ctaCursor.style.width = '0px';
+        ctaCursor.style.height = '0px';
+        ctaCursor.style.opacity = '0';
+        ctaReveal.style.cursor = 'auto';
+      });
+      btn.addEventListener('mouseleave', () => {
+        ctaCursor.style.width = '100px';
+        ctaCursor.style.height = '100px';
+        ctaCursor.style.opacity = '1';
+        ctaReveal.style.cursor = 'none';
+      });
+    });
+    ctaReveal.addEventListener('click', () => {
+      ctaCursor.style.width = '0px';
+      ctaCursor.style.height = '0px';
+      ctaCursor.style.opacity = '0';
+      lightbox.style.display = 'block';
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => { lightbox.style.opacity = '1'; });
+      });
+      lightboxVideo.currentTime = 0;
+      lightboxVideo.muted = false;
+      lightboxVideo.play();
+      document.body.style.overflow = 'hidden';
+      if (typeof lenis !== 'undefined') lenis.stop();
+    });
+  }
+})();
+
+// Click-triggered card animation — disabled for bento hero layout
+(function() {
+  return;
+  const card = document.getElementById('heroCard');
+  const target = document.getElementById('cardTarget');
+  const staticPanel = document.getElementById('cardTargetStatic');
+  if (!card || !target) return;
+
+  let animating = false;
+  let landed = false;
+  let spacer = null;
+
+  function animateToTarget() {
+    if (animating || landed || window.innerWidth < 1024) return;
+    animating = true;
+
+    // Hide the static panel so the flying card replaces it
+    if (staticPanel) staticPanel.style.opacity = '0';
+
+    // Measure card in its current flex position
+    const cardRect = card.getBoundingClientRect();
+    const sy = window.scrollY;
+    const startTop = cardRect.top + sy;
+    const startLeft = cardRect.left;
+    const startW = cardRect.width;
+    const startH = cardRect.height;
+
+    // Create spacer to hold card's place in hero
+    spacer = document.createElement('div');
+    spacer.style.width = startW + 'px';
+    spacer.style.height = startH + 'px';
+    spacer.style.flexShrink = '0';
+    spacer.className = 'hidden lg:block';
+    card.parentElement.insertBefore(spacer, card);
+
+    // Move card to body for absolute positioning
+    document.body.appendChild(card);
+    gsap.set(card, {
+      position: 'absolute',
+      top: startTop,
+      left: startLeft,
+      width: startW,
+      zIndex: 9999,
+      margin: 0,
+    });
+
+    // Measure target
+    const targetRect = target.getBoundingClientRect();
+    const endWidth = Math.min(1024, targetRect.width);
+    const scaleVal = endWidth / startW;
+    const ratio = startH / startW;
+    target.style.height = (endWidth * ratio) + 'px';
+
+    const targetRect2 = target.getBoundingClientRect();
+    const endTop = targetRect2.top + sy;
+    const endLeft = targetRect2.left + (targetRect2.width - endWidth) / 2;
+
+    const deltaX = endLeft - startLeft;
+    const deltaY = endTop - startTop;
+
+    const cardInner = card.querySelector('.bg-white');
+    const endRadius = 16 / scaleVal;
+
+    // Scroll to tab section smoothly
+    document.getElementById('cardLanding').scrollIntoView({ behavior: 'smooth' });
+
+    // Animate the card flying down — fast to match scroll speed
+    gsap.to(card, {
+      x: deltaX,
+      y: deltaY,
+      scale: scaleVal,
+      transformOrigin: 'top left',
+      duration: 0.55,
+      ease: 'power3.inOut',
+      onUpdate: function() {
+        if (cardInner) {
+          const p = this.progress();
+          const r = gsap.utils.interpolate(16, endRadius, p);
+          cardInner.style.borderRadius = r + 'px';
+        }
+      },
+      onComplete: () => {
+        animating = false;
+        landed = true;
+        // Show static panel again, hide the flying card on top
+        if (staticPanel) staticPanel.style.opacity = '1';
+        card.style.opacity = '0';
+        // Activate tab 0 state
+        document.querySelectorAll('.platform-tab').forEach((t, i) => {
+          t.classList.toggle('active', i === 0);
+        });
+      }
+    });
+  }
+
+  // Click the card or the explore button
+  card.addEventListener('click', animateToTarget);
+})();
+
+// Dashboard hover — un-skew and shrink
+(function() {
+  const dash = document.getElementById('heroDashboard');
+  const inner = document.getElementById('heroDashInner');
+  if (!dash || !inner) return;
+  const dashImg = document.getElementById('heroDashImg');
+  const dashVid = document.getElementById('heroDashVideo');
+  function dashEnter() {
+    inner.style.transform = 'perspective(1400px) rotateY(0deg) rotateX(0deg) scale(0.75) translateX(-180px)';
+    if (dashVid) { dashVid.currentTime = 0; dashVid.play(); dashVid.style.opacity = '1'; }
+    if (dashImg) dashImg.style.opacity = '0';
+  }
+  function dashLeave() {
+    inner.style.transform = 'perspective(1400px) rotateY(-8deg) rotateX(2deg) scale(1.1)';
+    if (dashVid) { dashVid.style.opacity = '0'; dashVid.pause(); }
+    if (dashImg) dashImg.style.opacity = '1';
+  }
+  dash.addEventListener('mouseenter', dashEnter);
+  dash.addEventListener('mouseleave', dashLeave);
+  // Same animation on "Explore the platform" button
+  const exploreBtn = document.getElementById('heroExploreBtn');
+  if (exploreBtn) {
+    exploreBtn.addEventListener('mouseenter', dashEnter);
+    exploreBtn.addEventListener('mouseleave', dashLeave);
+  }
+})();
+
+
+/* ── Service Tabs Toggle ── */
+(function(){
+  const tabs = document.querySelectorAll('.svc-tab');
+  const teachers = document.getElementById('svcTeachers');
+  const schools  = document.getElementById('svcSchools');
+  if (!tabs.length || !teachers || !schools) return;
+
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-svc-tab');
+      tabs.forEach(t => {
+        t.classList.remove('bg-stone-900','text-white');
+        t.classList.add('bg-stone-100','text-stone-600','hover:bg-stone-200');
+      });
+      btn.classList.remove('bg-stone-100','text-stone-600','hover:bg-stone-200');
+      btn.classList.add('bg-stone-900','text-white');
+
+      const show = target === 'teachers' ? teachers : schools;
+      const hide = target === 'teachers' ? schools : teachers;
+
+      hide.style.opacity = '0';
+      setTimeout(() => {
+        hide.style.display = 'none';
+        show.style.display = '';
+        const rows = show.querySelectorAll('.service-row');
+        rows.forEach(r => { r.style.opacity = '0'; r.style.transform = 'translateY(24px)'; });
+        requestAnimationFrame(() => {
+          show.style.opacity = '1';
+          rows.forEach((r, i) => {
+            setTimeout(() => {
+              r.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+              r.style.opacity = '1';
+              r.style.transform = 'translateY(0)';
+            }, i * 100);
+          });
+        });
+      }, 300);
+    });
+  });
+})();
+
+
+// Presentation overlay — remove if already entered, animate hero dashboard
+(function() {
+  const overlay = document.getElementById('presentOverlay');
+  if (sessionStorage.getItem('entered')) {
+    if (overlay) overlay.remove();
+    sessionStorage.removeItem('entered');
+    // Animate hero dashboard 200px from right to left
+    const dash = document.getElementById('heroDashboard');
+    if (dash) {
+      gsap.set(dash, { x: 200 });
+      gsap.to(dash, { x: 0, duration: 1, ease: 'power3.out' });
+    }
+  }
+})();
+
+// Disable all link navigation but keep hover styles and pointer
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('a');
+  if (link) e.preventDefault();
+}, true);
+</script>
+</body>
+</html>
