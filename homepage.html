@@ -10,6 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -128,14 +129,33 @@
     .yellow-blast {
       animation: blast-in 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards 0.8s;
     }
+    /* Text wrap balance for headings */
+    h1, h2, h3, h4 { text-wrap: balance; }
+    /* Accordion styles for mobile platform preview */
+    .accordion-video { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .accordion-video.open { max-height: 500px; }
+    .accordion-chevron { transition: transform 0.3s ease; }
+    .accordion-chevron.rotated { transform: rotate(180deg); }
+    /* Responsive overrides */
+    @media (max-width: 1023px) {
+      #heroDashboard { display: none !important; }
+      #yellowBgZone::before, #yellowBgZone::after,
+      .yellowBgZone::before, .yellowBgZone::after { display: none; }
+      #howTopFrameWrap, #howTopFrame, #howBottomFrame { display: none !important; }
+      /* How it Works swiper */
+      .how-steps-swiper .swiper-slide { width: 85%; }
+      .how-steps-swiper { overflow: visible; }
+    }
+    @media (max-width: 639px) {
+      .hero-cta-wrap { flex-direction: column; }
+      .hero-cta-wrap a { width: 100%; text-align: center; }
+      .cta-buttons-wrap { flex-direction: column; }
+      .cta-buttons-wrap a { width: 100%; text-align: center; }
+    }
   </style>
 </head>
 <body>
 
-<!-- Presentation overlay -->
-<div id="presentOverlay" style="position:fixed; inset:0; z-index:9999; background:#F5D012; display:flex; align-items:center; justify-content:center; cursor:pointer;" onclick="sessionStorage.setItem('entered','1'); location.reload();">
-  <button style="background:#1c1917; color:#fff; font-family:'Montserrat',sans-serif; font-weight:700; font-size:1.25rem; padding:16px 48px; border-radius:9999px; border:none; cursor:pointer; letter-spacing:0.02em;">Enter</button>
-</div>
 
 <!-- Yellow outer shell wrapping entire page -->
 <div class="bg-[#F5D012] min-h-screen p-3 lg:p-6">
@@ -143,19 +163,19 @@
 <!-- NAVBAR - outside the container, in the yellow area -->
 <header id="mainNav" style="position:sticky; top:12px; z-index:50; margin-bottom:16px;">
   <div id="navInner" class="px-3 lg:px-4 flex items-center justify-between h-14 lg:h-16" style="background:#F5D010; border-radius:9999px; max-width:none; margin:0 auto; position:relative; overflow:visible; box-shadow:none; padding:12px 16px;">
-    <a href="/" class="flex-shrink-0">
-      <img id="navLogo" src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/logoheader.svg" alt="Let's Talk SPHE" class="h-10 lg:h-12" style="transform:scale(1.7) translateY(15px); transform-origin:left center; transition:transform 0.8s cubic-bezier(0.16,1,0.3,1), margin 0.8s cubic-bezier(0.16,1,0.3,1), padding 0.8s cubic-bezier(0.16,1,0.3,1); margin-bottom:0px;"/>
+    <a href="homepage.html" class="flex-shrink-0">
+      <img id="navLogo" src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/logoheader.svg" alt="Let's Talk SPHE" class="h-10 lg:h-12" style="transform:scale(1.7) translateY(10px); transform-origin:left center; transition:transform 0.8s cubic-bezier(0.16,1,0.3,1), margin 0.8s cubic-bezier(0.16,1,0.3,1), padding 0.8s cubic-bezier(0.16,1,0.3,1); margin-bottom:0px;"/>
     </a>
     <!-- Center links group -->
     <nav id="navLinks" class="hidden lg:flex items-center justify-center flex-1" style="gap:32px; padding-right:140px;">
-      <a href="/platform" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Platform</span><span class="line-2 block">Platform</span></a>
-      <a href="/for-teachers" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">For Teachers</span><span class="line-2 block">For Teachers</span></a>
-      <a href="/for-schools" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">For Schools</span><span class="line-2 block">For Schools</span></a>
-      <a href="/student-support" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Student Support</span><span class="line-2 block">Student Support</span></a>
-      <a href="/about" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">About</span><span class="line-2 block">About</span></a>
-      <a href="/courses" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Courses</span><span class="line-2 block">Courses</span></a>
-      <a href="/resources" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Resources</span><span class="line-2 block">Resources</span></a>
-      <a href="/contact" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Contact</span><span class="line-2 block">Contact</span></a>
+      <a href="platform.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Platform</span><span class="line-2 block">Platform</span></a>
+      <a href="for-teachers.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">For Teachers</span><span class="line-2 block">For Teachers</span></a>
+      <a href="for-schools.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">For Schools</span><span class="line-2 block">For Schools</span></a>
+      <a href="student-support.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Student Support</span><span class="line-2 block">Student Support</span></a>
+      <a href="about.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">About</span><span class="line-2 block">About</span></a>
+      <a href="courses.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Courses</span><span class="line-2 block">Courses</span></a>
+      <a href="resources.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Resources</span><span class="line-2 block">Resources</span></a>
+      <a href="contact.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Contact</span><span class="line-2 block">Contact</span></a>
     </nav>
     <!-- Right group: hamburger + CTA — absolutely positioned to prevent reflow -->
     <div id="navRight" class="hidden lg:flex items-center" style="gap:12px; position:absolute; right:16px; top:50%; transform:translateY(-50%);">
@@ -164,7 +184,7 @@
         <span class="w-5 h-0.5 bg-stone-900 transition-all pill-line-2"></span>
         <span class="w-5 h-0.5 bg-stone-900 transition-all pill-line-3"></span>
       </button>
-      <a id="bookDemo" href="/book-demo" class="btn-flip bg-stone-900 text-white text-sm font-medium px-5 py-2.5 rounded-full hover:bg-stone-800 transition-colors inline-block"><span class="btn-flip-inner"><span class="line-1">Book a Demo</span><span class="line-2">Book a Demo</span></span></a>
+      <a id="bookDemo" href="contact.html" class="btn-flip bg-stone-900 text-white text-sm font-medium px-5 py-2.5 rounded-full hover:bg-stone-800 transition-colors inline-block"><span class="btn-flip-inner"><span class="line-1">Book a Demo</span><span class="line-2">Book a Demo</span></span></a>
     </div>
     <!-- Mobile hamburger -->
     <button id="menuBtn" class="lg:hidden w-8 h-8 flex flex-col justify-center items-center gap-1.5">
@@ -175,66 +195,71 @@
   <!-- Pill dropdown menu for screens < 1380px -->
   <div id="pillDropdown" class="absolute left-1/2 -translate-x-1/2 bg-[#F5D012] rounded-2xl shadow-lg overflow-hidden" style="display:none; opacity:0; transform:translateY(-8px); transition:opacity 0.3s ease, transform 0.3s ease; top:100%; margin-top:8px; min-width:280px; z-index:49;">
     <nav class="flex flex-col py-3">
-      <a href="/platform" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Platform</a>
-      <a href="/for-teachers" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">For Teachers</a>
-      <a href="/for-schools" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">For Schools</a>
-      <a href="/student-support" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Student Support</a>
-      <a href="/about" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">About</a>
-      <a href="/courses" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Courses</a>
-      <a href="/resources" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Resources</a>
-      <a href="/contact" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Contact</a>
+      <a href="platform.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Platform</a>
+      <a href="for-teachers.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">For Teachers</a>
+      <a href="for-schools.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">For Schools</a>
+      <a href="student-support.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Student Support</a>
+      <a href="about.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">About</a>
+      <a href="courses.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Courses</a>
+      <a href="resources.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Resources</a>
+      <a href="contact.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Contact</a>
     </nav>
   </div>
 </header>
 
 <!-- MOBILE MENU -->
-<div id="mobileMenu" class="mobile-menu fixed inset-0 z-40 bg-[#F5D012] pt-20 px-8 lg:hidden">
-  <nav class="flex flex-col gap-6 text-2xl font-semibold text-stone-900">
-    <a href="/platform" class="border-b border-stone-900/20 pb-4">Platform</a>
-    <a href="/for-teachers" class="border-b border-stone-900/20 pb-4">For Teachers</a>
-    <a href="/for-schools" class="border-b border-stone-900/20 pb-4">For Schools</a>
-    <a href="/student-support" class="border-b border-stone-900/20 pb-4">Student Support</a>
-    <a href="/about" class="border-b border-stone-900/20 pb-4">About</a>
-    <a href="/courses" class="border-b border-stone-900/20 pb-4">Courses</a>
-    <a href="/resources" class="border-b border-stone-900/20 pb-4">Resources</a>
-    <a href="/contact" class="border-b border-stone-900/20 pb-4">Contact</a>
-    <a href="/book-demo" class="bg-stone-900 text-white text-center py-4 rounded-full text-lg mt-4">Book a Demo</a>
+<div id="mobileMenu" class="mobile-menu fixed inset-0 z-40 bg-[#F5D012] pt-16 px-6 lg:hidden">
+  <nav class="flex flex-col gap-2 text-lg font-semibold text-stone-900">
+    <a href="platform.html" class="border-b border-stone-900/20 py-2.5">Platform</a>
+    <a href="for-teachers.html" class="border-b border-stone-900/20 py-2.5">For Teachers</a>
+    <a href="for-schools.html" class="border-b border-stone-900/20 py-2.5">For Schools</a>
+    <a href="student-support.html" class="border-b border-stone-900/20 py-2.5">Student Support</a>
+    <a href="about.html" class="border-b border-stone-900/20 py-2.5">About</a>
+    <a href="courses.html" class="border-b border-stone-900/20 py-2.5">Courses</a>
+    <a href="resources.html" class="border-b border-stone-900/20 py-2.5">Resources</a>
+    <a href="contact.html" class="border-b border-stone-900/20 py-2.5">Contact</a>
+    <a href="contact.html" class="bg-stone-900 text-white text-center py-3 rounded-full text-base mt-3">Book a Demo</a>
   </nav>
 </div>
 
 <!-- HERO SECTION — Bento Grid Layout -->
-<section id="heroSection" class="relative bg-white rounded-[40px]" style="overflow:visible; z-index:10;">
-  <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Yellow%20Comment%20Scribble.svg" alt="" class="absolute pointer-events-none" style="width:50vw; height:50vw; left:60vw; top:-10vw; z-index:0; opacity:1;">
+<section id="heroSection" class="relative bg-white rounded-[20px] lg:rounded-[40px]" style="overflow:visible; z-index:10;">
+  <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Yellow%20Comment%20Scribble.svg" alt="" class="absolute pointer-events-none hidden lg:block" style="width:50vw; height:50vw; left:60vw; top:-10vw; z-index:0; opacity:1;">
   <div class="w-full max-w-[1400px] mx-auto px-6 lg:px-10 relative" style="z-index:1;">
+    <!-- Mobile/Tablet dashboard — shown above text on < 1024px -->
+    <div class="lg:hidden mt-8 mb-6 rounded-2xl overflow-hidden shadow-xl">
+      <video autoplay muted loop playsinline class="w-full object-cover object-left-top" style="aspect-ratio:16/9;">
+        <source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/clip4.mp4" type="video/mp4"/>
+      </video>
+    </div>
     <div class="flex flex-col lg:flex-row gap-8 lg:gap-10 items-stretch">
 
       <!-- LEFT COLUMN — Text content (60%) -->
       <div class="flex flex-col justify-center lg:w-[60%] lg:flex-none py-4 lg:py-8">
         <div class="flex flex-col gap-8">
           <div class="reveal relative">
-            <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Yellow%20Blast.svg" alt="" class="absolute -top-[102px] -left-[140px] w-40 lg:w-48 pointer-events-none yellow-blast" style="opacity:0; transform:scale(0) rotate(-30deg);"/>
-            <h1 class="text-stone-900 text-[clamp(2.1rem,4.65vw,3.95rem)] font-bold leading-[1.08] tracking-tight font-heading">
+            <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Yellow%20Blast.svg" alt="" class="absolute -top-[102px] -left-[140px] w-40 lg:w-48 pointer-events-none yellow-blast hidden lg:block" style="opacity:0; transform:scale(0) rotate(-30deg);"/>
+            <h1 class="text-stone-900 text-[clamp(2.1rem,4.65vw,3.95rem)] font-bold leading-[1.08] tracking-tight font-heading" style="text-wrap:balance;">
               <span class="inline-block mb-4">
                 <span class="block text-lg font-medium uppercase tracking-[0.2em] text-stone-600">Transforming SPHE in Irish schools</span>
-                <!-- squiggle underline hidden -->
               </span>
-              Empowering teachers.<br/>
-              <span class="text-[#F5D012]" style="paint-order:stroke fill; -webkit-text-stroke:11px #1c1917;">Supporting teenagers.</span>
+              <span class="block">Empowering teachers.</span>
+              <span class="block text-[#F5D012]" style="paint-order:stroke fill; -webkit-text-stroke:11px #1c1917;">Supporting teenagers.</span>
             </h1>
           </div>
           <div class="reveal" style="transition-delay:0.1s">
             <p class="text-stone-500 text-base leading-relaxed lg:max-w-lg">Let's Talk SPHE is Ireland's first digital, curriculum-aligned platform supporting post-primary schools to comprehensively deliver the new SPHE curriculum.</p>
           </div>
-          <div class="reveal flex flex-wrap gap-4" style="transition-delay:0.15s">
-            <a href="#" class="inline-flex items-center justify-center px-7 py-3 bg-[#F5D012] text-stone-900 font-semibold text-sm rounded-full hover:bg-white hover:text-black transition-colors">Book Now</a>
+          <div class="reveal flex flex-wrap gap-4 hero-cta-wrap" style="transition-delay:0.15s">
+            <a href="#" class="inline-flex items-center justify-center px-7 py-3 bg-[#F5D012] text-stone-900 font-semibold text-sm rounded-full hover:bg-white hover:text-black transition-colors">Book a Demo</a>
             <a id="heroExploreBtn" href="#" class="inline-flex items-center justify-center px-7 py-3 border border-stone-300 text-stone-900 font-semibold text-sm rounded-full hover:bg-stone-900 hover:text-white transition-colors">Explore the Platform</a>
             <a href="#" class="inline-flex items-center justify-center px-7 py-3 bg-stone-100 text-stone-900 font-semibold text-sm rounded-full hover:bg-stone-900 hover:text-white transition-colors">I'm a Teacher</a>
           </div>
         </div>
       </div>
 
-      <!-- RIGHT COLUMN — dashboard only -->
-      <div class="lg:w-[40%] lg:flex-none w-full relative" style="height:calc(100vh - 190px); overflow:visible;">
+      <!-- RIGHT COLUMN — dashboard only (hidden on mobile since dashboard is hidden) -->
+      <div class="hidden lg:block lg:w-[40%] lg:flex-none w-full relative" style="height:calc(100vh - 190px); overflow:visible;">
       </div>
 
     </div>
@@ -253,14 +278,14 @@
 <!-- PILL MARQUEE — outside hero, in the yellow area -->
 <div class="relative z-10 overflow-hidden py-5 lg:py-6">
   <div id="pillMarquee" class="flex items-center gap-6 whitespace-nowrap w-max">
-    <span class="pill-item inline-flex items-center text-stone-900 text-2xl font-semibold">Ready-to-use lessons</span>
-    <span class="pill-item text-white text-5xl leading-none">&bull;</span>
-    <span class="pill-item inline-flex items-center text-stone-900 text-2xl font-semibold">Planning &amp; assessment</span>
-    <span class="pill-item text-white text-5xl leading-none">&bull;</span>
-    <span class="pill-item inline-flex items-center text-stone-900 text-2xl font-semibold">Teacher support</span>
-    <span class="pill-item text-white text-5xl leading-none">&bull;</span>
-    <span class="pill-item inline-flex items-center text-stone-900 text-2xl font-semibold">Built for Irish classrooms</span>
-    <span class="pill-item text-white text-5xl leading-none">&bull;</span>
+    <span class="pill-item inline-flex items-center text-stone-900 text-xl lg:text-2xl font-semibold">Ready-to-use lessons</span>
+    <span class="pill-item text-white text-3xl lg:text-5xl leading-none">&bull;</span>
+    <span class="pill-item inline-flex items-center text-stone-900 text-xl lg:text-2xl font-semibold">Planning &amp; assessment</span>
+    <span class="pill-item text-white text-3xl lg:text-5xl leading-none">&bull;</span>
+    <span class="pill-item inline-flex items-center text-stone-900 text-xl lg:text-2xl font-semibold">Teacher support</span>
+    <span class="pill-item text-white text-3xl lg:text-5xl leading-none">&bull;</span>
+    <span class="pill-item inline-flex items-center text-stone-900 text-xl lg:text-2xl font-semibold">Built for Irish classrooms</span>
+    <span class="pill-item text-white text-3xl lg:text-5xl leading-none">&bull;</span>
   </div>
   <!-- Yellow fade edges -->
   <div class="absolute inset-y-0 left-0 w-24 pointer-events-none" style="background:linear-gradient(to right, #F5D012, transparent);"></div>
@@ -270,16 +295,16 @@
 <div class="bg-surface rounded-[40px]" style="overflow:clip;">
 
 <!-- ========== OUR MISSION SECTION ========== -->
-<section class="pt-20 lg:pt-28 pb-10 lg:pb-14 bg-surface" style="overflow:hidden;">
+<section class="pt-12 lg:pt-28 pb-8 lg:pb-14 bg-surface" style="overflow:hidden;">
   <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
     <!-- Header -->
-    <div class="mb-12 lg:mb-20">
+    <div class="mb-8 lg:mb-20">
       <div class="reveal flex items-center gap-2.5 mb-5">
         <span class="w-2 h-2 rounded-full bg-brand flex-shrink-0"></span>
         <span class="text-sm font-medium text-stone-400 font-heading tracking-tight">A Modern Solution</span>
       </div>
       <h2 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold text-stone-900 font-heading leading-[108%] tracking-[-0.02em] max-w-[1080px]">
-        SPHE is no longer a <span class="text-[#F5D012] inline-block sarcastic-wobble">&ldquo;</span>nice-to-have.<span class="text-[#F5D012] inline-block sarcastic-wobble" style="animation-delay:0.15s;">&rdquo;</span> The landscape is changing.<br/>Schools need a modern solution.
+        SPHE is no longer a<br/><span class="text-[#F5D012] inline-block sarcastic-wobble">&ldquo;</span>nice-to-have.<span class="text-[#F5D012] inline-block sarcastic-wobble" style="animation-delay:0.15s;">&rdquo;</span> The landscape is changing.<br/>Schools need a modern solution.
       </h2>
     </div>
 
@@ -298,34 +323,34 @@
           <div class="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center absolute top-6 right-6">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           </div>
-          <p class="font-bold text-stone-900 font-heading mb-3" style="font-size:32px; line-height:1.1;">Mandatory from 2027</p>
+          <p class="font-bold text-stone-900 font-heading mb-3 text-2xl lg:text-[32px]" style="line-height:1.1;">Mandatory from 2027</p>
           <p class="text-stone-500 font-body leading-relaxed pr-14" style="font-size:16px;">From September 2027, schools must deliver 60 hours of SPHE at Senior Cycle and one hour per week in Transition Year.</p>
         </div>
       </div>
 
       <!-- RIGHT column -->
       <div class="flex-1 relative">
-        <img id="missionScribble" src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Yellow%20Comment%20Scribble.svg" alt="" class="absolute pointer-events-none" style="width:700px; height:700px; right:-120px; top:-120px; z-index:0; opacity:1;">
-        <div class="reveal rounded-3xl overflow-hidden h-full min-h-[400px] lg:max-h-[520px] relative" style="z-index:3;">
+        <img id="missionScribble" src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Yellow%20Comment%20Scribble.svg" alt="" class="absolute pointer-events-none hidden lg:block" style="width:700px; height:700px; right:-120px; top:-120px; z-index:0; opacity:1;">
+        <div class="reveal rounded-3xl overflow-hidden h-full min-h-[400px] lg:max-h-[520px] relative hidden lg:block" style="z-index:3;">
           <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/teacher%20iso.png" alt="Teacher" class="w-full h-full object-contain" style="transform: scaleX(-1) translateX(-150px);">
         </div>
-        <!-- Teachers need support card -->
-        <div class="absolute bottom-8 left-6 bg-[#F5D012] rounded-2xl px-5 py-4 shadow-sm" style="z-index:2; max-width:380px;">
+        <!-- Teachers need support card — static on mobile, absolute on desktop -->
+        <div class="relative lg:absolute bottom-auto lg:bottom-8 left-auto lg:left-6 bg-[#F5D012] rounded-2xl px-5 py-4 shadow-sm" style="z-index:2; max-width:380px;">
           <!-- Built pink badge -->
-          <img id="builtPinkBadge" src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/builtpink.svg" alt="" class="absolute pointer-events-none" style="bottom:calc(100% + 100px); left:50%; transform:translateX(-50%) scale(2) rotate(-6deg); opacity:0;"/>
+          <img id="builtPinkBadge" src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/builtpink.svg" alt="" class="absolute pointer-events-none hidden lg:block" style="bottom:calc(100% + 100px); left:50%; transform:translateX(-50%) scale(2) rotate(-6deg); opacity:0;"/>
           <div class="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center absolute top-4 right-5">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4-4v2"/><circle cx="12" cy="7" r="4"/></svg>
           </div>
-          <p class="font-bold text-stone-900 font-heading mb-2" style="font-size:32px; line-height:1.1;">Teachers need support</p>
+          <p class="font-bold text-stone-900 font-heading mb-2 text-2xl lg:text-[32px]" style="line-height:1.1;">Teachers need support</p>
           <p class="text-stone-900 font-body leading-relaxed pr-14" style="font-size:16px;">Teachers want to facilitate honest, open discussion but often don't have the time or resources to build lessons from scratch.</p>
         </div>
       </div>
     </div>
 
     <!-- Students deserve structure -->
-    <div class="mt-16 lg:mt-24 text-center">
+    <div class="mt-12 lg:mt-24 text-left lg:text-center">
       <h2 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold text-stone-900 font-heading leading-[108%] tracking-[-0.02em]">Students deserve structure</h2>
-      <p class="reveal text-stone-500 text-base lg:text-lg mt-4 leading-relaxed max-w-2xl mx-auto font-body">Students benefit most when learning is structured, age-appropriate and grounded in real-life issues.</p>
+      <p class="reveal text-stone-500 text-base lg:text-lg mt-4 leading-relaxed max-w-2xl lg:mx-auto font-body">Students benefit most when learning is structured, age-appropriate and grounded in real-life issues.</p>
     </div>
   </div>
 </section>
@@ -339,17 +364,22 @@
       <video autoplay muted loop playsinline class="w-full">
         <source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/intro.mp4" type="video/mp4"/>
       </video>
-      <!-- Text overlay bottom left -->
-      <div class="absolute bottom-6 left-6 lg:bottom-10 lg:left-10 z-10 pointer-events-none">
+      <!-- Text overlay bottom left — hidden on mobile, shown below instead -->
+      <div class="hidden lg:block absolute bottom-10 left-10 z-10 pointer-events-none">
         <h3 class="text-white text-[clamp(2.25rem,5vw,4.25rem)] font-bold font-heading tracking-tight leading-[1.08]">Why SPHE matters now</h3>
         <p class="text-white/70 text-lg mt-2 font-body">Hear from teachers and school leaders</p>
       </div>
-      <!-- Gradient overlay for text legibility -->
-      <div class="absolute inset-x-0 bottom-0 h-32 pointer-events-none" style="background:linear-gradient(to top, rgba(0,0,0,0.5), transparent);"></div>
+      <!-- Gradient overlay — desktop only -->
+      <div class="hidden lg:block absolute inset-x-0 bottom-0 h-32 pointer-events-none" style="background:linear-gradient(to top, rgba(0,0,0,0.5), transparent);"></div>
       <!-- Custom play cursor -->
       <div id="videoCursor" class="fixed top-0 left-0 pointer-events-none z-[60] flex items-center justify-center rounded-full bg-[#F5D012]" style="width:0px; height:0px; transform:translate(-50%,-50%); transition: width 0.35s cubic-bezier(0.16,1,0.3,1), height 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.35s cubic-bezier(0.16,1,0.3,1); opacity:0; overflow:hidden;">
         <svg class="flex-shrink-0" width="32" height="32" viewBox="0 0 24 24" fill="none"><polygon points="8,4 21,12 8,20" fill="#1c1917"/></svg>
       </div>
+    </div>
+    <!-- Mobile text below video -->
+    <div class="lg:hidden mt-4">
+      <h3 class="text-stone-900 text-2xl font-bold font-heading tracking-tight leading-[1.08]">Why SPHE matters now</h3>
+      <p class="text-stone-500 text-base mt-2 font-body">Hear from teachers and school leaders</p>
     </div>
   </div>
 </section>
@@ -382,7 +412,7 @@
 </div>
 
 <!-- CARD LANDING SECTION -->
-<section id="cardLanding" class="pt-20 lg:pt-28 pb-10 lg:pb-16 bg-surface">
+<section id="cardLanding" class="pt-12 lg:pt-28 pb-8 lg:pb-16 bg-surface">
   <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
     <!-- Header above -->
     <div class="mb-12 lg:mb-16 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
@@ -394,16 +424,76 @@
         <h2 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold leading-[108%] tracking-[-0.02em] text-stone-900 font-heading max-w-[900px]">See the platform in action</h2>
         <p class="reveal text-stone-500 text-base lg:text-lg mt-4 leading-relaxed max-w-xl">Explore the platform's course structure. Full access is available in a demo or trial.</p>
       </div>
-      <a href="/platform" class="reveal flex-shrink-0 btn-flip bg-stone-900 text-white text-sm font-medium px-6 py-3 rounded-full hover:bg-stone-800 transition-colors inline-block">
+      <a href="platform.html" class="reveal flex-shrink-0 btn-flip bg-stone-900 text-white text-sm font-medium px-6 py-3 rounded-full hover:bg-stone-800 transition-colors inline-block">
         <span class="btn-flip-inner">
           <span class="line-1">Explore the platform <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline ml-1" style="vertical-align:middle;"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></span>
           <span class="line-2">Explore the platform <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline ml-1" style="vertical-align:middle;"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg></span>
         </span>
       </a>
     </div>
-    <!-- Two-column: tabs left, images right -->
-    <div class="flex flex-col xl:flex-row gap-6 xl:gap-10 items-stretch">
-      <!-- LEFT — Tabs stacked, matching image height -->
+    <!-- MOBILE ACCORDION — visible on < xl -->
+    <div class="xl:hidden flex flex-col gap-3" id="platformAccordion">
+      <div class="bg-[#FEF9E6] rounded-xl overflow-hidden">
+        <button class="accordion-trigger w-full px-5 py-4 flex items-center justify-between text-left" data-acc="0">
+          <div>
+            <span class="block text-base font-bold text-stone-900">Select Course</span>
+            <span class="block text-sm font-normal text-stone-500 mt-1">Browse available SPHE courses and pick your starting point.</span>
+          </div>
+          <svg class="accordion-chevron flex-shrink-0 ml-3 rotated" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="accordion-video open" data-acc-panel="0">
+          <div class="px-3 pb-3">
+            <video autoplay muted loop playsinline class="w-full rounded-xl" style="aspect-ratio:16/9; object-fit:contain;"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/clip4.mp4" type="video/mp4"/></video>
+          </div>
+        </div>
+      </div>
+      <div class="bg-[#FEF9E6] rounded-xl overflow-hidden">
+        <button class="accordion-trigger w-full px-5 py-4 flex items-center justify-between text-left" data-acc="1">
+          <div>
+            <span class="block text-base font-bold text-stone-900">Fifth Year Units</span>
+            <span class="block text-sm font-normal text-stone-500 mt-1">Explore units covering relationships, wellbeing and identity.</span>
+          </div>
+          <svg class="accordion-chevron flex-shrink-0 ml-3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="accordion-video" data-acc-panel="1">
+          <div class="px-3 pb-3">
+            <video muted loop playsinline class="w-full rounded-xl" style="aspect-ratio:16/9; object-fit:contain;"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/step1.mp4" type="video/mp4"/></video>
+          </div>
+        </div>
+      </div>
+      <div class="bg-[#FEF9E6] rounded-xl overflow-hidden">
+        <button class="accordion-trigger w-full px-5 py-4 flex items-center justify-between text-left" data-acc="2">
+          <div>
+            <span class="block text-base font-bold text-stone-900">Sixth Year Units</span>
+            <span class="block text-sm font-normal text-stone-500 mt-1">Dive into senior cycle topics aligned with the 2027 curriculum.</span>
+          </div>
+          <svg class="accordion-chevron flex-shrink-0 ml-3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="accordion-video" data-acc-panel="2">
+          <div class="px-3 pb-3">
+            <video muted loop playsinline class="w-full rounded-xl" style="aspect-ratio:16/9; object-fit:contain;"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/step2.mp4" type="video/mp4"/></video>
+          </div>
+        </div>
+      </div>
+      <div class="bg-[#FEF9E6] rounded-xl overflow-hidden">
+        <button class="accordion-trigger w-full px-5 py-4 flex items-center justify-between text-left" data-acc="3">
+          <div>
+            <span class="block text-base font-bold text-stone-900">Lesson View</span>
+            <span class="block text-sm font-normal text-stone-500 mt-1">See how individual lessons are structured for classroom delivery.</span>
+          </div>
+          <svg class="accordion-chevron flex-shrink-0 ml-3" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="accordion-video" data-acc-panel="3">
+          <div class="px-3 pb-3">
+            <video muted loop playsinline class="w-full rounded-xl" style="aspect-ratio:16/9; object-fit:contain;"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/step3.mp4" type="video/mp4"/></video>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESKTOP TABS — visible on xl+ -->
+    <div class="hidden xl:flex flex-row gap-10 items-stretch">
+      <!-- LEFT — Tabs stacked -->
       <div class="xl:w-[360px] flex-shrink-0 flex flex-col gap-2">
         <button class="platform-tab active px-6 py-5 xl:py-0 xl:flex-1 text-base font-semibold rounded-xl transition-colors text-left" data-tab="0">
           <span class="block text-lg font-bold">Select Course</span>
@@ -425,19 +515,15 @@
       <!-- RIGHT — Tab content panels -->
       <div class="flex-1 relative overflow-hidden bg-[#F5D012]" style="border-radius:24px;">
         <div id="cardTarget" class="w-full relative">
-          <!-- Panel 0 — Select Course (clip4) -->
           <div class="platform-panel active rounded-2xl overflow-hidden shadow-lg" data-panel="0">
             <video autoplay muted loop playsinline class="w-full rounded-2xl" style="aspect-ratio:16/9; object-fit:contain;"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/clip4.mp4" type="video/mp4"/></video>
           </div>
-          <!-- Panel 1 — Fifth Year Units (clip1) -->
           <div class="platform-panel rounded-2xl overflow-hidden shadow-lg" data-panel="1">
             <video autoplay muted loop playsinline class="w-full rounded-2xl" style="aspect-ratio:16/9; object-fit:contain;"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/step1.mp4" type="video/mp4"/></video>
           </div>
-          <!-- Panel 2 — Sixth Year Units (clip2) -->
           <div class="platform-panel rounded-2xl overflow-hidden shadow-lg" data-panel="2">
             <video autoplay muted loop playsinline class="w-full rounded-2xl" style="aspect-ratio:16/9; object-fit:contain;"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/step2.mp4" type="video/mp4"/></video>
           </div>
-          <!-- Panel 3 — Lesson View (clip3) -->
           <div class="platform-panel rounded-2xl overflow-hidden shadow-lg" data-panel="3">
             <video autoplay muted loop playsinline class="w-full rounded-2xl" style="aspect-ratio:16/9; object-fit:contain;"><source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/step3.mp4" type="video/mp4"/></video>
           </div>
@@ -448,9 +534,9 @@
 </section>
 
 <!-- ========== SERVICES HOVER SECTION ========== -->
-<section class="py-20 lg:py-28 bg-surface">
+<section class="py-12 lg:py-28 bg-surface">
   <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
-    <div class="reveal text-center mb-16">
+    <div class="reveal text-center mb-10 lg:mb-16">
       <h2 class="text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold leading-[108%] tracking-[-0.02em] text-stone-900 font-heading max-w-3xl mx-auto">Built for the people who need it most</h2>
       <p class="text-stone-500 text-base lg:text-lg mt-5 leading-relaxed max-w-2xl mx-auto font-body">Whether your school has a dedicated SPHE lead or not, this brings structure and consistency instantly.</p>
       <!-- Tabs -->
@@ -461,7 +547,7 @@
     </div>
     <!-- For Teachers list -->
     <div id="svcTeachers" class="flex flex-col" style="transition:opacity 0.3s ease;">
-      <div class="service-row border-t border-stone-200 py-6 lg:py-8 group">
+      <div class="service-row border-t border-stone-200 py-4 lg:py-8 group">
         <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
           <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">Save hours every week</h3>
           <p class="text-base text-stone-500 max-w-sm font-body">Ready-to-use lesson plans eliminate time spent searching for and creating resources.</p>
@@ -470,7 +556,7 @@
           </div>
         </a>
       </div>
-      <div class="service-row border-t border-stone-200 py-6 lg:py-8 group">
+      <div class="service-row border-t border-stone-200 py-4 lg:py-8 group">
         <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
           <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">Teach sensitive topics with confidence</h3>
           <p class="text-base text-stone-500 max-w-sm font-body">Facilitator notes, structured activities and clear guidance for every lesson.</p>
@@ -479,7 +565,7 @@
           </div>
         </a>
       </div>
-      <div class="service-row border-t border-stone-200 py-6 lg:py-8 group">
+      <div class="service-row border-t border-stone-200 py-4 lg:py-8 group">
         <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
           <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">Assessment & reflection built in</h3>
           <p class="text-base text-stone-500 max-w-sm font-body">Access facilitator notes, activities, reflection and assessment in every module.</p>
@@ -488,7 +574,7 @@
           </div>
         </a>
       </div>
-      <div class="service-row border-t border-b border-stone-200 py-6 lg:py-8 group">
+      <div class="service-row border-t border-b border-stone-200 py-4 lg:py-8 group">
         <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
           <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">Adapt lessons easily</h3>
           <p class="text-base text-stone-500 max-w-sm font-body">Customise content to suit your class using the drag-and-drop builder.</p>
@@ -500,7 +586,7 @@
     </div>
     <!-- For Schools list -->
     <div id="svcSchools" class="flex flex-col" style="display:none; opacity:0; transition:opacity 0.3s ease;">
-      <div class="service-row border-t border-stone-200 py-6 lg:py-8 group">
+      <div class="service-row border-t border-stone-200 py-4 lg:py-8 group">
         <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
           <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">Consistent delivery</h3>
           <p class="text-base text-stone-500 max-w-sm font-body">Consistent delivery across classes and year groups, even with non-specialist teachers.</p>
@@ -509,7 +595,7 @@
           </div>
         </a>
       </div>
-      <div class="service-row border-t border-stone-200 py-6 lg:py-8 group">
+      <div class="service-row border-t border-stone-200 py-4 lg:py-8 group">
         <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
           <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">Curriculum-aligned</h3>
           <p class="text-base text-stone-500 max-w-sm font-body">Resources aligned to the new SPHE curriculum for inspection and evaluation.</p>
@@ -518,7 +604,7 @@
           </div>
         </a>
       </div>
-      <div class="service-row border-t border-stone-200 py-6 lg:py-8 group">
+      <div class="service-row border-t border-stone-200 py-4 lg:py-8 group">
         <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
           <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">Planning documentation</h3>
           <p class="text-base text-stone-500 max-w-sm font-body">Planning and assessment documentation built in, supporting WSE and SSE requirements.</p>
@@ -527,7 +613,7 @@
           </div>
         </a>
       </div>
-      <div class="service-row border-t border-b border-stone-200 py-6 lg:py-8 group">
+      <div class="service-row border-t border-b border-stone-200 py-4 lg:py-8 group">
         <a href="#" class="flex flex-col lg:flex-row lg:items-center gap-4 lg:gap-12">
           <h3 class="text-xl lg:text-2xl font-bold flex-1 group-hover:text-stone-500 transition-colors text-stone-900 font-heading">School-wide visibility</h3>
           <p class="text-base text-stone-500 max-w-sm font-body">See how SPHE is being delivered across the school, supporting accountability.</p>
@@ -546,9 +632,9 @@
   <div id="howTopFrame" style="position:relative; top:0; z-index:5; height:110px; background:#fdfcf8; border-radius:0 0 40px 40px;"></div>
 </div>
 <!-- ========== OUR VALUES SECTION ========== -->
-<section class="py-20 lg:py-28" style="position:relative; z-index:1;">
+<section class="py-12 lg:py-28" style="position:relative; z-index:1;">
   <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
-    <div class="flex flex-col lg:flex-row gap-12 lg:gap-16">
+    <div class="flex flex-col lg:flex-row gap-8 lg:gap-16">
       <!-- Left column — sticky (55%) -->
       <div class="lg:w-[55%] lg:flex-shrink-0">
         <div id="howItWorksStickyCol">
@@ -568,24 +654,51 @@
           </div>
         </div>
       </div>
-      <!-- Right column — scrolling steps (45%) -->
-      <div class="lg:w-[45%] flex flex-col gap-4">
-        <!-- Spacer to push Step 1 below the sticky image -->
+      <!-- Right column — scrolling steps on desktop, swiper on mobile -->
+      <!-- MOBILE SWIPER (< lg) -->
+      <div class="lg:hidden w-full">
+        <div id="howStepsSwiper" class="swiper how-steps-swiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <div class="how-step reveal p-6 bg-white rounded-2xl" data-step="0">
+                <span class="text-sm font-semibold text-brand font-heading tracking-widest uppercase mb-4 block">Step 01</span>
+                <h4 class="text-[22px] font-bold text-stone-900 font-heading tracking-tight mb-4 leading-snug">Log in and choose your course</h4>
+                <p class="text-[15px] text-stone-500 font-body leading-[175%]">Select from Transition Year or Senior Cycle courses, with content aligned to the new SPHE curriculum.</p>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="how-step reveal p-6 bg-white rounded-2xl" data-step="1">
+                <span class="text-sm font-semibold text-brand font-heading tracking-widest uppercase mb-4 block">Step 02</span>
+                <h4 class="text-[22px] font-bold text-stone-900 font-heading tracking-tight mb-4 leading-snug">Build your lesson</h4>
+                <p class="text-[15px] text-stone-500 font-body leading-[175%]">Use the drag-and-drop module builder to assemble lessons from video, discussion, activities, reflection and assessment blocks.</p>
+              </div>
+            </div>
+            <div class="swiper-slide">
+              <div class="how-step reveal p-6 bg-white rounded-2xl" data-step="2">
+                <span class="text-sm font-semibold text-brand font-heading tracking-widest uppercase mb-4 block">Step 03</span>
+                <h4 class="text-[22px] font-bold text-stone-900 font-heading tracking-tight mb-4 leading-snug">Deliver and track</h4>
+                <p class="text-[15px] text-stone-500 font-body leading-[175%]">Deliver engaging lessons in class and keep track of planning, progress and assessment documentation.</p>
+              </div>
+            </div>
+          </div>
+          <div class="swiper-pagination mt-6"></div>
+        </div>
+      </div>
+
+      <!-- DESKTOP STEPS (lg+) -->
+      <div id="howDesktopSteps" class="hidden lg:flex lg:w-[45%] flex-col gap-4">
         <div class="hidden lg:block" id="howStepSpacer"></div>
-        <!-- Step 1 -->
-        <div class="how-step reveal p-6 my-12 lg:my-44 bg-white rounded-2xl" data-step="0">
+        <div class="how-step reveal p-6 my-6 lg:my-44 bg-white rounded-2xl" data-step="0">
           <span class="text-sm font-semibold text-brand font-heading tracking-widest uppercase mb-4 block">Step 01</span>
           <h4 class="text-[22px] lg:text-[26px] font-bold text-stone-900 font-heading tracking-tight mb-4 leading-snug">Log in and choose your course</h4>
           <p class="text-[15px] text-stone-500 font-body leading-[175%] max-w-lg">Select from Transition Year or Senior Cycle courses, with content aligned to the new SPHE curriculum.</p>
         </div>
-        <!-- Step 2 -->
-        <div class="how-step reveal p-6 my-12 lg:my-44 bg-white rounded-2xl" data-step="1">
+        <div class="how-step reveal p-6 my-6 lg:my-44 bg-white rounded-2xl" data-step="1">
           <span class="text-sm font-semibold text-brand font-heading tracking-widest uppercase mb-4 block">Step 02</span>
           <h4 class="text-[22px] lg:text-[26px] font-bold text-stone-900 font-heading tracking-tight mb-4 leading-snug">Build your lesson</h4>
           <p class="text-[15px] text-stone-500 font-body leading-[175%] max-w-lg">Use the drag-and-drop module builder to assemble lessons from video, discussion, activities, reflection and assessment blocks.</p>
         </div>
-        <!-- Step 3 -->
-        <div class="how-step reveal p-6 my-12 lg:my-44 bg-white rounded-2xl" data-step="2">
+        <div class="how-step reveal p-6 my-6 lg:my-44 bg-white rounded-2xl" data-step="2">
           <span class="text-sm font-semibold text-brand font-heading tracking-widest uppercase mb-4 block">Step 03</span>
           <h4 class="text-[22px] lg:text-[26px] font-bold text-stone-900 font-heading tracking-tight mb-4 leading-snug">Deliver and track</h4>
           <p class="text-[15px] text-stone-500 font-body leading-[175%] max-w-lg">Deliver engaging lessons in class and keep track of planning, progress and assessment documentation.</p>
@@ -594,15 +707,15 @@
     </div>
   </div>
 </section>
-<div style="height:200px;"></div>
+<div class="h-12 lg:h-[200px]"></div>
 <div id="howBottomFrame" style="position:sticky; bottom:0; z-index:2; height:110px; background:#fdfcf8; border-radius:40px 40px 0 0; margin-top:-110px; opacity:0; transform:translateY(30px); transition:opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);"></div>
 </div><!-- end yellowBgZone for How it Works -->
 
 <!-- ========== WHERE WE BEGAN ========== -->
-<section class="pt-20 lg:pt-28 pb-10 lg:pb-14 bg-surface" style="overflow:hidden; position:relative; z-index:4;">
+<section class="pt-12 lg:pt-28 pb-8 lg:pb-14 bg-surface" style="overflow:hidden; position:relative; z-index:4;">
   <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
     <!-- Content grid — swapped columns -->
-    <div class="flex flex-col lg:flex-row gap-8 lg:gap-10">
+    <div class="flex flex-col lg:flex-row gap-6 lg:gap-10">
       <!-- LEFT column — text content -->
       <div class="flex-1 flex flex-col justify-center">
         <div class="reveal flex items-center gap-2.5 mb-5">
@@ -644,8 +757,8 @@
             </div>
           </div>
         </div>
-        <!-- Meet Richie Sadlier card -->
-        <div class="absolute bottom-6 left-6 bg-[#F5D012] rounded-2xl px-5 py-4 shadow-sm" style="z-index:2; max-width:320px;">
+        <!-- Meet Richie Sadlier card — static centered on mobile, absolute on desktop -->
+        <div class="relative lg:absolute bottom-auto lg:bottom-6 left-auto lg:left-6 bg-[#F5D012] rounded-2xl px-5 py-4 shadow-sm mt-4 lg:mt-0 mx-auto lg:mx-0" style="z-index:2; max-width:320px;">
           <p class="font-bold text-stone-900 font-heading mb-1" style="font-size:22px; line-height:1.2;">Meet Richie Sadlier</p>
           <p class="text-stone-900/70 font-body text-sm leading-relaxed">The story behind Let&rsquo;s Talk SPHE</p>
         </div>
@@ -655,7 +768,7 @@
 </section>
 
 <!-- TESTIMONIALS SECTION -->
-<section class="py-20 lg:py-32 bg-surface" style="position:relative; z-index:4;">
+<section class="py-12 lg:py-32 bg-surface" style="position:relative; z-index:4;">
   <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
     <div class="flex flex-col gap-12">
       <!-- Header -->
@@ -671,7 +784,7 @@
       <!-- Testimonial cards -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <!-- Sarah M. -->
-        <div class="reveal bg-white rounded-2xl border border-stone-100 p-8 shadow-sm flex flex-col justify-between">
+        <div class="reveal bg-white rounded-2xl border border-stone-100 p-5 lg:p-8 shadow-sm flex flex-col justify-between">
           <div>
             <div class="flex gap-1 mb-5">
               <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
@@ -688,7 +801,7 @@
           </div>
         </div>
         <!-- James O'B. -->
-        <div class="reveal bg-white rounded-2xl border border-stone-100 p-8 shadow-sm flex flex-col justify-between" style="transition-delay:0.1s">
+        <div class="reveal bg-white rounded-2xl border border-stone-100 p-5 lg:p-8 shadow-sm flex flex-col justify-between" style="transition-delay:0.1s">
           <div>
             <div class="flex gap-1 mb-5">
               <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
@@ -705,7 +818,7 @@
           </div>
         </div>
         <!-- Aoife K. -->
-        <div class="reveal bg-white rounded-2xl border border-stone-100 p-8 shadow-sm flex flex-col justify-between" style="transition-delay:0.15s">
+        <div class="reveal bg-white rounded-2xl border border-stone-100 p-5 lg:p-8 shadow-sm flex flex-col justify-between" style="transition-delay:0.15s">
           <div>
             <div class="flex gap-1 mb-5">
               <svg width="16" height="16" viewBox="0 0 18 18" fill="#F5D012"><path d="M9 1.5l2.47 5.01L17 7.36l-4 3.9.94 5.49L9 14.14l-4.94 2.6.94-5.49-4-3.9 5.53-.85L9 1.5z"/></svg>
@@ -739,7 +852,7 @@
 </section>
 
 <!-- CTA / DEMO SECTION -->
-<section class="pt-8 lg:pt-12 pb-20 lg:pb-32 bg-surface" style="position:relative; z-index:4;">
+<section class="pt-8 lg:pt-12 pb-12 lg:pb-32 bg-surface" style="position:relative; z-index:4;">
   <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
     <div class="reveal text-center mb-12">
       <div class="flex items-center justify-center gap-2.5 mb-5">
@@ -753,7 +866,8 @@
       <video autoplay muted loop playsinline class="w-full">
         <source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/intro.mp4" type="video/mp4"/>
       </video>
-      <div class="absolute bottom-6 left-6 lg:bottom-10 lg:left-10 z-10 pointer-events-none">
+      <!-- Desktop overlay text -->
+      <div class="hidden lg:block absolute bottom-10 left-10 z-10 pointer-events-none">
         <h3 class="text-white text-[clamp(2.25rem,5vw,4.25rem)] font-bold font-heading tracking-tight leading-[1.08]">A day with Let&rsquo;s Talk SPHE</h3>
         <p class="text-white/70 text-lg mt-2 font-body">Real teachers, real classrooms</p>
         <div class="flex gap-3 mt-5 pointer-events-auto">
@@ -761,7 +875,16 @@
           <a href="#" class="inline-block px-6 py-3 bg-white/10 backdrop-blur-sm text-white text-sm font-semibold rounded-full border border-white/20 hover:bg-white/20 transition-colors">I&rsquo;m a Teacher &mdash; Request Access</a>
         </div>
       </div>
-      <div class="absolute inset-x-0 bottom-0 h-32 pointer-events-none" style="background:linear-gradient(to top, rgba(0,0,0,0.5), transparent);"></div>
+      <div class="hidden lg:block absolute inset-x-0 bottom-0 h-32 pointer-events-none" style="background:linear-gradient(to top, rgba(0,0,0,0.5), transparent);"></div>
+    </div>
+    <!-- Mobile text below CTA video -->
+    <div class="lg:hidden mt-4">
+      <h3 class="text-stone-900 text-2xl font-bold font-heading tracking-tight leading-[1.08]">A day with Let&rsquo;s Talk SPHE</h3>
+      <p class="text-stone-500 text-base mt-2 font-body">Real teachers, real classrooms</p>
+      <div class="flex flex-col sm:flex-row gap-3 mt-5 cta-buttons-wrap">
+        <a href="#" class="inline-block px-6 py-3 bg-[#F5D012] text-stone-900 text-sm font-semibold rounded-full hover:bg-yellow-400 transition-colors text-center">Book a Demo</a>
+        <a href="#" class="inline-block px-6 py-3 bg-stone-900 text-white text-sm font-semibold rounded-full hover:bg-stone-800 transition-colors text-center">I&rsquo;m a Teacher &mdash; Request Access</a>
+      </div>
     </div>
   </div>
 </section>
@@ -770,13 +893,13 @@
 </div>
 
 <!-- FOOTER -->
-<footer class="bg-stone-900 text-white py-16 lg:py-24 rounded-b-[40px]" style="position:relative; z-index:4;">
+<footer class="bg-stone-900 text-white py-10 lg:py-24 rounded-b-[40px]" style="position:relative; z-index:4;">
   <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
     <div class="flex flex-col gap-12">
       <div class="flex flex-col lg:flex-row gap-12 lg:gap-20">
         <!-- Logo + description -->
         <div class="lg:w-1/3 flex flex-col gap-6">
-          <a href="/"><img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/logofooter.svg" alt="Let's Talk SPHE" class="h-10 lg:h-12"/></a>
+          <a href="homepage.html"><img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/logofooter.svg" alt="Let's Talk SPHE" class="h-10 lg:h-12"/></a>
           <p class="text-sm text-white/60 leading-relaxed">Ireland&rsquo;s first digital, curriculum-aligned platform supporting post-primary schools to comprehensively deliver the new SPHE curriculum.</p>
           <a href="mailto:hello@letstalksphe.com" class="inline-flex items-center gap-2 text-sm text-[#F5D012] hover:text-yellow-300 transition-colors">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
@@ -784,25 +907,25 @@
           </a>
         </div>
         <!-- Navigation columns -->
-        <div class="lg:w-2/3 flex flex-col md:flex-row gap-12 lg:gap-16">
+        <div class="lg:w-2/3 grid grid-cols-2 md:grid-cols-3 gap-8 lg:gap-16">
           <!-- Platform -->
           <div class="flex-1">
             <div class="text-xs text-white/40 mb-5 uppercase tracking-wider font-semibold">Platform</div>
             <div class="flex flex-col gap-3">
-              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Platform Overview</a>
-              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">For Teachers</a>
-              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">For Schools</a>
-              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Courses</a>
+              <a href="platform.html" class="text-sm text-white/60 hover:text-white transition-colors">Platform Overview</a>
+              <a href="for-teachers.html" class="text-sm text-white/60 hover:text-white transition-colors">For Teachers</a>
+              <a href="for-schools.html" class="text-sm text-white/60 hover:text-white transition-colors">For Schools</a>
+              <a href="courses.html" class="text-sm text-white/60 hover:text-white transition-colors">Courses</a>
             </div>
           </div>
           <!-- Resources -->
           <div class="flex-1">
             <div class="text-xs text-white/40 mb-5 uppercase tracking-wider font-semibold">Resources</div>
             <div class="flex flex-col gap-3">
-              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Resources</a>
-              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Student Support</a>
-              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">About Us</a>
-              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Contact</a>
+              <a href="resources.html" class="text-sm text-white/60 hover:text-white transition-colors">Resources</a>
+              <a href="student-support.html" class="text-sm text-white/60 hover:text-white transition-colors">Student Support</a>
+              <a href="about.html" class="text-sm text-white/60 hover:text-white transition-colors">About Us</a>
+              <a href="contact.html" class="text-sm text-white/60 hover:text-white transition-colors">Contact</a>
             </div>
           </div>
           <!-- Legal -->
@@ -815,7 +938,7 @@
           </div>
         </div>
       </div>
-      <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="border-t border-white/10 pt-8 flex flex-col items-center gap-4 text-center md:flex-row md:justify-between md:text-left">
         <p class="text-xs text-white/40">&copy; 2026 - All rights reserved</p>
         <div class="flex items-center gap-4">
           <a href="#" class="text-xs text-white/40 hover:text-white transition-colors">Terms &amp; Conditions</a>
@@ -964,7 +1087,7 @@ document.querySelectorAll('.service-trigger').forEach(btn => {
     inner.style.borderRadius = '9999px';
     inner.style.boxShadow = 'none';
     inner.style.padding = '12px 16px';
-    if (logo) { logo.style.transform = 'scale(1.7) translateY(15px)'; logo.style.marginBottom = '0px'; logo.style.paddingLeft = '0px'; logo.style.position = ''; logo.style.zIndex = ''; }
+    if (logo) { logo.style.transform = 'scale(1.7) translateY(10px)'; logo.style.marginBottom = '0px'; logo.style.paddingLeft = '0px'; logo.style.position = ''; logo.style.zIndex = ''; }
     // Delay links appearing so logo/CTA can reposition first
     // Don't show inline links if we're in dropdown mode
     if (!useDropdown()) {
@@ -1243,8 +1366,10 @@ if (missionScribble) {
   // Set spacer height
   spacer.style.height = stickyCol.offsetHeight + 'px';
 
-  // Find the last step card to use as end trigger
-  const lastStep = yellowZone.querySelector('.how-step:last-child');
+  // Find the last step card to use as end trigger (desktop steps only)
+  const desktopSteps = document.getElementById('howDesktopSteps');
+  const lastStep = desktopSteps ? desktopSteps.querySelector('.how-step:last-child') : null;
+  if (!lastStep) return;
 
   // Pin the left column
   const colPin = ScrollTrigger.create({
@@ -1316,9 +1441,11 @@ if (missionScribble) {
 
 })();
 
-// How it Works — IntersectionObserver image swap
+// How it Works — IntersectionObserver image swap (desktop steps only)
 (function() {
-  const steps = document.querySelectorAll('.how-step');
+  const desktopContainer = document.getElementById('howDesktopSteps');
+  if (!desktopContainer) return;
+  const steps = desktopContainer.querySelectorAll('.how-step');
   const imgs = document.querySelectorAll('.how-step-img');
   if (!steps.length || !imgs.length) return;
   let activeStep = 0;
@@ -1637,26 +1764,59 @@ if (missionScribble) {
 })();
 
 
-// Presentation overlay — remove if already entered, animate hero dashboard
-(function() {
-  const overlay = document.getElementById('presentOverlay');
-  if (sessionStorage.getItem('entered')) {
-    if (overlay) overlay.remove();
-    sessionStorage.removeItem('entered');
-    // Animate hero dashboard 200px from right to left
-    const dash = document.getElementById('heroDashboard');
-    if (dash) {
-      gsap.set(dash, { x: 200 });
-      gsap.to(dash, { x: 0, duration: 1, ease: 'power3.out' });
-    }
-  }
-})();
 
-// Disable all link navigation but keep hover styles and pointer
-document.addEventListener('click', function(e) {
-  const link = e.target.closest('a');
-  if (link) e.preventDefault();
-}, true);
+
+// Platform accordion (mobile)
+(function() {
+  const triggers = document.querySelectorAll('.accordion-trigger');
+  triggers.forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const idx = trigger.dataset.acc;
+      const panel = document.querySelector(`.accordion-video[data-acc-panel="${idx}"]`);
+      const chevron = trigger.querySelector('.accordion-chevron');
+      const isOpen = panel.classList.contains('open');
+      // Close all
+      document.querySelectorAll('.accordion-video').forEach(p => p.classList.remove('open'));
+      document.querySelectorAll('.accordion-chevron').forEach(c => c.classList.remove('rotated'));
+      document.querySelectorAll('.accordion-trigger').forEach(t => t.closest('.bg-\\[\\#FEF9E6\\]')?.style.removeProperty('background'));
+      // Open clicked if it was closed
+      if (!isOpen) {
+        panel.classList.add('open');
+        chevron.classList.add('rotated');
+        // Play video
+        const video = panel.querySelector('video');
+        if (video) { video.currentTime = 0; video.play(); }
+      }
+    });
+  });
+})();
+</script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script>
+// How it Works swiper (mobile only)
+(function() {
+  if (window.innerWidth >= 1024) return;
+  const swiperEl = document.getElementById('howStepsSwiper');
+  if (!swiperEl) return;
+  const imgs = document.querySelectorAll('.how-step-img');
+  const swiper = new Swiper('#howStepsSwiper', {
+    slidesPerView: 1.15,
+    spaceBetween: 12,
+    centeredSlides: true,
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    on: {
+      slideChange: function() {
+        const idx = this.activeIndex;
+        imgs.forEach((img, i) => {
+          img.style.opacity = i === idx ? '1' : '0';
+        });
+      }
+    }
+  });
+})();
 </script>
 </body>
 </html>

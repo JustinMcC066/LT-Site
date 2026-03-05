@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Us – Let's Talk SPHE</title>
+  <meta name="description" content="Our mission is to lead the delivery of modern, inclusive and impactful SPHE resources in Irish schools."/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Montserrat"', 'sans-serif'],
+            heading: ['"Montserrat"', 'sans-serif'],
+            body: ['"Montserrat"', 'sans-serif'],
+          },
+          colors: {
+            brand: '#F5D012',
+            'brand-light': '#F4D232',
+            'brand-warm': '#FEF9E6',
+            surface: '#fdfcf8',
+          },
+          screens: { 'xl': '1320px' }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Montserrat', sans-serif; color: #1c1917; overflow-x: hidden; background: #F5D012; }
+    .reveal { opacity: 0; transform: translateY(30px) scale(0.97); filter: blur(4px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.visible { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    .nav-link-wrap { position: relative; overflow: hidden; height: 1.25em; }
+    .nav-link-wrap .line-1, .nav-link-wrap .line-2 { transition: transform 0.3s cubic-bezier(0.76, 0, 0.24, 1); }
+    .nav-link-wrap:hover .line-1 { transform: translateY(-100%); }
+    .nav-link-wrap:hover .line-2 { transform: translateY(-100%); }
+    .btn-flip .btn-flip-inner { position: relative; overflow: hidden; height: 1.25em; display: block; }
+    .btn-flip .line-1, .btn-flip .line-2 { display: flex; align-items: center; gap: 8px; transition: transform 0.3s cubic-bezier(0.76, 0, 0.24, 1); }
+    .btn-flip:hover .line-1 { transform: translateY(-100%); }
+    .btn-flip:hover .line-2 { transform: translateY(-100%); }
+    .mobile-menu { transform: translateX(100%); transition: transform 0.3s ease; }
+    .mobile-menu.open { transform: translateX(0); }
+    h1, h2, h3, h4 { text-wrap: balance; }
+    @media (max-width: 639px) {
+      .cta-buttons-wrap { flex-direction: column; }
+      .cta-buttons-wrap a { width: 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-[#F5D012] min-h-screen p-3 lg:p-6">
+
+<!-- NAVBAR -->
+<header id="mainNav" style="position:sticky; top:12px; z-index:50; margin-bottom:16px;">
+  <div id="navInner" class="px-3 lg:px-4 flex items-center justify-between h-14 lg:h-16" style="background:#F5D010; border-radius:9999px; max-width:none; margin:0 auto; position:relative; overflow:visible; box-shadow:none; padding:12px 16px;">
+    <a href="homepage.html" class="flex-shrink-0">
+      <img id="navLogo" src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/logoheader.svg" alt="Let's Talk SPHE" class="h-10 lg:h-12" style="transform:scale(1.7) translateY(10px); transform-origin:left center; transition:transform 0.8s cubic-bezier(0.16,1,0.3,1), margin 0.8s cubic-bezier(0.16,1,0.3,1), padding 0.8s cubic-bezier(0.16,1,0.3,1); margin-bottom:0px;"/>
+    </a>
+    <nav id="navLinks" class="hidden lg:flex items-center justify-center flex-1" style="gap:32px; padding-right:140px;">
+      <a href="platform.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Platform</span><span class="line-2 block">Platform</span></a>
+      <a href="for-teachers.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">For Teachers</span><span class="line-2 block">For Teachers</span></a>
+      <a href="for-schools.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">For Schools</span><span class="line-2 block">For Schools</span></a>
+      <a href="student-support.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Student Support</span><span class="line-2 block">Student Support</span></a>
+      <a href="about.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">About</span><span class="line-2 block">About</span></a>
+      <a href="courses.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Courses</span><span class="line-2 block">Courses</span></a>
+      <a href="resources.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Resources</span><span class="line-2 block">Resources</span></a>
+      <a href="contact.html" class="nav-link-wrap block text-sm font-medium text-stone-900"><span class="line-1 block">Contact</span><span class="line-2 block">Contact</span></a>
+    </nav>
+    <div id="navRight" class="hidden lg:flex items-center" style="gap:12px; position:absolute; right:16px; top:50%; transform:translateY(-50%);">
+      <button id="pillMenuBtn" class="w-8 h-8 flex-col justify-center items-center gap-1.5" style="display:none;">
+        <span class="w-5 h-0.5 bg-stone-900 transition-all pill-line-1"></span>
+        <span class="w-5 h-0.5 bg-stone-900 transition-all pill-line-2"></span>
+        <span class="w-5 h-0.5 bg-stone-900 transition-all pill-line-3"></span>
+      </button>
+      <a id="bookDemo" href="contact.html" class="btn-flip bg-stone-900 text-white text-sm font-medium px-5 py-2.5 rounded-full hover:bg-stone-800 transition-colors inline-block"><span class="btn-flip-inner"><span class="line-1">Book a Demo</span><span class="line-2">Book a Demo</span></span></a>
+    </div>
+    <button id="menuBtn" class="lg:hidden w-8 h-8 flex flex-col justify-center items-center gap-1.5">
+      <span class="w-6 h-0.5 bg-stone-900 transition-all menu-line-1"></span>
+      <span class="w-6 h-0.5 bg-stone-900 transition-all menu-line-2"></span>
+    </button>
+  </div>
+  <div id="pillDropdown" class="absolute left-1/2 -translate-x-1/2 bg-[#F5D012] rounded-2xl shadow-lg overflow-hidden" style="display:none; opacity:0; transform:translateY(-8px); transition:opacity 0.3s ease, transform 0.3s ease; top:100%; margin-top:8px; min-width:280px; z-index:49;">
+    <nav class="flex flex-col py-3">
+      <a href="platform.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Platform</a>
+      <a href="for-teachers.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">For Teachers</a>
+      <a href="for-schools.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">For Schools</a>
+      <a href="student-support.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Student Support</a>
+      <a href="about.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">About</a>
+      <a href="courses.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Courses</a>
+      <a href="resources.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Resources</a>
+      <a href="contact.html" class="px-6 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-900/5 transition-colors">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div id="mobileMenu" class="mobile-menu fixed inset-0 z-40 bg-[#F5D012] pt-16 px-6 lg:hidden">
+  <nav class="flex flex-col gap-2 text-lg font-semibold text-stone-900">
+    <a href="platform.html" class="border-b border-stone-900/20 py-2.5">Platform</a>
+    <a href="for-teachers.html" class="border-b border-stone-900/20 py-2.5">For Teachers</a>
+    <a href="for-schools.html" class="border-b border-stone-900/20 py-2.5">For Schools</a>
+    <a href="student-support.html" class="border-b border-stone-900/20 py-2.5">Student Support</a>
+    <a href="about.html" class="border-b border-stone-900/20 py-2.5">About</a>
+    <a href="courses.html" class="border-b border-stone-900/20 py-2.5">Courses</a>
+    <a href="resources.html" class="border-b border-stone-900/20 py-2.5">Resources</a>
+    <a href="contact.html" class="border-b border-stone-900/20 py-2.5">Contact</a>
+    <a href="contact.html" class="bg-stone-900 text-white text-center py-3 rounded-full text-base mt-3">Book a Demo</a>
+  </nav>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="bg-surface rounded-[20px] lg:rounded-[40px]" style="overflow:clip;">
+
+<!-- HERO -->
+<section class="pt-16 lg:pt-28 pb-12 lg:pb-20 bg-surface">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
+    <div class="reveal flex items-center justify-center gap-2.5 mb-5">
+      <span class="w-2 h-2 rounded-full bg-brand flex-shrink-0"></span>
+      <span class="text-sm font-medium text-stone-400 font-heading tracking-tight">About Us</span>
+    </div>
+    <h1 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold text-stone-900 font-heading leading-[108%] tracking-[-0.02em]">Our mission</h1>
+    <p class="reveal text-stone-500 text-base lg:text-lg mt-6 leading-relaxed max-w-3xl mx-auto font-body">Our mission is to lead the delivery of modern, inclusive and impactful SPHE resources in Irish schools. Through the creation of the Let's Talk SPHE platform, we aim to fill a long-standing gap in Irish education by providing engaging digital resources that empower students to navigate adolescence with critical awareness.</p>
+  </div>
+</section>
+
+<!-- OUR GOAL -->
+<section class="py-12 lg:py-20 bg-white">
+  <div class="max-w-[900px] mx-auto px-6 lg:px-10">
+    <div class="reveal flex items-center gap-3 mb-4">
+      <div class="w-10 h-10 rounded-xl bg-brand/10 flex items-center justify-center">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      </div>
+      <h2 class="text-2xl sm:text-3xl font-bold text-stone-900 font-heading">Our goal</h2>
+    </div>
+    <p class="reveal text-stone-500 text-base leading-relaxed mb-8">Our goal is to help transform SPHE education in Ireland into an inclusive and supportive space where:</p>
+    <div class="space-y-4">
+      <!-- BookOpen -->
+      <div class="reveal flex gap-4 rounded-xl border border-stone-100 bg-white p-5 shadow-sm">
+        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand/10">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        </div>
+        <p class="text-sm leading-relaxed text-stone-500">Students feel encouraged to learn and explore topics central to their personal development.</p>
+      </div>
+      <!-- Users -->
+      <div class="reveal flex gap-4 rounded-xl border border-stone-100 bg-white p-5 shadow-sm" style="transition-delay:0.08s">
+        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand/10">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <p class="text-sm leading-relaxed text-stone-500">Teachers feel confident and empowered to facilitate honest, open discussions.</p>
+      </div>
+      <!-- Heart -->
+      <div class="reveal flex gap-4 rounded-xl border border-stone-100 bg-white p-5 shadow-sm" style="transition-delay:0.16s">
+        <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-brand/10">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <p class="text-sm leading-relaxed text-stone-500">Parents feel reassured that their teenagers are receiving age-appropriate, relevant education.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE STORY + VIDEO -->
+<section class="py-12 lg:py-20 bg-surface">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="grid items-center gap-10 lg:grid-cols-2">
+      <!-- Text -->
+      <div class="max-w-lg">
+        <h2 class="reveal text-2xl sm:text-3xl font-bold text-stone-900 font-heading">The story</h2>
+        <p class="reveal text-stone-500 text-base leading-relaxed mt-4">Let's Talk SPHE is led by Richie Sadlier and brings together education, wellbeing and practical classroom delivery in one platform designed for Irish schools.</p>
+        <h3 class="reveal text-lg font-bold text-stone-900 mt-10">How it's built</h3>
+        <div class="reveal flex flex-wrap gap-3 mt-4">
+          <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Built with teachers
+          </span>
+          <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Guided by curriculum expertise
+          </span>
+          <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Designed for Irish classrooms
+          </span>
+        </div>
+      </div>
+      <!-- Video block -->
+      <div class="relative">
+        <div class="reveal rounded-3xl overflow-hidden relative cursor-pointer group" style="aspect-ratio:4/3;">
+          <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Richie.jpg" alt="Meet Richie Sadlier" class="w-full h-full object-cover"/>
+          <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
+            <div class="w-16 h-16 rounded-full bg-[#F5D012] flex items-center justify-center shadow-lg transform scale-100 group-hover:scale-110 transition-transform duration-300">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polygon points="9,5 20,12 9,19" fill="#1c1917"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="relative lg:absolute bottom-auto lg:bottom-6 left-auto lg:left-6 bg-[#F5D012] rounded-2xl px-5 py-4 shadow-sm mt-4 lg:mt-0" style="z-index:2; max-width:320px;">
+          <p class="font-bold text-stone-900 font-heading mb-1" style="font-size:22px; line-height:1.2;">Meet Richie Sadlier</p>
+          <p class="text-stone-900/70 font-body text-sm leading-relaxed">The story behind Let&rsquo;s Talk SPHE</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DARK CTA -->
+<section class="bg-stone-900 py-16 lg:py-24">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
+    <h2 class="reveal text-3xl sm:text-4xl font-bold text-white font-heading">Get in touch</h2>
+    <p class="reveal text-white/70 mt-4 text-base lg:text-lg">We&rsquo;d love to hear from you.</p>
+    <div class="reveal flex flex-wrap justify-center gap-4 mt-8 cta-buttons-wrap">
+      <a href="contact.html" class="inline-flex items-center justify-center px-7 py-3 bg-[#F5D012] text-stone-900 font-semibold text-sm rounded-full hover:bg-yellow-400 transition-colors">Contact Us</a>
+      <a href="contact.html" class="inline-flex items-center justify-center px-7 py-3 border border-white/30 text-white font-semibold text-sm rounded-full hover:bg-white/10 transition-colors">Book a Demo</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-stone-900 text-white py-10 lg:py-24 rounded-b-[40px]" style="position:relative; z-index:4;">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="flex flex-col gap-12">
+      <div class="flex flex-col lg:flex-row gap-12 lg:gap-20">
+        <div class="lg:w-1/3 flex flex-col gap-6">
+          <a href="homepage.html"><img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/logofooter.svg" alt="Let's Talk SPHE" class="h-10 lg:h-12"/></a>
+          <p class="text-sm text-white/60 leading-relaxed">Ireland&rsquo;s first digital, curriculum-aligned platform supporting post-primary schools to comprehensively deliver the new SPHE curriculum.</p>
+          <a href="mailto:hello@letstalksphe.com" class="inline-flex items-center gap-2 text-sm text-[#F5D012] hover:text-yellow-300 transition-colors">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            hello@letstalksphe.com
+          </a>
+        </div>
+        <div class="lg:w-2/3 grid grid-cols-2 md:grid-cols-3 gap-8 lg:gap-16">
+          <div class="flex-1">
+            <div class="text-xs text-white/40 mb-5 uppercase tracking-wider font-semibold">Platform</div>
+            <div class="flex flex-col gap-3">
+              <a href="platform.html" class="text-sm text-white/60 hover:text-white transition-colors">Platform Overview</a>
+              <a href="for-teachers.html" class="text-sm text-white/60 hover:text-white transition-colors">For Teachers</a>
+              <a href="for-schools.html" class="text-sm text-white/60 hover:text-white transition-colors">For Schools</a>
+              <a href="courses.html" class="text-sm text-white/60 hover:text-white transition-colors">Courses</a>
+            </div>
+          </div>
+          <div class="flex-1">
+            <div class="text-xs text-white/40 mb-5 uppercase tracking-wider font-semibold">Resources</div>
+            <div class="flex flex-col gap-3">
+              <a href="resources.html" class="text-sm text-white/60 hover:text-white transition-colors">Resources</a>
+              <a href="student-support.html" class="text-sm text-white/60 hover:text-white transition-colors">Student Support</a>
+              <a href="about.html" class="text-sm text-white/60 hover:text-white transition-colors">About Us</a>
+              <a href="contact.html" class="text-sm text-white/60 hover:text-white transition-colors">Contact</a>
+            </div>
+          </div>
+          <div class="flex-1">
+            <div class="text-xs text-white/40 mb-5 uppercase tracking-wider font-semibold">Legal</div>
+            <div class="flex flex-col gap-3">
+              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Privacy Policy</a>
+              <a href="#" class="text-sm text-white/60 hover:text-white transition-colors">Cookies Policy</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="border-t border-white/10 pt-8 flex flex-col items-center gap-4 text-center md:flex-row md:justify-between md:text-left">
+        <p class="text-xs text-white/40">&copy; 2026 - All rights reserved</p>
+        <div class="flex items-center gap-4">
+          <a href="#" class="text-xs text-white/40 hover:text-white transition-colors">Terms &amp; Conditions</a>
+          <span class="w-1 h-1 rounded-full bg-white/30"></span>
+          <a href="#" class="text-xs text-white/40 hover:text-white transition-colors">Privacy Policy</a>
+        </div>
+        <a href="https://www.rooftoptwentytwo.ie/" target="_blank" rel="noopener" class="text-xs text-white/40 hover:text-white transition-colors">Designed &amp; Developed by Rooftop Twenty Two</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</div><!-- end rounded container -->
+</div><!-- end yellow shell -->
+
+<script>
+// Lenis smooth scroll
+const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+requestAnimationFrame(raf);
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add((time) => { lenis.raf(time * 1000); });
+gsap.ticker.lagSmoothing(0);
+
+// Reveal on scroll
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Mobile menu
+const menuBtn = document.getElementById('menuBtn'), mobileMenu = document.getElementById('mobileMenu');
+let menuOpen = false;
+menuBtn.addEventListener('click', () => {
+  menuOpen = !menuOpen; mobileMenu.classList.toggle('open');
+  const lines = menuBtn.querySelectorAll('span');
+  lines[0].style.transform = menuOpen ? 'rotate(45deg) translate(3px, 3px)' : '';
+  lines[1].style.transform = menuOpen ? 'rotate(-45deg) translate(3px, -3px)' : '';
+});
+
+// Sticky nav
+(function() {
+  const nav = document.getElementById('mainNav');
+  const inner = document.getElementById('navInner');
+  const navLinks = document.getElementById('navLinks');
+  if (!nav || !inner) return;
+  inner.style.width = nav.offsetWidth + 'px';
+  inner.style.transition = 'width 0.5s ease-in-out, border-radius 0.5s ease-in-out, background 0.5s ease-in-out, backdrop-filter 0.5s ease-in-out, box-shadow 0.5s ease-in-out, padding 0.5s ease-in-out';
+  inner.style.maxWidth = 'none';
+  inner.style.margin = '0 auto';
+  if (navLinks) navLinks.style.transition = 'gap 0.5s ease-in-out, opacity 0.3s ease';
+  const threshold = 50;
+  const logo = document.getElementById('navLogo');
+  const pillMenuBtn = document.getElementById('pillMenuBtn');
+  const navRight = document.getElementById('navRight');
+  let isPillState = false, pillExpanded = false, collapseTimer = null, fullStateTimer = null;
+  const pillDropdown = document.getElementById('pillDropdown');
+  let dropdownOpen = false;
+  function getNavItems() { return navLinks ? Array.from(navLinks.children) : []; }
+  function getFullWidth() { return nav.offsetWidth; }
+  function useDropdown() { return window.innerWidth < 1380; }
+  function showPillState() {
+    isPillState = true; pillExpanded = false;
+    if (fullStateTimer) { clearTimeout(fullStateTimer); fullStateTimer = null; }
+    getNavItems().forEach(el => { el.style.display = 'none'; el.style.opacity = '0'; });
+    if (navLinks) navLinks.style.display = 'none';
+    if (navRight) navRight.style.display = 'flex';
+    if (pillMenuBtn) { pillMenuBtn.style.display = 'flex'; resetPillIcon(); }
+    inner.style.width = '650px';
+    inner.style.background = '#F5D010';
+    inner.style.backdropFilter = 'blur(12px)';
+    inner.style.borderRadius = '9999px';
+    inner.style.boxShadow = 'none';
+    inner.style.padding = '12px 16px';
+    if (logo) { logo.style.transform = 'scale(1.2)'; logo.style.marginBottom = '-30px'; logo.style.paddingLeft = '10px'; logo.style.position = 'relative'; logo.style.zIndex = '10'; }
+  }
+  function showFullState() {
+    isPillState = false; pillExpanded = false;
+    clearCollapseTimer();
+    if (dropdownOpen) hideDropdown();
+    if (pillMenuBtn) { pillMenuBtn.style.display = 'none'; resetPillIcon(); }
+    if (navRight) navRight.style.display = 'flex';
+    inner.style.width = getFullWidth() + 'px';
+    inner.style.maxWidth = 'none';
+    inner.style.background = '#F5D010';
+    inner.style.backdropFilter = 'blur(12px)';
+    inner.style.borderRadius = '9999px';
+    inner.style.boxShadow = 'none';
+    inner.style.padding = '12px 16px';
+    if (logo) { logo.style.transform = 'scale(1.7) translateY(10px)'; logo.style.marginBottom = '0px'; logo.style.paddingLeft = '0px'; logo.style.position = ''; logo.style.zIndex = ''; }
+    if (!useDropdown()) {
+      fullStateTimer = setTimeout(() => {
+        fullStateTimer = null;
+        if (useDropdown() || isPillState) return;
+        getNavItems().forEach(el => { el.style.display = ''; el.style.opacity = ''; el.style.transform = ''; el.style.transition = ''; el.style.transitionDelay = ''; });
+        if (navLinks) { navLinks.style.display = ''; navLinks.style.opacity = '1'; navLinks.style.gap = '32px'; }
+      }, 200);
+    }
+  }
+  function showDropdown() {
+    if (dropdownOpen || !pillDropdown) return;
+    dropdownOpen = true;
+    pillDropdown.style.display = 'block';
+    requestAnimationFrame(() => { requestAnimationFrame(() => { pillDropdown.style.opacity = '1'; pillDropdown.style.transform = 'translateY(0)'; }); });
+  }
+  function hideDropdown() {
+    if (!dropdownOpen || !pillDropdown) return;
+    dropdownOpen = false;
+    pillDropdown.style.opacity = '0';
+    pillDropdown.style.transform = 'translateY(-8px)';
+    setTimeout(() => { pillDropdown.style.display = 'none'; }, 300);
+  }
+  function expandPill() {
+    if (pillExpanded) return;
+    if (useDropdown()) { showDropdown(); return; }
+    pillExpanded = true; clearCollapseTimer();
+    if (pillMenuBtn) pillMenuBtn.style.display = 'none';
+    inner.style.width = '1200px';
+    if (navLinks) { navLinks.style.display = 'flex'; navLinks.style.gap = '16px'; navLinks.style.opacity = '1'; }
+    const items = getNavItems();
+    items.forEach(el => { el.style.display = ''; el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; });
+    setTimeout(() => { items.forEach((el, i) => { el.style.transition = 'opacity 0.3s ease, transform 0.3s ease'; el.style.transitionDelay = (i * 0.04) + 's'; el.style.opacity = '1'; el.style.transform = 'translateY(0)'; }); }, 150);
+  }
+  function collapsePill() {
+    if (dropdownOpen) { hideDropdown(); return; }
+    if (!pillExpanded) return;
+    pillExpanded = false; clearCollapseTimer();
+    const items = getNavItems();
+    items.forEach((el, i) => { const delay = (items.length - 1 - i) * 0.03; el.style.transition = 'opacity 0.15s ease, transform 0.15s ease'; el.style.transitionDelay = delay + 's'; el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; });
+    inner.style.width = '650px';
+    const fadeTime = 150 + items.length * 30;
+    setTimeout(() => { items.forEach(el => { el.style.display = 'none'; el.style.transition = ''; el.style.transitionDelay = ''; }); if (navLinks) navLinks.style.display = 'none'; if (pillMenuBtn) pillMenuBtn.style.display = 'flex'; }, fadeTime);
+  }
+  function resetPillIcon() { if (!pillMenuBtn) return; const lines = pillMenuBtn.querySelectorAll('span'); lines[0].style.transform = ''; lines[1].style.opacity = '1'; lines[2].style.transform = ''; }
+  function clearCollapseTimer() { if (collapseTimer) { clearTimeout(collapseTimer); collapseTimer = null; } }
+  function startCollapseTimer() { clearCollapseTimer(); if (pillExpanded || dropdownOpen) collapseTimer = setTimeout(() => { collapsePill(); }, 600); }
+  if (pillMenuBtn) pillMenuBtn.addEventListener('click', () => { if (dropdownOpen) { hideDropdown(); return; } if (!pillExpanded) expandPill(); });
+  inner.addEventListener('mouseenter', () => { clearCollapseTimer(); if (isPillState && !pillExpanded && !dropdownOpen) expandPill(); });
+  inner.addEventListener('mouseleave', () => { if (isPillState && pillExpanded) startCollapseTimer(); if (isPillState && dropdownOpen && !useDropdown()) hideDropdown(); });
+  if (pillDropdown) { pillDropdown.addEventListener('mouseenter', () => { clearCollapseTimer(); }); pillDropdown.addEventListener('mouseleave', () => { if (dropdownOpen) startCollapseTimer(); }); }
+  function update() {
+    const sy = window.scrollY;
+    if (window.innerWidth < 1024) return;
+    if (sy > 500) inner.style.boxShadow = '0 4px 20px rgba(0,0,0,0.08)'; else inner.style.boxShadow = 'none';
+    if (useDropdown()) { if (!isPillState) showPillState(); return; }
+    if (sy > threshold && !isPillState) showPillState();
+    else if (sy <= threshold && isPillState) showFullState();
+  }
+  window.addEventListener('resize', () => {
+    if (useDropdown()) { if (dropdownOpen) hideDropdown(); showPillState(); }
+    else if (window.scrollY <= threshold) { showFullState(); inner.style.width = getFullWidth() + 'px'; inner.style.maxWidth = 'none'; }
+    else if (!isPillState) showPillState();
+  });
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+})();
+</script>
+</body>
+</html>
