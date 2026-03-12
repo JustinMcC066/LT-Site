@@ -53,6 +53,53 @@
       .cta-buttons-wrap { flex-direction: column; }
       .cta-buttons-wrap a { width: 100%; text-align: center; }
     }
+
+    /* Yellow zone overlapping corners */
+    #yellowBgZone, .yellowBgZone { position: relative; }
+    #yellowBgZone::before, #yellowBgZone::after,
+    .yellowBgZone::before, .yellowBgZone::after {
+      content: ''; position: absolute; left: 0; right: 0; height: 40px; z-index: 3; pointer-events: none;
+      background: #fdfcf8;
+    }
+    #yellowBgZone::before, .yellowBgZone::before { top: 0; border-radius: 0 0 40px 40px; }
+    #yellowBgZone::after, .yellowBgZone::after { bottom: 0; border-radius: 40px 40px 0 0; }
+
+    /* Custom play cursor */
+    .custom-play-cursor {
+      width: 80px; height: 80px; border-radius: 50%; background: #F5D012;
+      position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; transform: scale(0.5);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+    .custom-play-cursor.visible { opacity: 1; transform: scale(1); }
+
+    /* Marquee pill items */
+    .pill-item {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.25rem, 3vw, 2.5rem);
+      color: white;
+      white-space: nowrap;
+    }
+
+    /* Feature image hover */
+    .feature-img-wrap {
+      overflow: hidden; border-radius: 1rem; box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    }
+    .feature-img-wrap img {
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .feature-block:hover .feature-img-wrap img {
+      transform: scale(1.03);
+    }
+
+    /* Yellow accent bar for odd features */
+    .yellow-accent-bar {
+      position: absolute; left: -20px; top: 20%; width: 4px; height: 60%;
+      background: #F5D012; border-radius: 4px;
+    }
   </style>
 </head>
 <body>
@@ -120,54 +167,113 @@
 <!-- MAIN CONTENT -->
 <div class="bg-surface rounded-[20px] lg:rounded-[40px]" style="overflow:clip;">
 
-<!-- HERO -->
-<section class="pt-16 lg:pt-28 pb-12 lg:pb-20 bg-surface">
-  <div class="max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
-    <div class="reveal flex items-center justify-center gap-2.5 mb-5">
-      <span class="w-2 h-2 rounded-full bg-brand flex-shrink-0"></span>
-      <span class="text-sm font-medium text-stone-400 font-heading tracking-tight">Platform</span>
+<!-- ============================================================ -->
+<!-- HERO — Two-column with perspective dashboard                  -->
+<!-- ============================================================ -->
+<section class="relative pt-16 lg:pt-24 pb-12 lg:pb-20 bg-surface overflow-hidden" style="min-height:auto;">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
+
+    <!-- Mobile: dashboard image above text -->
+    <div class="lg:hidden mb-8 reveal">
+      <div class="rounded-2xl overflow-hidden shadow-xl bg-[#F5D012]">
+        <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="Let's Talk SPHE Dashboard" class="w-full object-cover" style="aspect-ratio:16/9;"/>
+      </div>
     </div>
-    <h1 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold text-stone-900 font-heading leading-[108%] tracking-[-0.02em]">A complete SPHE teaching platform — not just resources</h1>
-    <p class="reveal text-stone-500 text-base lg:text-lg mt-6 leading-relaxed max-w-3xl mx-auto font-body">Let's Talk SPHE is an online, interactive classroom platform designed to support Irish post-primary schools in the comprehensive delivery of the new SPHE curriculum.</p>
-    <div class="reveal flex flex-wrap justify-center gap-3 mt-8">
-      <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">Ready-to-use lessons</span>
-      <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">Drag-and-drop builder</span>
-      <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">Planning &amp; assessment</span>
-      <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">Student views</span>
-      <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">School oversight</span>
+
+    <div class="flex flex-col lg:flex-row items-start gap-10 relative">
+      <!-- Left column (60%) -->
+      <div class="w-full lg:w-[60%] relative z-10">
+        <div class="reveal flex items-center gap-2.5 mb-5">
+          <span class="w-2 h-2 rounded-full bg-brand flex-shrink-0"></span>
+          <span class="text-sm font-medium text-stone-400 font-heading tracking-tight">Platform</span>
+        </div>
+
+        <h1 class="reveal text-[28px] sm:text-[36px] lg:text-[48px] xl:text-[56px] font-bold text-stone-900 font-heading leading-[108%] tracking-[-0.02em]">A complete SPHE teaching platform — not just resources</h1>
+
+        <p class="reveal text-stone-500 text-base lg:text-lg mt-6 leading-relaxed max-w-2xl font-body">Let's Talk SPHE is an online, interactive classroom platform designed to support Irish post-primary schools in the comprehensive delivery of the new SPHE curriculum.</p>
+
+        <!-- Trust chips -->
+        <div class="reveal flex flex-wrap gap-3 mt-8">
+          <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">Ready-to-use lessons</span>
+          <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">Drag-and-drop builder</span>
+          <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">Planning &amp; assessment</span>
+          <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">Student views</span>
+          <span class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-stone-200 rounded-full text-sm font-medium text-stone-700">School oversight</span>
+        </div>
+
+        <div class="reveal mt-8">
+          <a href="contact.html" class="btn-flip bg-stone-900 text-white text-sm font-medium px-7 py-3.5 rounded-full hover:bg-stone-800 transition-colors inline-block"><span class="btn-flip-inner"><span class="line-1">Book a Demo</span><span class="line-2">Book a Demo</span></span></a>
+        </div>
+      </div>
+
+      <!-- Right column (40%) — Desktop only -->
+      <div class="hidden lg:block lg:w-[40%] relative" style="height:calc(100vh - 300px); overflow:visible;">
+      </div>
     </div>
+
+    <!-- Dashboard — perspective container (desktop) -->
+    <div class="hidden lg:block absolute" style="top:120px; right:-60px; width:45%; z-index:15;">
+      <!-- Yellow Comment Scribble SVG behind dashboard -->
+      <svg id="heroScribble" class="absolute -top-12 -left-16 w-40 h-40 pointer-events-none select-none" style="z-index:0; opacity:0.6;" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M40 160C40 160 20 120 50 80C80 40 140 30 160 60C180 90 150 130 110 140C70 150 50 120 60 100C70 80 100 70 120 80" stroke="#F5D012" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.5"/>
+        <path d="M30 170L45 155M45 170L55 160" stroke="#F5D012" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <div class="rounded-2xl overflow-hidden shadow-2xl bg-[#F5D012] relative" style="transform:perspective(1400px) rotateY(-8deg) rotateX(2deg) scale(1.1); transform-origin:right center; z-index:1;">
+        <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="Let's Talk SPHE Dashboard" class="w-full object-cover" style="aspect-ratio:16/9;"/>
+      </div>
+    </div>
+
   </div>
 </section>
 
-<!-- VIDEO BLOCK -->
-<section class="pb-12 lg:pb-20 bg-surface">
-  <div class="max-w-4xl mx-auto px-6 lg:px-10 text-center">
-    <h2 class="reveal text-2xl sm:text-3xl font-bold text-stone-900 font-heading">Platform overview</h2>
-    <p class="reveal text-stone-500 text-base mt-3 mb-8">See how Let's Talk SPHE works — 3 min walkthrough</p>
-    <div class="reveal rounded-2xl overflow-hidden relative cursor-pointer group shadow-lg" style="aspect-ratio:16/9;">
-      <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="Platform overview" class="w-full h-full object-cover"/>
-      <div class="absolute inset-0 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-colors">
-        <div class="w-16 h-16 rounded-full bg-[#F5D012] flex items-center justify-center shadow-lg transform scale-100 group-hover:scale-110 transition-transform duration-300">
+</div><!-- temporarily close rounded container -->
+
+<!-- ============================================================ -->
+<!-- VIDEO BLOCK — Yellow zone with GSAP clip-path reveal          -->
+<!-- ============================================================ -->
+<div class="yellowBgZone" style="background-color: #F5D012; position:relative;">
+<section class="py-16 lg:py-24">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10 relative">
+    <div id="platformVideoReveal" class="rounded-2xl overflow-hidden shadow-xl relative cursor-none z-10" style="clip-path: inset(0% 50% 0% 50%);">
+      <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="Platform overview" class="w-full" style="aspect-ratio:16/9;"/>
+      <div class="hidden lg:block absolute bottom-10 left-10 z-10 pointer-events-none">
+        <h3 class="text-white text-[clamp(2.25rem,5vw,4.25rem)] font-bold font-heading tracking-tight leading-[1.08]">Platform overview</h3>
+        <p class="text-white/70 text-lg mt-2 font-body">See how Let's Talk SPHE works — 3 min walkthrough</p>
+      </div>
+      <div class="hidden lg:block absolute inset-x-0 bottom-0 h-32 pointer-events-none" style="background:linear-gradient(to top, rgba(0,0,0,0.5), transparent);"></div>
+      <!-- Play icon center -->
+      <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+        <div class="w-16 h-16 lg:w-20 lg:h-20 rounded-full bg-[#F5D012] flex items-center justify-center shadow-lg">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polygon points="9,5 20,12 9,19" fill="#1c1917"/></svg>
         </div>
       </div>
     </div>
+    <div class="lg:hidden mt-4">
+      <h3 class="text-stone-900 text-2xl font-bold font-heading">Platform overview</h3>
+      <p class="text-stone-500 text-base mt-2">See how Let's Talk SPHE works — 3 min walkthrough</p>
+    </div>
   </div>
 </section>
+</div>
 
-<!-- FEATURE BLOCKS -->
-<section class="py-12 lg:py-20 bg-white">
-  <div class="max-w-[1400px] mx-auto px-6 lg:px-10 space-y-16">
+<!-- Re-open the rounded container -->
+<div class="bg-surface rounded-[40px]" style="overflow:clip;">
 
-    <!-- Feature 1: text left, image right -->
-    <div class="reveal grid lg:grid-cols-2 items-center gap-10">
-      <div>
+<!-- ============================================================ -->
+<!-- FEATURE BLOCKS — With visual depth                            -->
+<!-- ============================================================ -->
+
+<!-- Feature 1: text left, image right (odd = surface bg + yellow accent) -->
+<section class="py-16 lg:py-24 bg-surface">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="reveal feature-block grid lg:grid-cols-2 items-center gap-10 lg:gap-16">
+      <div class="relative">
+        <div class="hidden lg:block yellow-accent-bar"></div>
         <div class="w-12 h-12 rounded-xl bg-brand/10 flex items-center justify-center">
-          <!-- GripVertical -->
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></svg>
         </div>
-        <h3 class="mt-5 text-2xl sm:text-3xl font-bold text-stone-900">Drag-and-drop lesson builder</h3>
-        <p class="text-stone-500 text-base leading-relaxed mt-4">Assemble SPHE lessons using simple drag-and-drop blocks. Start from proven templates or customise content to suit your class.</p>
+        <h3 class="mt-5 text-2xl sm:text-3xl lg:text-[2.5rem] font-bold text-stone-900 leading-tight">Drag-and-drop lesson builder</h3>
+        <p class="text-stone-500 text-base leading-relaxed mt-4 max-w-lg">Assemble SPHE lessons using simple drag-and-drop blocks. Start from proven templates or customise content to suit your class.</p>
         <ul class="mt-6 space-y-3">
           <li class="flex items-start gap-3">
             <svg class="w-5 h-5 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -190,35 +296,42 @@
           <a href="contact.html" class="btn-flip bg-stone-900 text-white text-sm font-medium px-6 py-3 rounded-full hover:bg-stone-800 transition-colors inline-block"><span class="btn-flip-inner"><span class="line-1">Book a Demo</span><span class="line-2">Book a Demo</span></span></a>
         </div>
       </div>
-      <div>
-        <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="Drag-and-drop lesson builder" class="w-full rounded-2xl shadow-lg"/>
+      <div class="feature-img-wrap">
+        <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="Drag-and-drop lesson builder" class="w-full"/>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- Feature 2: image left, text right -->
-    <div class="reveal grid lg:grid-cols-2 items-center gap-10">
+<!-- Feature 2: image left, text right (even = white bg) -->
+<section class="py-16 lg:py-24 bg-white">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="reveal feature-block grid lg:grid-cols-2 items-center gap-10 lg:gap-16">
       <div class="lg:order-2">
         <div class="w-12 h-12 rounded-xl bg-brand/10 flex items-center justify-center">
-          <!-- BookOpen -->
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
         </div>
-        <h3 class="mt-5 text-2xl sm:text-3xl font-bold text-stone-900">High-quality, age-appropriate content</h3>
-        <p class="text-stone-500 text-base leading-relaxed mt-4">Browse lessons by year group and topic. Preview content before you use it. All resources are designed to meet the prescribed teaching hours and learning outcomes of the new SPHE curriculum.</p>
+        <h3 class="mt-5 text-2xl sm:text-3xl lg:text-[2.5rem] font-bold text-stone-900 leading-tight">High-quality, age-appropriate content</h3>
+        <p class="text-stone-500 text-base leading-relaxed mt-4 max-w-lg">Browse lessons by year group and topic. Preview content before you use it. All resources are designed to meet the prescribed teaching hours and learning outcomes of the new SPHE curriculum.</p>
       </div>
-      <div class="lg:order-1">
-        <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="High-quality, age-appropriate content" class="w-full rounded-2xl shadow-lg"/>
+      <div class="lg:order-1 feature-img-wrap">
+        <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="High-quality, age-appropriate content" class="w-full"/>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- Feature 3: text left, image right -->
-    <div class="reveal grid lg:grid-cols-2 items-center gap-10">
-      <div>
+<!-- Feature 3: text left, image right (odd = surface bg + yellow accent) -->
+<section class="py-16 lg:py-24 bg-surface">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="reveal feature-block grid lg:grid-cols-2 items-center gap-10 lg:gap-16">
+      <div class="relative">
+        <div class="hidden lg:block yellow-accent-bar"></div>
         <div class="w-12 h-12 rounded-xl bg-brand/10 flex items-center justify-center">
-          <!-- FileText -->
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
         </div>
-        <h3 class="mt-5 text-2xl sm:text-3xl font-bold text-stone-900">Inspection-ready planning and evidence</h3>
-        <p class="text-stone-500 text-base leading-relaxed mt-4">Comprehensive planning and assessment documents are built into the platform, supporting WSE, SSE and SPHE inspection requirements.</p>
+        <h3 class="mt-5 text-2xl sm:text-3xl lg:text-[2.5rem] font-bold text-stone-900 leading-tight">Inspection-ready planning and evidence</h3>
+        <p class="text-stone-500 text-base leading-relaxed mt-4 max-w-lg">Comprehensive planning and assessment documents are built into the platform, supporting WSE, SSE and SPHE inspection requirements.</p>
         <ul class="mt-6 space-y-3">
           <li class="flex items-start gap-3">
             <svg class="w-5 h-5 flex-shrink-0 mt-0.5" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
@@ -234,53 +347,86 @@
           </li>
         </ul>
       </div>
-      <div>
-        <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="Inspection-ready planning and evidence" class="w-full rounded-2xl shadow-lg"/>
+      <div class="feature-img-wrap">
+        <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="Inspection-ready planning and evidence" class="w-full"/>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- Feature 4: image left, text right -->
-    <div class="reveal grid lg:grid-cols-2 items-center gap-10">
+<!-- Feature 4: image left, text right (even = white bg) -->
+<section class="py-16 lg:py-24 bg-white">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="reveal feature-block grid lg:grid-cols-2 items-center gap-10 lg:gap-16">
       <div class="lg:order-2">
         <div class="w-12 h-12 rounded-xl bg-brand/10 flex items-center justify-center">
-          <!-- Monitor -->
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
         </div>
-        <h3 class="mt-5 text-2xl sm:text-3xl font-bold text-stone-900">Designed for engagement in the classroom</h3>
-        <p class="text-stone-500 text-base leading-relaxed mt-4">Students experience clear, focused lessons that encourage participation, debate and learning — supporting emotional literacy, self-awareness and interpersonal skills.</p>
+        <h3 class="mt-5 text-2xl sm:text-3xl lg:text-[2.5rem] font-bold text-stone-900 leading-tight">Designed for engagement in the classroom</h3>
+        <p class="text-stone-500 text-base leading-relaxed mt-4 max-w-lg">Students experience clear, focused lessons that encourage participation, debate and learning — supporting emotional literacy, self-awareness and interpersonal skills.</p>
       </div>
-      <div class="lg:order-1">
-        <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="Designed for engagement in the classroom" class="w-full rounded-2xl shadow-lg"/>
+      <div class="lg:order-1 feature-img-wrap">
+        <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="Designed for engagement in the classroom" class="w-full"/>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- Feature 5: text left, image right -->
-    <div class="reveal grid lg:grid-cols-2 items-center gap-10">
-      <div>
+<!-- Feature 5: text left, image right (odd = surface bg + yellow accent) -->
+<section class="py-16 lg:py-24 bg-surface">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10">
+    <div class="reveal feature-block grid lg:grid-cols-2 items-center gap-10 lg:gap-16">
+      <div class="relative">
+        <div class="hidden lg:block yellow-accent-bar"></div>
         <div class="w-12 h-12 rounded-xl bg-brand/10 flex items-center justify-center">
-          <!-- BarChart3 -->
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="13" width="3" height="7"/><rect x="12" y="9" width="3" height="11"/><rect x="17" y="5" width="3" height="15"/></svg>
         </div>
-        <h3 class="mt-5 text-2xl sm:text-3xl font-bold text-stone-900">Confidence and visibility for school leadership</h3>
-        <p class="text-stone-500 text-base leading-relaxed mt-4">Nominated staff can access the platform with unique logins. School leaders can see how SPHE is being delivered across the school, supporting consistency and accountability.</p>
+        <h3 class="mt-5 text-2xl sm:text-3xl lg:text-[2.5rem] font-bold text-stone-900 leading-tight">Confidence and visibility for school leadership</h3>
+        <p class="text-stone-500 text-base leading-relaxed mt-4 max-w-lg">Nominated staff can access the platform with unique logins. School leaders can see how SPHE is being delivered across the school, supporting consistency and accountability.</p>
       </div>
-      <div>
-        <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="Confidence and visibility for school leadership" class="w-full rounded-2xl shadow-lg"/>
+      <div class="feature-img-wrap">
+        <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Dashboard.jpg" alt="Confidence and visibility for school leadership" class="w-full"/>
       </div>
     </div>
-
   </div>
 </section>
 
-<!-- TRUST LINE -->
-<section class="py-10 lg:py-14 bg-white">
-  <div class="max-w-[1400px] mx-auto px-6 lg:px-10 text-center">
-    <p class="reveal inline-flex items-center gap-2 text-sm text-stone-500">
-      <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#F5D012" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      Secure, GDPR-compliant, built for Irish schools.
-    </p>
+</div><!-- temporarily close rounded container -->
+
+<!-- ============================================================ -->
+<!-- MARQUEE STRIP — Yellow zone                                   -->
+<!-- ============================================================ -->
+<div class="relative z-10 overflow-hidden py-5 lg:py-6" style="background:#F5D012;">
+  <!-- Yellow fade left -->
+  <div class="absolute left-0 top-0 bottom-0 w-20 z-10 pointer-events-none" style="background:linear-gradient(to right, #F5D012, transparent);"></div>
+  <!-- Yellow fade right -->
+  <div class="absolute right-0 top-0 bottom-0 w-20 z-10 pointer-events-none" style="background:linear-gradient(to left, #F5D012, transparent);"></div>
+
+  <div id="platformMarquee" class="flex items-center gap-6 whitespace-nowrap w-max">
+    <span class="pill-item">Ready-to-use lessons</span><span class="pill-item text-white text-3xl lg:text-5xl">&bull;</span>
+    <span class="pill-item">Drag-and-drop builder</span><span class="pill-item text-white text-3xl lg:text-5xl">&bull;</span>
+    <span class="pill-item">Planning &amp; assessment</span><span class="pill-item text-white text-3xl lg:text-5xl">&bull;</span>
+    <span class="pill-item">Built for Irish schools</span><span class="pill-item text-white text-3xl lg:text-5xl">&bull;</span>
+    <!-- Duplicate for seamless loop -->
+    <span class="pill-item">Ready-to-use lessons</span><span class="pill-item text-white text-3xl lg:text-5xl">&bull;</span>
+    <span class="pill-item">Drag-and-drop builder</span><span class="pill-item text-white text-3xl lg:text-5xl">&bull;</span>
+    <span class="pill-item">Planning &amp; assessment</span><span class="pill-item text-white text-3xl lg:text-5xl">&bull;</span>
+    <span class="pill-item">Built for Irish schools</span><span class="pill-item text-white text-3xl lg:text-5xl">&bull;</span>
   </div>
-</section>
+</div>
+
+<!-- ============================================================ -->
+<!-- TRUST LINE — Full-width yellow strip                          -->
+<!-- ============================================================ -->
+<div style="background:#F5D012;">
+  <div class="max-w-[1400px] mx-auto px-6 lg:px-10 py-8 lg:py-12 flex items-center justify-center gap-4">
+    <svg class="w-8 h-8 lg:w-10 lg:h-10 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="#1c1917" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    <p class="text-stone-900 text-lg lg:text-2xl font-bold font-heading tracking-tight">Secure, GDPR-compliant, built for Irish schools.</p>
+  </div>
+</div>
+
+<!-- Re-open rounded container for CTA + footer -->
+<div class="bg-surface rounded-[40px]" style="overflow:clip;">
 
 <!-- DARK CTA -->
 <section class="bg-stone-900 py-16 lg:py-24">
@@ -351,6 +497,11 @@
 </div><!-- end rounded container -->
 </div><!-- end yellow shell -->
 
+<!-- Custom play cursor element -->
+<div id="customPlayCursor" class="custom-play-cursor">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><polygon points="9,5 20,12 9,19" fill="#1c1917"/></svg>
+</div>
+
 <script>
 // Lenis smooth scroll
 const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
@@ -359,6 +510,9 @@ requestAnimationFrame(raf);
 lenis.on('scroll', ScrollTrigger.update);
 gsap.ticker.add((time) => { lenis.raf(time * 1000); });
 gsap.ticker.lagSmoothing(0);
+
+// Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger);
 
 // Reveal on scroll
 const observer = new IntersectionObserver((entries) => {
@@ -375,6 +529,105 @@ menuBtn.addEventListener('click', () => {
   lines[0].style.transform = menuOpen ? 'rotate(45deg) translate(3px, 3px)' : '';
   lines[1].style.transform = menuOpen ? 'rotate(-45deg) translate(3px, -3px)' : '';
 });
+
+// ============================================================
+// GSAP — Video clip-path reveal
+// ============================================================
+(function() {
+  const videoEl = document.getElementById('platformVideoReveal');
+  if (!videoEl) return;
+
+  gsap.to(videoEl, {
+    clipPath: 'inset(0% 0% 0% 0%)',
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: videoEl,
+      start: 'top 80%',
+      end: 'top 30%',
+      scrub: 1,
+    }
+  });
+})();
+
+// ============================================================
+// Custom play cursor for video block
+// ============================================================
+(function() {
+  const videoEl = document.getElementById('platformVideoReveal');
+  const cursor = document.getElementById('customPlayCursor');
+  if (!videoEl || !cursor) return;
+
+  let cx = -100, cy = -100, tx = -100, ty = -100;
+
+  videoEl.addEventListener('mouseenter', () => { cursor.classList.add('visible'); });
+  videoEl.addEventListener('mouseleave', () => { cursor.classList.remove('visible'); });
+  videoEl.addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; });
+
+  function animateCursor() {
+    cx += (tx - cx) * 0.15;
+    cy += (ty - cy) * 0.15;
+    cursor.style.left = cx - 40 + 'px';
+    cursor.style.top = cy - 40 + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+})();
+
+// ============================================================
+// GSAP — Parallax for hero decorative elements
+// ============================================================
+(function() {
+  const blast = document.getElementById('heroBlast');
+  if (blast) {
+    gsap.to(blast, {
+      y: -40,
+      rotation: 8,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: blast,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1,
+      }
+    });
+  }
+
+  const scribble = document.getElementById('heroScribble');
+  if (scribble) {
+    gsap.to(scribble, {
+      y: -30,
+      rotation: -5,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: scribble,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1,
+      }
+    });
+  }
+})();
+
+// ============================================================
+// Marquee — rAF-based infinite scroll
+// ============================================================
+(function() {
+  const marquee = document.getElementById('platformMarquee');
+  if (!marquee) return;
+
+  let offset = 0;
+  const speed = 0.5; // px per frame
+
+  function tick() {
+    offset -= speed;
+    // Reset when first half has scrolled out
+    const halfWidth = marquee.scrollWidth / 2;
+    if (Math.abs(offset) >= halfWidth) offset += halfWidth;
+    marquee.style.transform = 'translateX(' + offset + 'px)';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
 
 // Sticky nav
 (function() {
