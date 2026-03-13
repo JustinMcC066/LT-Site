@@ -84,14 +84,14 @@
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id=GTM-KXL9PHF'+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-KXL9PHF');</script>
+  'https://www.googletagmanager.com/gtm.js?id=GTM-KXL9P9HF'+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-KXL9P9HF');</script>
   <!-- HubSpot -->
   <script type="text/javascript" id="hs-script-loader" async defer src="//js-eu1.hs-scripts.com/147754514.js"></script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KXL9PHF"
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KXL9P9HF"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <div class="bg-[#F5D012] min-h-screen p-3 lg:p-6">
@@ -344,7 +344,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="border-t border-white/10 pt-8 flex flex-col items-center gap-4 text-center md:flex-row md:justify-between md:text-left">
         <p class="text-xs text-white/40">&copy; 2026 Samson Media Limited. All Rights Reserved.</p>
         <div class="flex items-center gap-4">
-          <a href="#" class="text-xs text-white/40 hover:text-white transition-colors">Terms &amp; Conditions</a>
           <span class="w-1 h-1 rounded-full bg-white/30"></span>
           <a href="privacy-policy.html" class="text-xs text-white/40 hover:text-white transition-colors">Privacy Policy</a>
         </div>
@@ -480,6 +479,7 @@ menuBtn.addEventListener('click', () => {
     if (navRight) navRight.style.display = 'flex';
     if (pillMenuBtn) { pillMenuBtn.style.display = 'flex'; resetPillIcon(); }
     inner.style.width = '650px';
+    inner.style.maxWidth = 'calc(100vw - 24px)';
     inner.style.background = '#F5D010';
     inner.style.backdropFilter = 'blur(12px)';
     inner.style.borderRadius = '9999px';
@@ -529,6 +529,7 @@ menuBtn.addEventListener('click', () => {
     pillExpanded = true; clearCollapseTimer();
     if (pillMenuBtn) pillMenuBtn.style.display = 'none';
     inner.style.width = '1200px';
+    inner.style.maxWidth = 'calc(100vw - 24px)';
     if (navLinks) { navLinks.style.display = 'flex'; navLinks.style.gap = '16px'; navLinks.style.opacity = '1'; }
     const items = getNavItems();
     items.forEach(el => { el.style.display = ''; el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; });
@@ -541,6 +542,7 @@ menuBtn.addEventListener('click', () => {
     const items = getNavItems();
     items.forEach((el, i) => { const delay = (items.length - 1 - i) * 0.03; el.style.transition = 'opacity 0.15s ease, transform 0.15s ease'; el.style.transitionDelay = delay + 's'; el.style.opacity = '0'; el.style.transform = 'translateY(6px)'; });
     inner.style.width = '650px';
+    inner.style.maxWidth = 'calc(100vw - 24px)';
     const fadeTime = 150 + items.length * 30;
     setTimeout(() => { items.forEach(el => { el.style.display = 'none'; el.style.transition = ''; el.style.transitionDelay = ''; }); if (navLinks) navLinks.style.display = 'none'; if (pillMenuBtn) pillMenuBtn.style.display = 'flex'; }, fadeTime);
   }
@@ -560,6 +562,7 @@ menuBtn.addEventListener('click', () => {
     else if (sy <= threshold && isPillState) showFullState();
   }
   window.addEventListener('resize', () => {
+    if (window.innerWidth < 1024) return;
     if (useDropdown()) { if (dropdownOpen) hideDropdown(); showPillState(); }
     else if (window.scrollY <= threshold) { showFullState(); inner.style.width = getFullWidth() + 'px'; inner.style.maxWidth = 'none'; }
     else if (!isPillState) showPillState();

@@ -165,14 +165,14 @@
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
   new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
   j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id=GTM-KXL9PHF'+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-KXL9PHF');</script>
+  'https://www.googletagmanager.com/gtm.js?id=GTM-KXL9P9HF'+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-KXL9P9HF');</script>
   <!-- HubSpot -->
   <script type="text/javascript" id="hs-script-loader" async defer src="//js-eu1.hs-scripts.com/147754514.js"></script>
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KXL9PHF"
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KXL9P9HF"
 height="0" width="0" style="display:none;visibility:hidden" aria-hidden="true"></iframe></noscript>
 
 
@@ -246,7 +246,7 @@ height="0" width="0" style="display:none;visibility:hidden" aria-hidden="true"><
   <img src="https://tktxwfoeyvwhbrcpnviz.supabase.co/storage/v1/object/public/website%20images/Yellow%20Comment%20Scribble.svg" alt="" class="absolute pointer-events-none hidden lg:block" style="width:50vw; height:50vw; left:60vw; top:-10vw; z-index:0; opacity:1;">
   <div class="w-full max-w-[1400px] mx-auto px-6 lg:px-10 relative" style="z-index:1;">
     <!-- Mobile/Tablet dashboard — shown above text on < 1024px -->
-    <div class="lg:hidden mt-8 mb-6 rounded-2xl overflow-hidden shadow-xl">
+    <div class="lg:hidden mt-14 mb-6 rounded-2xl overflow-hidden shadow-xl">
       <video autoplay muted loop playsinline class="w-full object-cover object-left-top" style="aspect-ratio:16/9;">
         <source src="https://r22-pull-zone.b-cdn.net/Lets%20Talk%20SPHE/Website%20Videos/clip4.mp4" type="video/mp4"/>
       </video>
@@ -981,7 +981,6 @@ height="0" width="0" style="display:none;visibility:hidden" aria-hidden="true"><
       <div class="border-t border-white/10 pt-8 flex flex-col items-center gap-4 text-center md:flex-row md:justify-between md:text-left">
         <p class="text-xs text-white/40">&copy; 2026 Samson Media Limited. All Rights Reserved.</p>
         <div class="flex items-center gap-4">
-          <a href="#" class="text-xs text-white/40 hover:text-white transition-colors">Terms &amp; Conditions</a>
           <span class="w-1 h-1 rounded-full bg-white/30"></span>
           <a href="privacy-policy.html" class="text-xs text-white/40 hover:text-white transition-colors">Privacy Policy</a>
         </div>
@@ -1103,6 +1102,7 @@ document.querySelectorAll('.service-trigger').forEach(btn => {
     if (navRight) { navRight.style.display = 'flex'; }
     if (pillMenuBtn) { pillMenuBtn.style.display = 'flex'; resetPillIcon(); }
     inner.style.width = '650px';
+    inner.style.maxWidth = 'calc(100vw - 24px)';
     inner.style.background = '#F5D010';
     inner.style.backdropFilter = 'blur(12px)';
     inner.style.webkitBackdropFilter = 'blur(12px)';
@@ -1180,6 +1180,7 @@ document.querySelectorAll('.service-trigger').forEach(btn => {
     if (pillMenuBtn) { pillMenuBtn.style.display = 'none'; }
     // Expand width first
     inner.style.width = '1200px';
+    inner.style.maxWidth = 'calc(100vw - 24px)';
     // Show nav links
     if (navLinks) { navLinks.style.display = 'flex'; navLinks.style.gap = '16px'; navLinks.style.opacity = '1'; }
     const items = getNavItems();
@@ -1294,6 +1295,7 @@ document.querySelectorAll('.service-trigger').forEach(btn => {
   }
 
   window.addEventListener('resize', () => {
+    if (window.innerWidth < 1024) return;
     if (useDropdown()) {
       if (dropdownOpen) hideDropdown();
       showPillState();
