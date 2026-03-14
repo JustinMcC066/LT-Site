@@ -284,9 +284,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           </div>
           <div class="flex items-start gap-3">
             <input type="checkbox" id="privacy" name="privacy" required class="mt-1 h-4 w-4 rounded border-stone-300 text-[#F5D012] focus:ring-[#F5D012]"/>
-            <label for="privacy" class="text-xs text-stone-500 leading-relaxed">I agree to the <a href="#" class="underline hover:text-stone-700">Privacy Policy</a> and consent to being contacted about Let's Talk SPHE.</label>
+            <label for="privacy" class="text-xs text-stone-500 leading-relaxed">I agree to the <a href="privacy-policy.html" class="underline hover:text-stone-700">Privacy Policy</a> and consent to being contacted about Let's Talk SPHE.</label>
           </div>
           <button id="formSubmitBtn" type="submit" class="w-full bg-stone-900 text-white font-semibold text-sm py-3 rounded-full hover:bg-stone-800 transition-colors">Book a Demo</button>
+          <p id="formMessage" class="text-sm text-center mt-3 hidden"></p>
         </form>
       </div>
     </div>
@@ -541,6 +542,57 @@ function switchRole(role) {
   });
   window.addEventListener('scroll', update, { passive: true });
   update();
+})();
+
+// Contact form submission
+(function() {
+  const form = document.getElementById('contactForm');
+  if (!form) return;
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('formSubmitBtn');
+    const msg = document.getElementById('formMessage');
+    const originalText = btn.textContent;
+
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    msg.className = 'text-sm text-center mt-3 hidden';
+
+    const data = {
+      name: form.name.value.trim(),
+      email: form.email.value.trim(),
+      phone: form.phone.value.trim(),
+      school: form.school.value.trim(),
+      message: form.message.value.trim(),
+      formType: originalText === 'Book a Demo' ? 'demo' : 'trial',
+    };
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (res.ok) {
+        msg.textContent = 'Thank you! We\'ll be in touch shortly.';
+        msg.className = 'text-sm text-center mt-3 text-green-600 font-medium';
+        form.reset();
+      } else {
+        const err = await res.json();
+        msg.textContent = err.error || 'Something went wrong. Please try again.';
+        msg.className = 'text-sm text-center mt-3 text-red-500 font-medium';
+      }
+    } catch (error) {
+      msg.textContent = 'Network error. Please try again.';
+      msg.className = 'text-sm text-center mt-3 text-red-500 font-medium';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  });
 })();
 </script>
 </body>
